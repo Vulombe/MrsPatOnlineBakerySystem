@@ -13,7 +13,7 @@ public interface ProductDAO {
     public boolean add(Product p);
     public Product read(int id);
     public List<Product> read();
-     public List<Product> read(Product p);
+    public List<Product> read(Product p);
     public List<Product> read(Category c);
     public void update(Product p);
     public void delete(Product p);

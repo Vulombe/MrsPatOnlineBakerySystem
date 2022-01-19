@@ -43,7 +43,7 @@ public class ProductController extends HttpServlet {
             prs = prs.toLowerCase();
             switch (prs) {
                 case "pview-single":
-                    request.setAttribute("prod", productService.getProduct(request.getParameter("prodid")));
+                    request.setAttribute("prod", productService.getProduct(request.getParameter("category")));
                     view = request.getRequestDispatcher("TestingPage.jsp");
                     view.forward(request, response);
                     break;

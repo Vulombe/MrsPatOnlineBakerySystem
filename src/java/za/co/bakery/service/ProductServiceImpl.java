@@ -53,9 +53,9 @@ public class ProductServiceImpl implements ProductService{
     }
 
     @Override
-    public void productDelete(int productID, String name, String picture, double price, Category category, String warning, String description, int recipeID) {
+    public boolean productDelete(int productID, String name, String picture, double price, Category category, String warning, String description, int recipeID) {
         Product p = new Product(productID, name, picture, price, category, warning, description, recipeID);
-        productDAO.delete(p);
+        return productDAO.delete(p);
         
     }
 

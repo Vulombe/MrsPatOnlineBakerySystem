@@ -14,5 +14,5 @@ public interface ProductService {
     List<Product> getProducts(String category);
     Product getProduct(String productID);
     Ingredient getIngredient(int ingredientID);
-    void productDelete(int productID, String name, String picture, double price, Category category, String warning, String description, int recipeID);
+    boolean productDelete(int productID, String name, String picture, double price, Category category, String warning, String description, int recipeID);
 }
