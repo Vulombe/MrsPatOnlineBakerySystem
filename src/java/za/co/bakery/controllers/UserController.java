@@ -20,6 +20,7 @@ public class UserController extends HttpServlet {
         if (prs != null) {
             String email = request.getParameter("title");
             String password = request.getParameter("lastName");
+//            String password = request.getParameter("lastName");
             if (prs.equals("login")) {
                 boolean userValidation = userService.isUserValid(email, password);
                 if(userValidation)
