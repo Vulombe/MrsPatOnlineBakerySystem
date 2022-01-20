@@ -16,6 +16,8 @@ import za.co.bakery.domain.Category;
 import za.co.bakery.manager.DBPoolManagerBasic;
 import za.co.bakery.service.ProductService;
 import za.co.bakery.service.ProductServiceImpl;
+import za.co.bakery.service.UserService;
+import za.co.bakery.service.UserServiceImpl;
 
 /**
  *
@@ -40,15 +42,16 @@ public class ProductController extends HttpServlet {
         if (prs != null) {
             DBPoolManagerBasic dbpm = (DBPoolManagerBasic) sc.getAttribute("dbconn");
             ProductService productService = new ProductServiceImpl(dbpm);
+            UserService userService = new UserServiceImpl(dbpm);
             prs = prs.toLowerCase();
             switch (prs) {
                 case "pview-single":
-                    request.setAttribute("prod", productService.getProduct(request.getParameter("category")));
+                    request.setAttribute("prod", productService.getProduct(request.getParameter("prodid")));
                     view = request.getRequestDispatcher("TestingPage.jsp");
                     view.forward(request, response);
                     break;
                 case "pview":
-                    request.setAttribute("prod", productService.getProducts(request.getParameter("prodid")));
+                    request.setAttribute("prod", productService.getProducts(request.getParameter("category")));
                     view = request.getRequestDispatcher("TestingPage.jsp");
                     view.forward(request, response);
                     break;
@@ -60,7 +63,7 @@ public class ProductController extends HttpServlet {
                             Category.valueOf(request.getParameter("category").toUpperCase()), 
                             request.getParameter("warning"), request.getParameter("description"), 
                             Integer.parseInt(request.getParameter("productID")));
-                    request.setAttribute("isAdded", res);                    
+                            request.setAttribute("isAdded", res);                    
                     view = request.getRequestDispatcher("TestingPage.jsp");
                     view.forward(request, response);
                     break;
@@ -77,6 +80,14 @@ public class ProductController extends HttpServlet {
                     view.forward(request, response);
                     break;
                 case "pedit":
+                    break;
+                case "cadd":
+                    request.setAttribute("added", productService.addToCart(request.getParameter("prodid"),
+                            request.getParameter("qty"),
+                            userService.read("user")));
+                    view = request.getRequestDispatcher("TestingPage.jsp");
+                    view.forward(request, response);                    
+                    
                     break;
             }
 
