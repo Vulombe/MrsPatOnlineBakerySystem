@@ -4,29 +4,42 @@ import za.co.bakery.service.UserService;
 import za.co.bakery.service.UserServiceImpl;
 import java.io.IOException;
 import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import za.co.bakery.dbao.UserDOA;
 import za.co.bakery.dbao.impl.UserDOAImpl;
 import za.co.bakery.domain.User;
+import za.co.bakery.manager.DBPoolManagerBasic;
 
 public class UserController extends HttpServlet {
-    UserService userService = new UserServiceImpl();
+
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        
+        String message = "";
         String prs = request.getParameter("pro");
+        RequestDispatcher view=null;
         if (prs != null) {
-            String email = request.getParameter("title");
-            String password = request.getParameter("lastName");
+            ServletContext sc = request.getServletContext();
+            DBPoolManagerBasic dbpm = (DBPoolManagerBasic)sc.getAttribute("dbconn");
+            UserService userService = new UserServiceImpl(dbpm);
+
             if (prs.equals("login")) {
+                String email = request.getParameter("email");
+                String password = request.getParameter("password");
                 boolean userValidation = userService.isUserValid(email, password);
-                if(userValidation)
-                {
-                    
-                }    
-                RequestDispatcher view = request.getRequestDispatcher("loginAnswer.jsp");
+                HttpSession session = request.getSession();
+                if (userValidation) {
+                    message = "Valid User";
+                } else {
+                    message = "Invalid User";
+                }
+                session.setAttribute("Valid", message);
+                view = request.getRequestDispatcher("davelogin.jsp");
                 view.forward(request, response);
             }
         }
