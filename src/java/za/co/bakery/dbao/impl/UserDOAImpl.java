@@ -61,22 +61,21 @@ public class UserDOAImpl implements UserDOA {
         try {
             if (isNewUser(u)) {
                 con = dbpm.getConnection();
-                ps = con.prepareStatement("INSERT INTO USER VALUE(?,?,?,?,?,?,?,?)");
-                ps.setInt(1, u.getID());
-                ps.setString(2, u.getTitle());
-                ps.setString(3, u.getFirstName());
-                ps.setString(4, u.getLastName());
-                ps.setString(5, u.getEmailAddress());
-                ps.setString(6, u.getContactNumber());
-                ps.setString(7, u.getPassword());
+                ps = con.prepareStatement("INSERT INTO USER VALUE(null,?,?,?,?,?,?,?)");
+             //   ps.setInt(1, u.getID());
+                ps.setString(1, u.getTitle());
+                ps.setString(2, u.getFirstName());
+                ps.setString(3, u.getLastName());
+                ps.setString(4, u.getEmailAddress());
+                ps.setString(5, u.getContactNumber());
+                ps.setString(6, u.getPassword());
 
                 if (u.getUserRole().toString().toLowerCase().equals("admin")) {
-                    ps.setString(8, "N");
+                    ps.setString(7, "N");
                 } else {
-                    ps.setString(8, "Y");
+                    ps.setString(7, "Y");
                 }
-                ps.executeUpdate();
-
+                i=ps.executeUpdate();
             }
         } catch (Exception e) {
             System.err.println(e);

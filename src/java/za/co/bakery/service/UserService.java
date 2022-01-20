@@ -7,9 +7,10 @@ import za.co.bakery.domain.User;
 
 public interface UserService {
  
-    void create(String title,String lastName,String firstName,String email, String password);
+    User create(String title, String firstName, String lastName, String emailAddress, String contactNumber, String password);
     boolean isUserValid(String email,String password);
     public User read(User u);
+    public User read(int id);
     List<User> getUsers();
 }
 

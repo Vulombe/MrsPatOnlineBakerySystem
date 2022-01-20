@@ -43,9 +43,15 @@
             </form>
         </div>
         <div class="form-container sign-in-container">
-            <form action="#">
+           <form action="http://localhost:8080/MrsPatOnlineBakerySystem/userController" method="post">
                 <h1> Login </h1>
         
+                <!--                get session and check if there is a User. If there is then check if it is an admin. If it is, then enable
+                admin features, else leave default features-->
+                
+<!--                if there is a user in the session, change the login button to logout button-->
+
+                
                 <input type="email" name="loginEmail" placeholder="Email">
                 <input type="Password" name="loginPassword" placeholder="Password">
                 <button> Login </button>

@@ -4,6 +4,8 @@
     Author     : Student03
 --%>
 
+<%@page import="za.co.bakery.domain.Role"%>
+<%@page import="za.co.bakery.domain.User"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -13,6 +15,12 @@
     </head>
     <body>
         <h1>Testing Page!!!!</h1>
-        
+        <% User user = (User)session.getAttribute("user");%>
+        <H1>The user name is: <%=user.getLastName()%> </H1>
+        <% if(user.getUserRole().equals(Role.CLIENT)){%>
+          <H1>The user is a Client</H1>
+          <%}else{%>
+        <H1>The user is ADMIN</H1>
+        <%}%>    
     </body>
 </html>

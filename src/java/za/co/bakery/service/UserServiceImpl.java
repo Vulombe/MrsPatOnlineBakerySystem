@@ -37,8 +37,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void create(String title, String lastName, String firstName, String email, String password) {
-        // return userdao.create(u);
+    public User create(String title, String firstName, String lastName, String emailAddress, String contactNumber, String password) {
+        User user = new User(title, firstName, lastName, emailAddress, contactNumber, password);
+        return (userdao.create(user) > 0) ? user:null;
     }
 
     @Override
@@ -48,6 +49,11 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User read(User u) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public User read(int id) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 

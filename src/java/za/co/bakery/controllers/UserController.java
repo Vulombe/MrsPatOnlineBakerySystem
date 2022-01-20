@@ -19,86 +19,86 @@ public class UserController extends HttpServlet {
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
-        String message = "";
+
         String prs = request.getParameter("pro");
-        RequestDispatcher view=null;
+        RequestDispatcher view = null;
         if (prs != null) {
             ServletContext sc = request.getServletContext();
-            DBPoolManagerBasic dbpm = (DBPoolManagerBasic)sc.getAttribute("dbconn");
+            DBPoolManagerBasic dbpm = (DBPoolManagerBasic) sc.getAttribute("dbconn");
             UserService userService = new UserServiceImpl(dbpm);
-
+            HttpSession session = request.getSession();
             if (prs.equals("login")) {
-                String email = request.getParameter("email");
-                String password = request.getParameter("password");
+                String email = request.getParameter("loginEmail");
+                String password = request.getParameter("loginPassword");
                 boolean userValidation = userService.isUserValid(email, password);
-                HttpSession session = request.getSession();
+
                 if (userValidation) {
-                    message = "Valid User";
+
+                    User user = new User(email, password);
+                    user = userService.read(user);
+                    if (user.getUserRole().equals("ADMIN")) {
+                        session.setAttribute("role", user.getUserRole().ADMIN);
+                    }
+                    session.setAttribute("user", user);
+                    view = request.getRequestDispatcher("index.jsp");
                 } else {
-                    message = "Invalid User";
+                    String message = "Invalid email or password try again";
+                    request.setAttribute("Error", message);
+                    //view = request.getRequestDispatcher("Error.jsp");
                 }
-                session.setAttribute("Valid", message);
-                view = request.getRequestDispatcher("davelogin.jsp");
+
+                view.forward(request, response);
+            }
+            if (prs.equals("register")) {
+
+                String title = request.getParameter("title");
+                String lname = request.getParameter("lastName");
+                String fname = request.getParameter("firstName");
+                String email = request.getParameter("loginEmail");
+
+                if (email != null) {
+                    email = email.toLowerCase();
+                }
+                String password = request.getParameter("loginPassword");
+                String confirmPassword = request.getParameter("loginEmail");
+                String contactNumber = request.getParameter("contactNumber");
+                if (password.equals(confirmPassword)) {
+                    User user = userService.create(title, fname, lname, email, contactNumber, password);
+                    if (user == null) {
+                        //Use was not created
+                        view = request.getRequestDispatcher("Error.jsp");
+                    } else {
+                        session.setAttribute("user", user);
+                        view = request.getRequestDispatcher("TestingPage.jsp");
+                    }
+                    view.forward(request, response);
+                }
+
+            }
+            if (prs.equals("logout")) {
+                session.removeAttribute("user");
+                view = request.getRequestDispatcher("index.jsp");
                 view.forward(request, response);
             }
         }
 
     }
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /**
-     * Handles the HTTP <code>GET</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
     }
 
-    /**
-     * Handles the HTTP <code>POST</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
     }
 
-    /**
-     * Returns a short description of the servlet.
-     *
-     * @return a String containing servlet description
-     */
     @Override
     public String getServletInfo() {
         return "Short description";
-    }// </editor-fold>
+    }
 
 }
-//                if(valid){
-//                    request.setAttribute("valid", valid);
-//                }else
-//                {
-//                    request.setAttribute("invalid", valid);
-//                }
-//       if (prs.equals("register")) {
-//                UserDOA userReg = new UserServiceImpl();
-//                //userReg.registerUser(prs, prs, prs, prs, prs);
-//                String title = request.getParameter("title");
-//                String lname = request.getParameter("lastName");
-//                String fname = request.getParameter("firstName");
-//                String email = request.getParameter("email");
-//                String password = request.getParameter("password");
-//                userReg.registerUser(title, lname, fname, email, password);
-//            }
