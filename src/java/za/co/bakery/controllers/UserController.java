@@ -24,10 +24,8 @@ public class UserController extends HttpServlet {
         String prs = request.getParameter("pro");
         RequestDispatcher view=null;
         if (prs != null) {
-            ServletContext sc = request.getServletContext();
-            DBPoolManagerBasic dbpm = (DBPoolManagerBasic)sc.getAttribute("dbconn");
-            UserService userService = new UserServiceImpl(dbpm);
-
+            String email = request.getParameter("email");
+            String password = request.getParameter("password");
             if (prs.equals("login")) {
                 String email = request.getParameter("email");
                 String password = request.getParameter("password");

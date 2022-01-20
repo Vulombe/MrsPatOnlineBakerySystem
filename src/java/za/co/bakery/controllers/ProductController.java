@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import za.co.bakery.domain.Category;
+import za.co.bakery.domain.Product;
 import za.co.bakery.manager.DBPoolManagerBasic;
 import za.co.bakery.service.ProductService;
 import za.co.bakery.service.ProductServiceImpl;
@@ -68,21 +69,26 @@ public class ProductController extends HttpServlet {
                     view.forward(request, response);
                     break;
                 case "pdelete":
+                                        
                     request.setAttribute("isDeleted", 
-                           Integer.parseInt(request.getParameter("productID")));
+                            productService.productDelete(Integer.parseInt(request.getParameter("productID"))));
                     view = request.getRequestDispatcher("TestingPage.jsp");
                     view.forward(request, response);
                     break;
                 case "pedit":
                     break;
                 case "cadd":
-                    request.setAttribute("cart-count", productService.addToCart(request.getParameter("prodid"),
-                            request.getParameter("qty"),
-                            userService.read("userID")));
-                    view = request.getRequestDispatcher("TestingPage.jsp");
-                    view.forward(request, response);                    
-                    
+//                    request.setAttribute("cart-count", productService.addToCart(request.getParameter("prodid"),
+//                            request.getParameter("qty"),
+//                            userService.read("userID")));
+//                    view = request.getRequestDispatcher("TestingPage.jsp");
+//                    view.forward(request, response);                    
+//                    
                     break;
+                case "pupdate":
+                    request.setAttribute("update", productService.productUpdate(Integer.parseInt(request.getParameter("productID")), 
+                            request.getParameter("field"), 
+                            request.getParameter("change")));
             }
 
         } else {

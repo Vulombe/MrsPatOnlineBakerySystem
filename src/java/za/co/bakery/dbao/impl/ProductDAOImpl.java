@@ -6,9 +6,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import org.eclipse.jdt.internal.compiler.ast.FalseLiteral;
 import za.co.bakery.dbao.ProductDAO;
 import za.co.bakery.domain.Category;
 import za.co.bakery.domain.Product;
+import za.co.bakery.domain.Recipe;
 import za.co.bakery.domain.User;
 import za.co.bakery.manager.DBPoolManagerBasic;
 
@@ -218,7 +220,8 @@ public class ProductDAOImpl implements ProductDAO {
 //***************update product in the database*******************************
 
     @Override
-    public void update(Product p) {
+    public boolean update(Product p) {
+        boolean isUpdated=false;
         try {
             con = dbpm.getConnection();
             ps = con.prepareStatement("update Product set name=?,picture=?,price=?,category=?,warning-?,description=?,recipeId=? where productId=?");
@@ -233,29 +236,43 @@ public class ProductDAOImpl implements ProductDAO {
             ps.setInt(8, p.getProductID());
 
             ps.executeUpdate();
+            isUpdated=true;
 
         } catch (SQLException ex) {
             System.out.println("Error: " + ex.getMessage());
         } finally {
             closeStreams();
+           
         }
+        return isUpdated;
     }
 
     //**************delete product in the database**************************
     @Override
-    public void delete(Product p) {
+    public boolean delete(int productId) {
+        
+        boolean isDeleted=false;
         try {
             con = dbpm.getConnection();
-            ps = con.prepareStatement("Delete from Product where productId=?");
-            ps.setInt(1, p.getProductID());
+            ps = con.prepareStatement("update Product set isActive=? where productId=?");
+            ps.setString(1,"N");
+            ps.setInt(2,productId);
             ps.executeUpdate();
-
+            isDeleted=true;
         } catch (SQLException ex) {
             System.out.println("Error: " + ex.getMessage());
         } finally {
             closeStreams();
         }
+        
+        return isDeleted;
     }
+    
+    @Override
+    public Recipe readRecipe(Product p) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
     //    
     //    @Override
     //    public List<Product> read(Category choice) {
@@ -309,4 +326,5 @@ public class ProductDAOImpl implements ProductDAO {
     }
     // ************************************************************************
 
+    
 }

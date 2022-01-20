@@ -116,6 +116,40 @@ public class ProductServiceImpl implements ProductService{
         return true;
     }
 
+    @Override
+    public boolean productUpdate(int productID, String field, String update) {
+        Product p = this.productDAO.read(productID);
+        String f = field.toLowerCase();
+        
+        switch(f){
+            case "name":
+                p.setName(update);
+                break;
+            case "picture":
+                p.setPicture(update);
+                break;
+            case "price":
+                p.setPrice(Double.parseDouble(update));
+                break;
+            case "category":
+                String r = update.toUpperCase();
+                p.setCategory(Category.valueOf(r));
+                break;
+            case "warning":
+                p.setWarning(update);
+                break;
+            case "description":
+                p.setDescription(update);
+                break;
+            case "recipe":
+                p.setRecipe(Integer.parseInt(update));
+                break;
+        }
+        
+        
+        return productDAO.update(p);
+    }
+
     
 
 

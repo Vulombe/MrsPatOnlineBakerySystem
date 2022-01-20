@@ -61,19 +61,19 @@ public class UserDOAImpl implements UserDOA {
         try {
             if (isNewUser(u)) {
                 con = dbpm.getConnection();
-                ps = con.prepareStatement("INSERT INTO USER VALUE(?,?,?,?,?,?,?,?)");
-                ps.setInt(1, u.getID());
-                ps.setString(2, u.getTitle());
-                ps.setString(3, u.getFirstName());
-                ps.setString(4, u.getLastName());
-                ps.setString(5, u.getEmailAddress());
-                ps.setString(6, u.getContactNumber());
-                ps.setString(7, u.getPassword());
+                ps = con.prepareStatement("INSERT INTO USER (id,title,firstName,lastName,email,contactNumber,password,isClient)VALUE(null,?,?,?,?,?,?,?)");
+                //ps.setInt(1, u.getID());
+                ps.setString(1, u.getTitle());
+                ps.setString(2, u.getFirstName());
+                ps.setString(3, u.getLastName());
+                ps.setString(4, u.getEmailAddress());
+                ps.setString(5, u.getContactNumber());
+                ps.setString(6, u.getPassword());
 
                 if (u.getUserRole().toString().toLowerCase().equals("admin")) {
-                    ps.setString(8, "N");
+                    ps.setString(7, "N");
                 } else {
-                    ps.setString(8, "Y");
+                    ps.setString(7, "Y");
                 }
                 ps.executeUpdate();
 
@@ -88,15 +88,49 @@ public class UserDOAImpl implements UserDOA {
 
     @Override
     public User read() {
-        User u=null;
-       try {
+        User u = null;
+        try {
             con = dbpm.getConnection();
             ps = con.prepareStatement("SELECT * FROM USER WHERE EMAIL=?");
             ps.setString(1, u.getEmailAddress());
             rs = ps.executeQuery();
 
             if (rs.next()) {
-                u= new User();
+                u = new User();
+                if (rs.getString("password").equals(u.getPassword())) {
+                    u.setID(rs.getInt("Id"));
+                    u.setTitle("title");
+                    u.setFirstName(rs.getString("firstName"));
+                    u.setLastName(rs.getString("lastName"));
+                    u.setContactNumber(rs.getString("contactNumber"));
+                    String userRole = rs.getString("isClient");
+                    if (userRole.equalsIgnoreCase("Y")) {
+                        u.setUserRole(Role.CLIENT);
+                    } else {
+                        u.setUserRole(Role.ADMIN);
+                    }
+
+                }
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        } finally {
+            closeStreams();
+        }
+        return u;
+    }
+
+    @Override
+    public User read(String email) {
+        User u = null;
+        try {
+            con = dbpm.getConnection();
+            ps = con.prepareStatement("SELECT * FROM USER WHERE EMAIL=?");
+            ps.setString(1, email);
+            rs = ps.executeQuery();
+
+            if (rs.next()) {
+                u = new User();
                 if (rs.getString("password").equals(u.getPassword())) {
                     u.setID(rs.getInt("Id"));
                     u.setTitle("title");
@@ -170,7 +204,57 @@ public class UserDOAImpl implements UserDOA {
         }
         return true;
     }
+    //***********updating user ******************************************
+ @Override
+    public boolean update(User u) {
+        boolean isUpdated = false;
+        try {
+            con = dbpm.getConnection();
+            ps = con.prepareStatement("update user set title=?,firstName=?,lastName=?,email=?,contactNumber=?,password=?,isClient=? where email=?");
 
+            ps.setString(1, u.getTitle());
+            ps.setString(2, u.getFirstName());
+            ps.setString(3, u.getLastName());
+            ps.setString(4, u.getEmailAddress());
+            ps.setString(5, u.getContactNumber());
+            ps.setString(6, u.getPassword());
+            if (u.getUserRole().toString().toLowerCase().equals("admin")) {
+                ps.setString(7, "N");
+            } else {
+                ps.setString(7, "Y");
+            }
+            ps.setInt(8, u.getID());
+
+            ps.executeUpdate();
+            isUpdated = true;
+
+        } catch (SQLException ex) {
+            System.out.println("Error: " + ex.getMessage());
+        } finally {
+            closeStreams();
+
+        }
+        return isUpdated;
+    }
+    
+      @Override
+    public boolean delete(String email) {
+       boolean isDeleted=false;
+        try {
+            con = dbpm.getConnection();
+            ps = con.prepareStatement("update user set isActive=? where email=?");
+            ps.setString(1,"N");
+            ps.setString(2,email);
+            ps.executeUpdate();
+            isDeleted=true;
+        } catch (SQLException ex) {
+            System.out.println("Error: " + ex.getMessage());
+        } finally {
+            closeStreams();
+        }
+        
+        return isDeleted; 
+    }
 // ***********************************Clossing the connection************************************
     private void closeStreams() {
         if (rs != null) {
@@ -199,5 +283,9 @@ public class UserDOAImpl implements UserDOA {
         con = null;
     }
     // ************************************************************************
+
+   
+
+  
 
 }

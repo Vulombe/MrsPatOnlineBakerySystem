@@ -19,21 +19,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean isUserValid(String email, String password) {
-//        boolean isUserValid = false;
-//        boolean valid = userdao.isUserValid(email, password);
-//        if (valid) {
-//            User user = userdao.read();
-//            String uEmail = user.getEmailAddress();
-//            String uPassword = user.getPassword();
-//            if (!uEmail.equals(email) || !uPassword.equals(password)) {
-//                isUserValid = true;
-//            }
-//
-//        }
-        boolean t = userdao.isUserValid(email, password);
-        return t;
-        // return userdao.isUserValid(email, password);
+    public boolean isUserValid(String email, String password) 
+    { return userdao.isUserValid(email, password);
     }
 
     @Override
