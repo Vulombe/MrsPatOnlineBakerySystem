@@ -41,9 +41,10 @@ public class UserDOAImpl implements UserDOA {
         boolean isValid = false;
         try {
             con = dbpm.getConnection();
-            ps = con.prepareStatement("SELECT * FROM USER WHERE EMAIL =? AND PASSWORD =?");
+            ps = con.prepareStatement("SELECT * FROM USER WHERE EMAIL =? AND PASSWORD =? AND ISACTIVE=?");
             ps.setString(1, email);
             ps.setString(2, password);
+            ps.setString(3, "Y");
             rs = ps.executeQuery();
             isValid = rs.next();
 

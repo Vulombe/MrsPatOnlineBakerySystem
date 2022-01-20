@@ -10,10 +10,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import za.co.bakery.dbao.UserDOA;
 import za.co.bakery.dbao.impl.UserDOAImpl;
+import za.co.bakery.domain.Product;
 import za.co.bakery.domain.User;
 
 public class UserController extends HttpServlet {
+
     UserService userService = new UserServiceImpl();
+
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String prs = request.getParameter("pro");
@@ -22,10 +25,11 @@ public class UserController extends HttpServlet {
             String password = request.getParameter("password");
             if (prs.equals("login")) {
                 boolean userValidation = userService.isUserValid(email, password);
-                if(userValidation)
-                {
-                    
-                }    
+                if (userValidation) {
+
+                }
+                
+             
                 RequestDispatcher view = request.getRequestDispatcher("loginAnswer.jsp");
                 view.forward(request, response);
             }

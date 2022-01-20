@@ -9,6 +9,7 @@ import java.util.List;
 import org.eclipse.jdt.internal.compiler.ast.FalseLiteral;
 import za.co.bakery.dbao.ProductDAO;
 import za.co.bakery.domain.Category;
+import za.co.bakery.domain.Ingredient;
 import za.co.bakery.domain.Product;
 import za.co.bakery.domain.Recipe;
 import za.co.bakery.domain.User;
@@ -272,6 +273,10 @@ public class ProductDAOImpl implements ProductDAO {
     public Recipe readRecipe(Product p) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
+      @Override
+    public List<Ingredient> readAllIngredient(Product p) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 
     //    
     //    @Override
@@ -325,6 +330,8 @@ public class ProductDAOImpl implements ProductDAO {
         con = null;
     }
     // ************************************************************************
+
+  
 
     
 }
