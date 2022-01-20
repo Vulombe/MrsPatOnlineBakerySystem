@@ -41,9 +41,10 @@ public class UserDOAImpl implements UserDOA {
         boolean isValid = false;
         try {
             con = dbpm.getConnection();
-            ps = con.prepareStatement("SELECT * FROM USER WHERE EMAIL =? AND PASSWORD =?");
+            ps = con.prepareStatement("SELECT * FROM USER WHERE EMAIL =? AND PASSWORD =? AND ISACTIVE=?");
             ps.setString(1, email);
             ps.setString(2, password);
+            ps.setString(3, "Y");
             rs = ps.executeQuery();
             isValid = rs.next();
 
@@ -62,7 +63,7 @@ public class UserDOAImpl implements UserDOA {
             if (isNewUser(u)) {
                 con = dbpm.getConnection();
                 ps = con.prepareStatement("INSERT INTO USER VALUE(null,?,?,?,?,?,?,?)");
-             //   ps.setInt(1, u.getID());
+                //   ps.setInt(1, u.getID());
                 ps.setString(1, u.getTitle());
                 ps.setString(2, u.getFirstName());
                 ps.setString(3, u.getLastName());
@@ -75,7 +76,7 @@ public class UserDOAImpl implements UserDOA {
                 } else {
                     ps.setString(7, "Y");
                 }
-                i=ps.executeUpdate();
+                i = ps.executeUpdate();
             }
         } catch (Exception e) {
             System.err.println(e);
@@ -87,15 +88,15 @@ public class UserDOAImpl implements UserDOA {
 
     @Override
     public User read() {
-        User u=null;
-       try {
+        User u = null;
+        try {
             con = dbpm.getConnection();
             ps = con.prepareStatement("SELECT * FROM USER WHERE EMAIL=?");
             ps.setString(1, u.getEmailAddress());
             rs = ps.executeQuery();
 
             if (rs.next()) {
-                u= new User();
+                u = new User();
                 if (rs.getString("password").equals(u.getPassword())) {
                     u.setID(rs.getInt("Id"));
                     u.setTitle("title");
@@ -170,7 +171,58 @@ public class UserDOAImpl implements UserDOA {
         return true;
     }
 
+    @Override
+    public boolean delete(String email) {
+        boolean isDeleted = false;
+        try {
+            con = dbpm.getConnection();
+            ps = con.prepareStatement("update user set isActive=? where email=?");
+            ps.setString(1, "N");
+            ps.setString(2, email);
+            ps.executeUpdate();
+            isDeleted = true;
+        } catch (SQLException ex) {
+            System.out.println("Error: " + ex.getMessage());
+        } finally {
+            closeStreams();
+        }
+
+        return isDeleted;
+    }
+    
+     @Override
+    public boolean update(User u) {
+             boolean isUpdated = false;
+        try {
+            con = dbpm.getConnection();
+            ps = con.prepareStatement("update user set title=?,firstName=?,lastName=?,email=?,contactNumber=?,password=?,isClient=? where email=?");
+
+            ps.setString(1, u.getTitle());
+            ps.setString(2, u.getFirstName());
+            ps.setString(3, u.getLastName());
+            ps.setString(4, u.getEmailAddress());
+            ps.setString(5, u.getContactNumber());
+            ps.setString(6, u.getPassword());
+            if (u.getUserRole().toString().toLowerCase().equals("admin")) {
+                ps.setString(7, "N");
+            } else {
+                ps.setString(7, "Y");
+            }
+            ps.setInt(8, u.getID());
+
+            ps.executeUpdate();
+            isUpdated = true;
+
+        } catch (SQLException ex) {
+            System.out.println("Error: " + ex.getMessage());
+        } finally {
+            closeStreams();
+
+        }
+        return isUpdated;
+    }
 // ***********************************Clossing the connection************************************
+
     private void closeStreams() {
         if (rs != null) {
             try {
@@ -198,5 +250,7 @@ public class UserDOAImpl implements UserDOA {
         con = null;
     }
     // ************************************************************************
+
+   
 
 }

@@ -11,6 +11,8 @@ public interface UserService {
     boolean isUserValid(String email,String password);
     public User read(User u);
     public User read(int id);
+    public boolean delete(String email);
+    public boolean update(User u);
     List<User> getUsers();
 }
 

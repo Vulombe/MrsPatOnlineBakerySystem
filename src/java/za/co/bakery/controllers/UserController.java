@@ -81,7 +81,14 @@ public class UserController extends HttpServlet {
                 view = request.getRequestDispatcher("index.jsp");
                 view.forward(request, response);
             }
-            
+            if(prs.equals("delete"))
+            {
+                String email = request.getParameter("loginEmail");
+                User user = new User(email);
+                boolean deleted = userService.delete(user.getEmailAddress());
+                view = request.getRequestDispatcher("TestingPage.jsp");
+                view.forward(request, response);
+            }
         }
 
     }

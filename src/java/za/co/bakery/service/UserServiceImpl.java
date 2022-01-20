@@ -20,17 +20,6 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean isUserValid(String email, String password) {
-//        boolean isUserValid = false;
-//        boolean valid = userdao.isUserValid(email, password);
-//        if (valid) {
-//            User user = userdao.read();
-//            String uEmail = user.getEmailAddress();
-//            String uPassword = user.getPassword();
-//            if (!uEmail.equals(email) || !uPassword.equals(password)) {
-//                isUserValid = true;
-//            }
-//
-//        }
         boolean t = userdao.isUserValid(email, password);
         return t;
         // return userdao.isUserValid(email, password);
@@ -55,6 +44,17 @@ public class UserServiceImpl implements UserService {
     @Override
     public User read(int id) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+   @Override
+   public boolean delete(String email)
+   {
+       return userdao.delete(email);
+   }
+
+    @Override
+    public boolean update(User u) {
+        return userdao.update(u);
     }
 
 }
