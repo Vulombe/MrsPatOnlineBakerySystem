@@ -469,13 +469,14 @@ body1 {
 }
 
 button {
+    position: absolute;
     border: 1px solid #722A1B;
-    padding: 4px 14px;
+    padding:5px 18px;
     background-color: #fff;
     color: #722A1B;
     text-transform: uppercase;
     float: right;
-    margin: 5px 0;
+    margin: 8px 0;
     font-weight: bold;
     cursor: pointer;
 }

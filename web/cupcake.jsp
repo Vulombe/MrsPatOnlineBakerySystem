@@ -8,8 +8,8 @@
 <!DOCTYPE html>
 <html>
     <head>
-         <button id="back" onclick="goBack()">BACK</button>
-    <button id="forward" onclick="goForward()">FORWARD</button>
+         
+    
         <link rel="stylesheet" type="text/css" href="style.css">
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Cupcakes</title>
@@ -61,6 +61,7 @@
 <!--/ wrapper -->
  
     </body1>
+    <button id="back" onclick="goBack()">BACK</button>
      <script src="cart.js"></script>
 </html>
 

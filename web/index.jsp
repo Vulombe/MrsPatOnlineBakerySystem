@@ -9,8 +9,8 @@
 <html>
 
 <head >
-    <button id="back" onclick="goBack()">BACK</button>
-    <button id="forward" onclick="goForward()">FORWARD</button>
+    
+  
     
     <meta charset="UTF-8" />
     <meta name="viewport" content="width-device-width,initial-scale=1.0">
@@ -24,7 +24,7 @@
 
     <div class="container" id="container">
         <div class="form-container sign-up-container">
-            <form action="#">
+            <form method="POST"   action="Signup">
                 <h1>Create Account</h1>
                 <p style="color:white"> <label for="title" >Title: </label>
                 <select name= "title" id="title">
@@ -43,7 +43,7 @@
             </form>
         </div>
         <div class="form-container sign-in-container">
-            <form action="#">
+            <form method="POST" action="Login">
                 <h1> Login </h1>
         
                 <input type="email" name="loginEmail" placeholder="Email">
@@ -66,6 +66,7 @@
             </div>
         </div>
     </div>
+    <button id="back" onclick="goBack()">BACK</button>
     <script src="main.js"></script>
     <script src="https://unpkg.com/ionicons@4.2.2/dist/ionicons.js"></script>
 </body>
