@@ -18,8 +18,8 @@ public class UserController extends HttpServlet {
             throws ServletException, IOException {
         String prs = request.getParameter("pro");
         if (prs != null) {
-            String email = request.getParameter("title");
-            String password = request.getParameter("lastName");
+            String email = request.getParameter("email");
+            String password = request.getParameter("password");
             if (prs.equals("login")) {
                 boolean userValidation = userService.isUserValid(email, password);
                 if(userValidation)

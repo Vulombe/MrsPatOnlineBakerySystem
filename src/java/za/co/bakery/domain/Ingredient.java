@@ -8,9 +8,6 @@ package za.co.bakery.domain;
 
 public class Ingredient {
     private int ingredientID;
-
-
-
     private String name;
     private String nutrient;
 

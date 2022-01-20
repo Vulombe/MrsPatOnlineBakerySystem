@@ -3,6 +3,7 @@ package za.co.bakery.dbao;
 import java.util.List;
 import za.co.bakery.domain.Category;
 import za.co.bakery.domain.Product;
+import za.co.bakery.domain.Recipe;
 
 /**
  *
@@ -15,8 +16,9 @@ public interface ProductDAO {
     public List<Product> read();
      public List<Product> read(Product p);
     public List<Product> read(Category c);
-    public void update(Product p);
-    public void delete(Product p);
+    public boolean update(Product p);
+    public boolean delete(int ProductId);
+    public Recipe readRecipe(Product p);
     
 
 //    boolean ProductAdd(String name, String picture, double price, Category category, String warning, String description, int recipeID);
