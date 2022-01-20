@@ -11,18 +11,17 @@ public class Cart {
     private static int userID = 0;
     private static Cart userCart = null;
     
-    private Cart(Product p, int qty, User user){
-        LineItem item = new LineItem(p,qty);
-        this.cart.add(item);
+    private Cart(User user){
         this.setUserID(user.getID());
     }
     
-    public static Cart Cart(Product p, int qty, User user){
+    public static Cart cart(User user){
         if (userID == 0){
-           userCart = new Cart(p,qty,user);
+           userCart = new Cart(user);
         }
         return userCart;
     }
+
 
     public List<LineItem> getCart() {
         return cart;

@@ -9,6 +9,7 @@ import za.co.bakery.domain.Ingredient;
 import za.co.bakery.domain.Product;
 import za.co.bakery.domain.User;
 import za.co.bakery.domain.Cart;
+import za.co.bakery.domain.LineItem;
 import za.co.bakery.manager.DBPoolManagerBasic;
 
 /**
@@ -55,13 +56,41 @@ public class ProductServiceImpl implements ProductService{
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-   // @Override
-   // public boolean productDelete(int productID, String name, String picture, double price, Category category, String warning, String description, int recipeID) {
-     //   Product p = new Product(productID, name, picture, price, category, warning, description, recipeID);
-    //    /*return*/ productDAO.delete(p);
-        
-   // }
+    @Override
+    public boolean addRecipe(String Steps) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+    
+    @Override
+    public int addToCart(String productID, String qty, User user){
+        Product p = this.getProduct(productID);
+        int quantity = Integer.parseInt(qty);
+        Cart userCart = Cart.cart(user);
+        userCart.addProduct(p, quantity);
+        return userCart.getCart().size();
+    }
 
+    @Override
+    public boolean productDelete(int productID) {
+        return productDAO.delete(productID);
+    }
+
+    @Override
+    public int editCart(String productID, String qty, User user) {
+        Product p = this.getProduct(productID);
+        int quantity = Integer.parseInt(qty);
+        Cart userCart = Cart.cart(user);
+        userCart.editCart(p, quantity);
+        return userCart.getCart().size();
+    }
+
+    @Override
+    public List<LineItem> getCart(User user) {
+        Cart userCart = Cart.cart(user);
+        
+        return userCart.getCart();
+    }
+    
     @Override
     public int hashCode() {
         int hash = 7;
@@ -86,20 +115,6 @@ public class ProductServiceImpl implements ProductService{
         }
         return true;
     }
-
-    @Override
-    public boolean addRecipe(String Steps) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-    
-    @Override
-    public int addToCart(String productID, String qty, User user){
-        Product p = this.getProduct(productID);
-        int quantity = Integer.parseInt(qty);
-        Cart userCart = Cart.Cart(p, quantity, user);
-        return userCart.getCart().size();
-    }
-
 
     
 

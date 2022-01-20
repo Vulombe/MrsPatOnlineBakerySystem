@@ -16,9 +16,9 @@ public interface ProductService {
     public List<Product> getProducts(String category);
     public Product getProduct(String productID);
     public Ingredient getIngredient(int ingredientID);
-    public boolean productDelete(int productID, String name, String picture, double price, Category category, String warning, String description, int recipeID);
+    public boolean productDelete(int productID);
     public boolean addRecipe(String Steps);
     public int addToCart(String productID, String qty, User user);
-    public int editCart(String productID, String qty);
+    public int editCart(String productID, String qty, User user);
     public List<LineItem> getCart(User user);
 }

@@ -68,23 +68,17 @@ public class ProductController extends HttpServlet {
                     view.forward(request, response);
                     break;
                 case "pdelete":
-//                    request.setAttribute("isDeleted", 
-//                            productService.productDelete(Integer.parseInt(request.getParameter("prodId")),
-//                            request.getParameter("name"), 
-//                            request.getParameter("picture"), 
-//                            Double.parseDouble(request.getParameter("price")), 
-//                            Category.valueOf(request.getParameter("category").toUpperCase()), 
-//                            request.getParameter("warning"), request.getParameter("description"), 
-//                            Integer.parseInt(request.getParameter("productID"))));
+                    request.setAttribute("isDeleted", 
+                           Integer.parseInt(request.getParameter("productID")));
                     view = request.getRequestDispatcher("TestingPage.jsp");
                     view.forward(request, response);
                     break;
                 case "pedit":
                     break;
                 case "cadd":
-                    request.setAttribute("added", productService.addToCart(request.getParameter("prodid"),
+                    request.setAttribute("cart-count", productService.addToCart(request.getParameter("prodid"),
                             request.getParameter("qty"),
-                            userService.read("user")));
+                            userService.read("userID")));
                     view = request.getRequestDispatcher("TestingPage.jsp");
                     view.forward(request, response);                    
                     
