@@ -62,6 +62,7 @@ public class UserController extends HttpServlet {
                 String password = request.getParameter("loginPassword");
                 String confirmPassword = request.getParameter("loginEmail");
                 String contactNumber = request.getParameter("contactNumber");
+                
                 if (password.equals(confirmPassword)) {
                     User user = userService.create(title, fname, lname, email, contactNumber, password);
                     if (user == null) {
@@ -80,6 +81,7 @@ public class UserController extends HttpServlet {
                 view = request.getRequestDispatcher("index.jsp");
                 view.forward(request, response);
             }
+            
         }
 
     }
