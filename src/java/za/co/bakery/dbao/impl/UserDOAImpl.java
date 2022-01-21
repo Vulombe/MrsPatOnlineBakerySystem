@@ -132,12 +132,13 @@ public class UserDOAImpl implements UserDOA {
 
             if (rs.next()) {
                 u = new User();
-                if (rs.getString("password").equals(u.getPassword())) {
+                    u.setPassword(rs.getString("password")) ;
                     u.setID(rs.getInt("Id"));
-                    u.setTitle("title");
+                    u.setTitle(rs.getString("title"));
                     u.setFirstName(rs.getString("firstName"));
                     u.setLastName(rs.getString("lastName"));
                     u.setContactNumber(rs.getString("contactNumber"));
+                    u.setEmailAddress(email);
                     String userRole = rs.getString("isClient");
                     if (userRole.equalsIgnoreCase("Y")) {
                         u.setUserRole(Role.CLIENT);
@@ -145,7 +146,7 @@ public class UserDOAImpl implements UserDOA {
                         u.setUserRole(Role.ADMIN);
                     }
 
-                }
+                
             }
         } catch (Exception e) {
             System.out.println(e.getMessage());
@@ -211,20 +212,19 @@ public class UserDOAImpl implements UserDOA {
         boolean isUpdated = false;
         try {
             con = dbpm.getConnection();
-            ps = con.prepareStatement("update user set title=?,firstName=?,lastName=?,email=?,contactNumber=?,password=?,isClient=? where email=?");
+            ps = con.prepareStatement("update user set title=?,firstName=?,lastName=?,contactNumber=?,password=?,isClient=? where email=?");
 
             ps.setString(1, u.getTitle());
             ps.setString(2, u.getFirstName());
             ps.setString(3, u.getLastName());
-            ps.setString(4, u.getEmailAddress());
-            ps.setString(5, u.getContactNumber());
-            ps.setString(6, u.getPassword());
+            ps.setString(4, u.getContactNumber());
+            ps.setString(5, u.getPassword());
             if (u.getUserRole().toString().toLowerCase().equals("admin")) {
-                ps.setString(7, "N");
+                ps.setString(6, "N");
             } else {
-                ps.setString(7, "Y");
+                ps.setString(6, "Y");
             }
-            ps.setInt(8, u.getID());
+           ps.setString(7, u.getEmailAddress());
 
             ps.executeUpdate();
             isUpdated = true;

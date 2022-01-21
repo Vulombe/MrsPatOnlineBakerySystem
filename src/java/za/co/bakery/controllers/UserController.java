@@ -83,7 +83,29 @@ public class UserController extends HttpServlet {
                 String firstName = request.getParameter("firstName");
                 String contactNumber = request.getParameter("contactNumber");
                 String password = request.getParameter("loginPassword");
-                User user = new User(title, firstName, lastName, emailAddress, contactNumber, password, Role.CLIENT);
+                
+                  User user = userService.read(userService.read(emailAddress));
+                 if(title!=null)
+                 {
+                     user.setTitle(title);
+                 }
+                 if(lastName!=null)
+                 {
+                     user.setLastName(lastName);
+                 }
+                  if(firstName!=null)
+                 {
+                     user.setFirstName(firstName);
+                 }
+                 if(contactNumber!=null)
+                 {
+                     user.setContactNumber(contactNumber);
+                 }
+                 if(password!=null)
+                 {
+                     user.setPassword(password);
+                 }
+     
                 boolean updated = userService.update(user);
                 if (updated) {
                     request.setAttribute("user", user);

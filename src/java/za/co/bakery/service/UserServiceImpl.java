@@ -38,7 +38,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User read(User u) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return userdao.read(u);
     }
 
     @Override
