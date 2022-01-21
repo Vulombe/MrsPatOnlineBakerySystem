@@ -3,12 +3,15 @@ package za.co.bakery.service;
 import java.util.List;
 import java.util.Objects;
 import za.co.bakery.dbao.ProductDAO;
+import za.co.bakery.dbao.UserDOA;
 import za.co.bakery.dbao.impl.ProductDAOImpl;
+import za.co.bakery.dbao.impl.UserDOAImpl;
 import za.co.bakery.domain.Category;
 import za.co.bakery.domain.Ingredient;
 import za.co.bakery.domain.Product;
 import za.co.bakery.domain.User;
 import za.co.bakery.domain.Cart;
+import za.co.bakery.domain.IngredientItem;
 import za.co.bakery.domain.LineItem;
 import za.co.bakery.manager.DBPoolManagerBasic;
 
@@ -16,9 +19,10 @@ import za.co.bakery.manager.DBPoolManagerBasic;
  *
  * @author Stuart Littles
  */
-public class ProductServiceImpl implements ProductService{
-    private ProductDAO productDAO;
+public class ProductServiceImpl implements ProductService {
 
+    private ProductDAO productDAO;
+    private UserDOA userDAO;
 
     public ProductServiceImpl(DBPoolManagerBasic dbpm) {
         this.productDAO = new ProductDAOImpl(dbpm);
@@ -26,20 +30,20 @@ public class ProductServiceImpl implements ProductService{
 
     @Override
     public boolean productAdd(String name, String picture, double price, Category category, String warning, String description, int recipeID) {
-        Product product = new Product(name,picture,price,category,warning,description,recipeID);
+        Product product = new Product(name, picture, price, category, warning, description, recipeID);
         return productDAO.add(product);
     }
 
     @Override
     public List<Product> getProducts(String category) {
         String r = category.toUpperCase();
-        
-        if(r == null || r.isEmpty()){
+
+        if (r == null || r.isEmpty()) {
             r = "0";
         }
-        
-        if(r.equalsIgnoreCase("0")){
- //           return error message
+
+        if (r.equalsIgnoreCase("0")) {
+            //           return error message
         }
         return productDAO.read(Category.valueOf(r));
     }
@@ -47,7 +51,7 @@ public class ProductServiceImpl implements ProductService{
     @Override
     public Product getProduct(String productID) {
         int pId = Integer.parseInt(productID);
-        
+
         return productDAO.read(pId);
     }
 
@@ -57,14 +61,16 @@ public class ProductServiceImpl implements ProductService{
     }
 
     @Override
-    public boolean addRecipe(String Steps) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public boolean addRecipe(String steps, String recipeName,List<IngredientItem> ingredients) {
+        
     }
-    
+
     @Override
-    public int addToCart(String productID, String qty, User user){
+    public int addToCart(String productID, String qty, String userID) {
         Product p = this.getProduct(productID);
         int quantity = Integer.parseInt(qty);
+        int user_ID = Integer.parseInt(userID);
+        User user = userDAO.read(user_ID);
         Cart userCart = Cart.cart(user);
         userCart.addProduct(p, quantity);
         return userCart.getCart().size();
@@ -76,21 +82,26 @@ public class ProductServiceImpl implements ProductService{
     }
 
     @Override
-    public int editCart(String productID, String qty, User user) {
+    public int editCart(String productID, String qty, String userID) {
         Product p = this.getProduct(productID);
         int quantity = Integer.parseInt(qty);
+        int user_ID = Integer.parseInt(userID);
+        User user = userDAO.read(user_ID);
         Cart userCart = Cart.cart(user);
         userCart.editCart(p, quantity);
         return userCart.getCart().size();
     }
 
     @Override
-    public List<LineItem> getCart(User user) {
+    public List<LineItem> getCart(String userID) {
+        int user_ID = Integer.parseInt(userID);
+        User user = userDAO.read(user_ID);
+
         Cart userCart = Cart.cart(user);
-        
+
         return userCart.getCart();
     }
-    
+
     @Override
     public int hashCode() {
         int hash = 7;
@@ -120,8 +131,8 @@ public class ProductServiceImpl implements ProductService{
     public boolean productUpdate(int productID, String field, String update) {
         Product p = this.productDAO.read(productID);
         String f = field.toLowerCase();
-        
-        switch(f){
+
+        switch (f) {
             case "name":
                 p.setName(update);
                 break;
@@ -145,13 +156,8 @@ public class ProductServiceImpl implements ProductService{
                 p.setRecipe(Integer.parseInt(update));
                 break;
         }
-        
-        
+
         return productDAO.update(p);
     }
 
-    
-
-
-    
 }

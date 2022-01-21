@@ -3,6 +3,7 @@ package za.co.bakery.service;
 import java.util.List;
 import za.co.bakery.domain.Category;
 import za.co.bakery.domain.Ingredient;
+import za.co.bakery.domain.IngredientItem;
 import za.co.bakery.domain.LineItem;
 import za.co.bakery.domain.Product;
 import za.co.bakery.domain.User;
@@ -17,8 +18,9 @@ public interface ProductService {
     public Product getProduct(String productID);
     public Ingredient getIngredient(int ingredientID);
     public boolean productDelete(int productID);
-    public boolean addRecipe(String Steps);
-    public int addToCart(String productID, String qty, User user);
-    public int editCart(String productID, String qty, User user);
-    public List<LineItem> getCart(User user);
+    public boolean productUpdate(int productID, String field, String update);
+    public boolean addRecipe(String steps, String recipeName, List<IngredientItem> ingredients);
+    public int addToCart(String productID, String qty, String userID);
+    public int editCart(String productID, String qty, String userID);
+    public List<LineItem> getCart(String userID);
 }

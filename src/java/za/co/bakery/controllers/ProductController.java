@@ -78,12 +78,12 @@ public class ProductController extends HttpServlet {
                 case "pedit":
                     break;
                 case "cadd":
-//                    request.setAttribute("cart-count", productService.addToCart(request.getParameter("prodid"),
-//                            request.getParameter("qty"),
-//                            userService.read("userID")));
-//                    view = request.getRequestDispatcher("TestingPage.jsp");
-//                    view.forward(request, response);                    
-//                    
+                    request.setAttribute("cart-count", productService.addToCart(request.getParameter("prodid"),
+                            request.getParameter("qty"),
+                            userService.read("userEmail")));
+                    view = request.getRequestDispatcher("TestingPage.jsp");
+                    view.forward(request, response);                    
+                    
                     break;
                 case "pupdate":
                     request.setAttribute("update", productService.productUpdate(Integer.parseInt(request.getParameter("productID")), 
