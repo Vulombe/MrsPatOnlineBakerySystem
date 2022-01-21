@@ -3,6 +3,7 @@ package za.co.bakery.service;
 import java.util.List;
 import java.util.Objects;
 import za.co.bakery.dbao.ProductDAO;
+import za.co.bakery.dbao.RecipeDAO;
 import za.co.bakery.dbao.UserDOA;
 import za.co.bakery.dbao.impl.ProductDAOImpl;
 import za.co.bakery.dbao.impl.UserDOAImpl;
@@ -10,9 +11,10 @@ import za.co.bakery.domain.Category;
 import za.co.bakery.domain.Ingredient;
 import za.co.bakery.domain.Product;
 import za.co.bakery.domain.User;
-import za.co.bakery.domain.Cart;
+import za.co.bakery.domain.LineItemCollection;
 import za.co.bakery.domain.IngredientItem;
 import za.co.bakery.domain.LineItem;
+import za.co.bakery.domain.Recipe;
 import za.co.bakery.manager.DBPoolManagerBasic;
 
 /**
@@ -23,6 +25,7 @@ public class ProductServiceImpl implements ProductService {
 
     private ProductDAO productDAO;
     private UserDOA userDAO;
+    private RecipeDAO recipeDAO;
 
     public ProductServiceImpl(DBPoolManagerBasic dbpm) {
         this.productDAO = new ProductDAOImpl(dbpm);
@@ -38,13 +41,6 @@ public class ProductServiceImpl implements ProductService {
     public List<Product> getProducts(String category) {
         String r = category.toUpperCase();
 
-        if (r == null || r.isEmpty()) {
-            r = "0";
-        }
-
-        if (r.equalsIgnoreCase("0")) {
-            //           return error message
-        }
         return productDAO.read(Category.valueOf(r));
     }
 
@@ -62,20 +58,16 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public boolean addRecipe(String steps, String recipeName,List<IngredientItem> ingredients) {
-     
-        
-        return true;
-    }
+        Recipe r = new Recipe(steps,ingredients, recipeName);
+        return recipeDAO.add(r);
+    }   
 
     @Override
-    public int addToCart(String productID, String qty, String userID) {
+    public int addToCart(String productID, String qty, LineItemCollection cart) {
         Product p = this.getProduct(productID);
         int quantity = Integer.parseInt(qty);
-        int user_ID = Integer.parseInt(userID);
-        User user = userDAO.read(userID);
-        Cart userCart = Cart.cart(user);
-        userCart.addProduct(p, quantity);
-        return userCart.getCart().size();
+        cart.addProduct(p, quantity);
+        return cart.getCart().size();
     }
 
     @Override
@@ -84,24 +76,11 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public int editCart(String productID, String qty, String userID) {
+    public int editCart(String productID, String qty, LineItemCollection cart) {
         Product p = this.getProduct(productID);
         int quantity = Integer.parseInt(qty);
-        int user_ID = Integer.parseInt(userID);
-        User user = userDAO.read(userID);
-        Cart userCart = Cart.cart(user);
-        userCart.editCart(p, quantity);
-        return userCart.getCart().size();
-    }
-
-    @Override
-    public List<LineItem> getCart(String userID) {
-        int user_ID = Integer.parseInt(userID);
-        User user = userDAO.read(userID);
-
-        Cart userCart = Cart.cart(user);
-
-        return userCart.getCart();
+        cart.editCartQty(p, quantity);
+        return cart.getCart().size();
     }
 
     @Override

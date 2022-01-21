@@ -35,17 +35,18 @@ public class IngredientDAOImpl implements IngredientDAO {
     //*****************add product to database*******************************
     @Override
     public boolean add(Ingredient i) {
- boolean isAdded = false;
+        boolean isAdded = false;
         try {
             con = dbpm.getConnection();
             ps = con.prepareStatement("INSERT INTO INGREDIENT(ingredientId,ingredientName,nutrient,isActive) VALUES(null,?,?,null)");
 
-          //  ps.setInt(1, p.getProductID());
-            ps.setString(1,i.getName());
+            //  ps.setInt(1, p.getProductID());
+            ps.setString(1, i.getName());
             ps.setString(2, i.getNutrient());
-    
-            if(ps.executeUpdate()>0)
+
+            if (ps.executeUpdate() > 0) {
                 isAdded = true;
+            }
 
         } catch (SQLException ex) {
             System.out.println("Error: " + ex.getMessage());
@@ -57,17 +58,17 @@ public class IngredientDAOImpl implements IngredientDAO {
 
     @Override
     public Ingredient readIngridient(String name) {
-     Ingredient i = null;
+        Ingredient i = null;
         try {
             con = dbpm.getConnection();
 
             ps = con.prepareStatement("SELECT * FROM INGREDIENT WHERE INGREDIENTNAME= ?");
-            ps.setString(1,name);
+            ps.setString(1, name);
             rs = ps.executeQuery();
 
             if (rs.next()) {
 
-                  i= new Ingredient( rs.getString("ingredientName"), rs.getString("nutrient"),rs.getInt("ingredientId"));
+                i = new Ingredient(rs.getString("ingredientName"), rs.getString("nutrient"), rs.getInt("ingredientId"));
 
             }
 
@@ -82,7 +83,7 @@ public class IngredientDAOImpl implements IngredientDAO {
 
     @Override
     public List<Ingredient> readAll() {
-       List<Ingredient> ingredients = new ArrayList<>();
+        List<Ingredient> ingredients = new ArrayList<>();
 
         try {
             con = dbpm.getConnection();
@@ -92,8 +93,8 @@ public class IngredientDAOImpl implements IngredientDAO {
 
             while (rs.next()) {
 
-               Ingredient i = new Ingredient(rs.getString("ingredientName"), rs.getString("nutrient"),rs.getInt("ingredientId"));
-               ingredients.add(i);
+                Ingredient i = new Ingredient(rs.getString("ingredientName"), rs.getString("nutrient"), rs.getInt("ingredientId"));
+                ingredients.add(i);
 
             }
 
@@ -112,7 +113,7 @@ public class IngredientDAOImpl implements IngredientDAO {
 
     @Override
     public boolean update(Ingredient i) {
-               boolean isUpdated = false;
+        boolean isUpdated = false;
         try {
             con = dbpm.getConnection();
             ps = con.prepareStatement("update ingredient set IngredientName=?,nutrient=? where ingredientName=?");
@@ -134,25 +135,24 @@ public class IngredientDAOImpl implements IngredientDAO {
 
     @Override
     public boolean delete(Ingredient i) {
-      boolean isDeleted=false;
+        boolean isDeleted = false;
         try {
             con = dbpm.getConnection();
             ps = con.prepareStatement("update ingredient set isActive=? where email=?");
-            ps.setString(1,"N");
-            ps.setString(2,i.getName());
+            ps.setString(1, "N");
+            ps.setString(2, i.getName());
             ps.executeUpdate();
-            isDeleted=true;
+            isDeleted = true;
         } catch (SQLException ex) {
             System.out.println("Error: " + ex.getMessage());
         } finally {
             closeStreams();
         }
-        
+
         return isDeleted;
     }
-    
-    
-        // ***********************************Clossing the connection************************************
+
+    // ***********************************Clossing the connection************************************
     private void closeStreams() {
         if (rs != null) {
             try {
@@ -180,6 +180,5 @@ public class IngredientDAOImpl implements IngredientDAO {
         con = null;
     }
     // ************************************************************************
-
 
 }

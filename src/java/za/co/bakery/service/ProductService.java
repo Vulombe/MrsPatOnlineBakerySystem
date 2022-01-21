@@ -1,6 +1,7 @@
 package za.co.bakery.service;
 
 import java.util.List;
+import za.co.bakery.domain.LineItemCollection;
 import za.co.bakery.domain.Category;
 import za.co.bakery.domain.Ingredient;
 import za.co.bakery.domain.IngredientItem;
@@ -20,7 +21,6 @@ public interface ProductService {
     public boolean productDelete(int productID);
     public boolean productUpdate(int productID, String field, String update);
     public boolean addRecipe(String steps, String recipeName, List<IngredientItem> ingredients);
-    public int addToCart(String productID, String qty, String userID);
-    public int editCart(String productID, String qty, String userID);
-    public List<LineItem> getCart(String userID);
+    public int addToCart(String productID, String qty, LineItemCollection cart);
+    public int editCart(String productID, String qty, LineItemCollection cart);
 }

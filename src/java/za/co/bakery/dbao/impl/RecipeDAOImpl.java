@@ -8,8 +8,11 @@ package za.co.bakery.dbao.impl;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.List;
 import za.co.bakery.dbao.RecipeDAO;
+import za.co.bakery.domain.Ingredient;
+import za.co.bakery.domain.IngredientItem;
 import za.co.bakery.domain.Product;
 import za.co.bakery.domain.Recipe;
 import za.co.bakery.manager.DBPoolManagerBasic;
@@ -43,6 +46,10 @@ public class RecipeDAOImpl implements RecipeDAO {
             //  ps.setInt(1, p.getProductID());
             ps.setString(1, r.getRecipeName());
             ps.setString(2, r.getSteps());
+            
+            
+       
+            
             ps.setDouble(3, p.getPrice());
             ps.setString(4, p.getCategory().toString().toLowerCase());
             ps.setString(5, p.getWarning());
@@ -90,5 +97,34 @@ public class RecipeDAOImpl implements RecipeDAO {
     public boolean delete(Recipe r) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
+
+    
+     private void closeStreams() {
+        if (rs != null) {
+            try {
+                rs.close();
+            } catch (SQLException ex) {
+                System.out.println("Error closing ResultSet: " + ex.getMessage());
+            }
+        }
+        if (ps != null) {
+            try {
+                ps.close();
+            } catch (SQLException ex) {
+                System.out.println("Error closing PreparedStatement: " + ex.getMessage());
+            }
+        }
+        if (rs != null) {
+            try {
+                con.close();
+            } catch (SQLException ex) {
+                System.out.println("Error closing Connection: " + ex.getMessage());
+            }
+        }
+        rs = null;
+        ps = null;
+        con = null;
+    }
+    // ************************************************************************
 
 }
