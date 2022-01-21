@@ -9,6 +9,6 @@ package za.co.bakery.dbao;
  *
  * @author Studio13
  */
-public interface InggredientLineItemDAO {
+public interface IngredientLineItemDAO {
     
 }

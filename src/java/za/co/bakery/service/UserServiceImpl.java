@@ -1,4 +1,3 @@
-
 package za.co.bakery.service;
 
 import java.util.List;
@@ -16,16 +15,20 @@ public class UserServiceImpl implements UserService {
 
     public UserServiceImpl(DBPoolManagerBasic dbpm) {
         this.userdao = new UserDOAImpl(dbpm);
+
     }
 
     @Override
-    public boolean isUserValid(String email, String password) 
-    { return userdao.isUserValid(email, password);
+    public boolean isUserValid(String email, String password) {
+        boolean t = userdao.isUserValid(email, password);
+        return t;
+        // return userdao.isUserValid(email, password);
     }
 
     @Override
-    public void create(String title, String lastName, String firstName, String email, String password) {
-        // return userdao.create(u);
+    public User create(String title, String firstName, String lastName, String emailAddress, String contactNumber, String password) {
+        User user = new User(title, firstName, lastName, emailAddress, contactNumber, password);
+        return (userdao.create(user) > 0) ? user:null;
     }
 
     @Override
@@ -35,9 +38,23 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User read(User u) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return userdao.read(u);
     }
 
+    @Override
+    public User read(String email) {
+        return userdao.read(email);
+    }
 
+   @Override
+   public boolean delete(String email)
+   {
+       return userdao.delete(email);
+   }
+
+    @Override
+    public boolean update(User u) {
+        return userdao.update(u);
+    }
 
 }
