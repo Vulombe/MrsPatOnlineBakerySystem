@@ -103,7 +103,7 @@ public class ProductController extends HttpServlet {
                     view = request.getRequestDispatcher("TestingPage.jsp");
                     view.forward(request, response);
                 case "cget":
-                    request.setAttribute("cart-items", productService.getCart((User)request.getSession().getAttribute("user")));
+                    request.setAttribute("cart-items", request.getSession().getAttribute("cart"));
                     view = request.getRequestDispatcher("TestingPage.jsp");
                     view.forward(request, response);
                 case "pupdate":

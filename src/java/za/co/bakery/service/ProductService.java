@@ -22,6 +22,5 @@ public interface ProductService {
     public boolean productUpdate(int productID, String field, String update);
     public boolean addRecipe(String steps, String recipeName, List<IngredientItem> ingredients);
     public int addToCart(String productID, String qty, LineItemCollection cart);
-    public int editCart(String productID, String qty, User user);
-    public List<LineItem> getCart(User user);
+    public int editCart(String productID, String qty, LineItemCollection cart);
 }

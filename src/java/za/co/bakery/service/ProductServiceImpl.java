@@ -3,6 +3,7 @@ package za.co.bakery.service;
 import java.util.List;
 import java.util.Objects;
 import za.co.bakery.dbao.ProductDAO;
+import za.co.bakery.dbao.RecipeDAO;
 import za.co.bakery.dbao.UserDOA;
 import za.co.bakery.dbao.impl.ProductDAOImpl;
 import za.co.bakery.dbao.impl.UserDOAImpl;
@@ -24,6 +25,7 @@ public class ProductServiceImpl implements ProductService {
 
     private ProductDAO productDAO;
     private UserDOA userDAO;
+    private RecipeDAO recipeDAO;
 
     public ProductServiceImpl(DBPoolManagerBasic dbpm) {
         this.productDAO = new ProductDAOImpl(dbpm);
@@ -57,7 +59,8 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public boolean addRecipe(String steps, String recipeName,List<IngredientItem> ingredients) {
         Recipe r = new Recipe(steps,ingredients, recipeName);
-    }   return productDAO.
+        return recipeDAO.add(r);
+    }   
 
     @Override
     public int addToCart(String productID, String qty, LineItemCollection cart) {
@@ -73,22 +76,11 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public int editCart(String productID, String qty, User user) {
+    public int editCart(String productID, String qty, LineItemCollection cart) {
         Product p = this.getProduct(productID);
         int quantity = Integer.parseInt(qty);
-        User user = userDAO.read(userEmail);
-        LineItemCollection userCart = LineItemCollection.cart(user);
-        userCart.editCart(p, quantity);
-        return userCart.getCart().size();
-    }
-
-    @Override
-    public List<LineItem> getCart(String userEmail) {
-        User user = userDAO.read(userEmail);
-
-        LineItemCollection userCart = LineItemCollection.cart(user);
-
-        return userCart.getCart();
+        cart.editCartQty(p, quantity);
+        return cart.getCart().size();
     }
 
     @Override

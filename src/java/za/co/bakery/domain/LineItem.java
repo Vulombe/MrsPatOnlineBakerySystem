@@ -13,6 +13,10 @@ public class LineItem {
         this.product = product;
         this.qty = qty;
     }
+    
+    public LineItem(){
+        
+    }
 
     public int getIngredientId() {
         return ingredientId;
