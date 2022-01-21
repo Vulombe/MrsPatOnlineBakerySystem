@@ -10,10 +10,9 @@ public class Order {
     private UserAddress custAddress;
     private double totalPrice;
     
-    public Order(User user, UserAddress custAddress, double totalPrice,List<LineItem> lineItem) {
+    public Order(User user, UserAddress custAddress, List<LineItem> lineItem) {
         this.user = user;
         this.custAddress = custAddress;
-        this.totalPrice = totalPrice;
         this.lineItem = lineItem;
     }
 
