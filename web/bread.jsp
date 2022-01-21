@@ -32,8 +32,14 @@
 
             <p>Price: <em>R50</em>
             </p>
+           <div1 class="tooltip">
+                <span class="tooltiptext"><p>contains nuts and dairy products</p> </span>
+</div1>
+           
+
             <button class="add-to-cart" type="button">Add to cart</button>
         </div1 >
+       
         <!--/ single item -->
         <!-- single item -->
         <div1 class="item">

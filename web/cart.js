@@ -19,7 +19,7 @@ $('.add-to-cart').on('click', function () {
                     'width': '150px',
                     'z-index': '100'
             })
-                .appendTo($('body'))
+                .appendTo($('body1'))
                 .animate({
                 'top': cart.offset().top + 10,
                     'left': cart.offset().left + 10,

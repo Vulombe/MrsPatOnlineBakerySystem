@@ -48,7 +48,7 @@ p {
 
 span {
     font-size: 12px;
-    color: beige;
+    color: black;
 }
 
 a {
@@ -493,7 +493,7 @@ span1 {
     margin: 0 10px 0 0;
 }
 div1 {
-    height: 400px;
+height: 600px;
 background-color: white;
 font-family: white;
 

@@ -24,8 +24,8 @@
 
     <div class="container" id="container">
         <div class="form-container sign-up-container">
-            <form method="POST"   action="http://localhost:8080/MrsPatOnlineBakerySystem/UserController">
-                <i
+            <form method="post"   action="http://localhost/MrsPatOnlineBakerySystem/UserController">
+                <input type="hidden" name="pro" value="register">
                 <h1>Create Account</h1>
                 <p style="color:white"> <label for="title" >Title: </label>
                 <select name= "title" id="title">
@@ -45,12 +45,13 @@
             </form>
         </div>
         <div class="form-container sign-in-container">
-            <form method="POST" action="Login">
+            <form method="post" action="http://localhost/MrsPatOnlineBakerySystem/UserController>
+                <input type="hidden" name="pro" value="login">
                 <h1> Login </h1>
         
                 <input type="email" name="loginEmail" placeholder="Email">
                 <input type="Password" name="loginPassword" placeholder="Password">
-                <button> Login </button>
+                <button type="submit"> Login </button>
             </form>
         </div>
         <div class="overlay-container">
