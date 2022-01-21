@@ -13,6 +13,7 @@ import za.co.bakery.domain.User;
 import za.co.bakery.domain.LineItemCollection;
 import za.co.bakery.domain.IngredientItem;
 import za.co.bakery.domain.LineItem;
+import za.co.bakery.domain.Recipe;
 import za.co.bakery.manager.DBPoolManagerBasic;
 
 /**
@@ -38,13 +39,6 @@ public class ProductServiceImpl implements ProductService {
     public List<Product> getProducts(String category) {
         String r = category.toUpperCase();
 
-        if (r == null || r.isEmpty()) {
-            r = "0";
-        }
-
-        if (r.equalsIgnoreCase("0")) {
-            //           return error message
-        }
         return productDAO.read(Category.valueOf(r));
     }
 
@@ -62,8 +56,8 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public boolean addRecipe(String steps, String recipeName,List<IngredientItem> ingredients) {
-        
-    }
+        Recipe r = new Recipe(steps,ingredients, recipeName);
+    }   return productDAO.
 
     @Override
     public int addToCart(String productID, String qty, LineItemCollection cart) {

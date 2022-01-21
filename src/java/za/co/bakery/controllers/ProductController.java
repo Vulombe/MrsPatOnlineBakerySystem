@@ -6,6 +6,7 @@
 package za.co.bakery.controllers;
 
 import java.io.IOException;
+import java.util.List;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -14,6 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import za.co.bakery.domain.LineItemCollection;
 import za.co.bakery.domain.Category;
+import za.co.bakery.domain.IngredientItem;
 import za.co.bakery.domain.Product;
 import za.co.bakery.domain.User;
 import za.co.bakery.manager.DBPoolManagerBasic;
@@ -108,6 +110,8 @@ public class ProductController extends HttpServlet {
                     request.setAttribute("update", productService.productUpdate(Integer.parseInt(request.getParameter("productID")),
                             request.getParameter("field"),
                             request.getParameter("change")));
+                case "radd":
+                    request.setAttribute("isAdded", productService.addRecipe("steps", "rname", (List<IngredientItem>)request.getSession().getAttribute("ingredients")));
             }
 
         } else {
