@@ -54,7 +54,7 @@
                 
                 <input type="email" name="loginEmail" placeholder="Email">
                 <input type="Password" name="loginPassword" placeholder="Password">
-                <button> Login </button>
+                <button type="submit">Login</button>
             </form>
         </div>
         <div class="overlay-container">

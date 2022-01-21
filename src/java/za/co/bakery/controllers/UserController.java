@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import za.co.bakery.dbao.UserDOA;
 import za.co.bakery.dbao.impl.UserDOAImpl;
+import za.co.bakery.domain.Role;
 import za.co.bakery.domain.User;
 import za.co.bakery.manager.DBPoolManagerBasic;
 
@@ -60,13 +61,12 @@ public class UserController extends HttpServlet {
                     email = email.toLowerCase();
                 }
                 String password = request.getParameter("loginPassword");
-                String confirmPassword = request.getParameter("loginEmail");
+                String confirmPassword = request.getParameter("confirmPassword");
                 String contactNumber = request.getParameter("contactNumber");
-                
+
                 if (password.equals(confirmPassword)) {
                     User user = userService.create(title, fname, lname, email, contactNumber, password);
                     if (user == null) {
-                        //Use was not created
                         view = request.getRequestDispatcher("Error.jsp");
                     } else {
                         session.setAttribute("user", user);
@@ -75,20 +75,44 @@ public class UserController extends HttpServlet {
                     view.forward(request, response);
                 }
 
+            }//git addedd
+            if (prs.equals("update")) {
+                String emailAddress = request.getParameter("loginEmail");
+                String title = request.getParameter("title");
+                String lastName = request.getParameter("lastName");
+                String firstName = request.getParameter("firstName");
+                String contactNumber = request.getParameter("contactNumber");
+                String password = request.getParameter("loginPassword");
+                User user = new User(title, firstName, lastName, emailAddress, contactNumber, password, Role.CLIENT);
+                boolean updated = userService.update(user);
+                if (updated) {
+                    request.setAttribute("user", user);
+                    view = request.getRequestDispatcher("TestingPage.jsp");
+                } else {
+                    request.setAttribute("error", "Sorry Something went wrong please try again!!!!");
+                    view = request.getRequestDispatcher("Error.jsp");
+                }
+
+            }
+            if (prs.equals("delete")) {
+                String emailAddress = request.getParameter("loginEmail");
+                User user = new User(emailAddress);
+                boolean deleted = userService.delete(user.getEmailAddress());
+                if (deleted) {
+                    request.setAttribute("deleted", "User Was Deleted");
+                    view = request.getRequestDispatcher("TestingPage.jsp");
+                } else {
+                    request.setAttribute("error", "Sorry Something went wrong please try again!!!!");
+                    view = request.getRequestDispatcher("Error.jsp");
+                }
+                view.forward(request, response);
             }
             if (prs.equals("logout")) {
                 session.removeAttribute("user");
                 view = request.getRequestDispatcher("index.jsp");
                 view.forward(request, response);
             }
-            if(prs.equals("delete"))
-            {
-                String email = request.getParameter("loginEmail");
-                User user = new User(email);
-                boolean deleted = userService.delete(user.getEmailAddress());
-                view = request.getRequestDispatcher("TestingPage.jsp");
-                view.forward(request, response);
-            }
+
         }
 
     }
