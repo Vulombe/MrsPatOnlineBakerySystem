@@ -3,18 +3,29 @@ package za.co.bakery.service;
 import java.util.List;
 import java.util.Objects;
 import za.co.bakery.dbao.ProductDAO;
+import za.co.bakery.dbao.RecipeDAO;
+import za.co.bakery.dbao.UserDOA;
 import za.co.bakery.dbao.impl.ProductDAOImpl;
+import za.co.bakery.dbao.impl.UserDOAImpl;
 import za.co.bakery.domain.Category;
 import za.co.bakery.domain.Ingredient;
 import za.co.bakery.domain.Product;
+import za.co.bakery.domain.User;
+import za.co.bakery.domain.LineItemCollection;
+import za.co.bakery.domain.IngredientItem;
+import za.co.bakery.domain.LineItem;
+import za.co.bakery.domain.Recipe;
 import za.co.bakery.manager.DBPoolManagerBasic;
 
 /**
  *
  * @author Stuart Littles
  */
-public class ProductServiceImpl implements ProductService{
+public class ProductServiceImpl implements ProductService {
+
     private ProductDAO productDAO;
+    private UserDOA userDAO;
+    private RecipeDAO recipeDAO;
 
     public ProductServiceImpl(DBPoolManagerBasic dbpm) {
         this.productDAO = new ProductDAOImpl(dbpm);
@@ -22,28 +33,21 @@ public class ProductServiceImpl implements ProductService{
 
     @Override
     public boolean productAdd(String name, String picture, double price, Category category, String warning, String description, int recipeID) {
-        Product product = new Product(name,picture,price,category,warning,description,recipeID);
+        Product product = new Product(name, picture, price, category, warning, description, recipeID);
         return productDAO.add(product);
     }
 
     @Override
     public List<Product> getProducts(String category) {
         String r = category.toUpperCase();
-        
-        if(r == null || r.isEmpty()){
-            r = "0";
-        }
-        
-        if(r.equalsIgnoreCase("0")){
- //           return 
-        }
+
         return productDAO.read(Category.valueOf(r));
     }
 
     @Override
     public Product getProduct(String productID) {
         int pId = Integer.parseInt(productID);
-        
+
         return productDAO.read(pId);
     }
 
@@ -53,10 +57,30 @@ public class ProductServiceImpl implements ProductService{
     }
 
     @Override
-    public void productDelete(int productID, String name, String picture, double price, Category category, String warning, String description, int recipeID) {
-        Product p = new Product(productID, name, picture, price, category, warning, description, recipeID);
-        productDAO.delete(p);
-        
+    public boolean addRecipe(String steps, String recipeName,List<IngredientItem> ingredients) {
+        Recipe r = new Recipe(steps,ingredients, recipeName);
+        return recipeDAO.add(r);
+    }   
+
+    @Override
+    public int addToCart(String productID, String qty, LineItemCollection cart) {
+        Product p = this.getProduct(productID);
+        int quantity = Integer.parseInt(qty);
+        cart.addProduct(p, quantity);
+        return cart.getCart().size();
+    }
+
+    @Override
+    public boolean productDelete(int productID) {
+        return productDAO.delete(productID);
+    }
+
+    @Override
+    public int editCart(String productID, String qty, LineItemCollection cart) {
+        Product p = this.getProduct(productID);
+        int quantity = Integer.parseInt(qty);
+        cart.editCartQty(p, quantity);
+        return cart.getCart().size();
     }
 
     @Override
@@ -84,9 +108,37 @@ public class ProductServiceImpl implements ProductService{
         return true;
     }
 
+    @Override
+    public boolean productUpdate(int productID, String field, String update) {
+        Product p = this.productDAO.read(productID);
+        String f = field.toLowerCase();
 
-    
+        switch (f) {
+            case "name":
+                p.setName(update);
+                break;
+            case "picture":
+                p.setPicture(update);
+                break;
+            case "price":
+                p.setPrice(Double.parseDouble(update));
+                break;
+            case "category":
+                String r = update.toUpperCase();
+                p.setCategory(Category.valueOf(r));
+                break;
+            case "warning":
+                p.setWarning(update);
+                break;
+            case "description":
+                p.setDescription(update);
+                break;
+            case "recipe":
+                p.setRecipe(Integer.parseInt(update));
+                break;
+        }
 
+        return productDAO.update(p);
+    }
 
-    
 }

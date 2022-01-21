@@ -8,9 +8,6 @@ package za.co.bakery.domain;
 
 public class Ingredient {
     private int ingredientID;
-
-
-
     private String name;
     private String nutrient;
 
@@ -32,16 +29,7 @@ public class Ingredient {
         return name;
     }
 
-    
-    public int getIngredientID() {
-        return ingredientID;
-    }
-
-    public void setIngredientID(int ingredientID) {
-        this.ingredientID = ingredientID;
-    }
-
-    public void setName(String name) {
+   public void setName(String name) {
         this.name = name;
     }
 
@@ -51,6 +39,14 @@ public class Ingredient {
 
     public void setNutrient(String nutrient) {
         this.nutrient = nutrient;
+    }
+
+    public int getIngredientID() {
+        return ingredientID;
+    }
+
+    public void setIngredientID(int ingredientID) {
+        this.ingredientID = ingredientID;
     }
     
 }
