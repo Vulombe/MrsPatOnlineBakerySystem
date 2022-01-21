@@ -14,7 +14,7 @@ public interface UserDOA {
     public User read(User u);
 
     public User read();
-
+    public User read(String email); 
     public boolean isNewUser(User u);
 
     public boolean delete(String email);

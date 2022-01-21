@@ -62,8 +62,8 @@ public class UserDOAImpl implements UserDOA {
         try {
             if (isNewUser(u)) {
                 con = dbpm.getConnection();
-                ps = con.prepareStatement("INSERT INTO USER VALUE(null,?,?,?,?,?,?,?)");
-                //   ps.setInt(1, u.getID());
+                ps = con.prepareStatement("INSERT INTO USER (id,title,firstName,lastName,email,contactNumber,password,isClient)VALUE(null,?,?,?,?,?,?,?)");
+                //ps.setInt(1, u.getID());
                 ps.setString(1, u.getTitle());
                 ps.setString(2, u.getFirstName());
                 ps.setString(3, u.getLastName());
@@ -76,7 +76,8 @@ public class UserDOAImpl implements UserDOA {
                 } else {
                     ps.setString(7, "Y");
                 }
-                i = ps.executeUpdate();
+                ps.executeUpdate();
+
             }
         } catch (Exception e) {
             System.err.println(e);
@@ -93,6 +94,40 @@ public class UserDOAImpl implements UserDOA {
             con = dbpm.getConnection();
             ps = con.prepareStatement("SELECT * FROM USER WHERE EMAIL=?");
             ps.setString(1, u.getEmailAddress());
+            rs = ps.executeQuery();
+
+            if (rs.next()) {
+                u = new User();
+                if (rs.getString("password").equals(u.getPassword())) {
+                    u.setID(rs.getInt("Id"));
+                    u.setTitle("title");
+                    u.setFirstName(rs.getString("firstName"));
+                    u.setLastName(rs.getString("lastName"));
+                    u.setContactNumber(rs.getString("contactNumber"));
+                    String userRole = rs.getString("isClient");
+                    if (userRole.equalsIgnoreCase("Y")) {
+                        u.setUserRole(Role.CLIENT);
+                    } else {
+                        u.setUserRole(Role.ADMIN);
+                    }
+
+                }
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        } finally {
+            closeStreams();
+        }
+        return u;
+    }
+
+    @Override
+    public User read(String email) {
+        User u = null;
+        try {
+            con = dbpm.getConnection();
+            ps = con.prepareStatement("SELECT * FROM USER WHERE EMAIL=?");
+            ps.setString(1, email);
             rs = ps.executeQuery();
 
             if (rs.next()) {
@@ -170,29 +205,10 @@ public class UserDOAImpl implements UserDOA {
         }
         return true;
     }
-
-    @Override
-    public boolean delete(String email) {
-        boolean isDeleted = false;
-        try {
-            con = dbpm.getConnection();
-            ps = con.prepareStatement("update user set isActive=? where email=?");
-            ps.setString(1, "N");
-            ps.setString(2, email);
-            ps.executeUpdate();
-            isDeleted = true;
-        } catch (SQLException ex) {
-            System.out.println("Error: " + ex.getMessage());
-        } finally {
-            closeStreams();
-        }
-
-        return isDeleted;
-    }
-    
-     @Override
+    //***********updating user ******************************************
+ @Override
     public boolean update(User u) {
-             boolean isUpdated = false;
+        boolean isUpdated = false;
         try {
             con = dbpm.getConnection();
             ps = con.prepareStatement("update user set title=?,firstName=?,lastName=?,email=?,contactNumber=?,password=?,isClient=? where email=?");
@@ -221,8 +237,26 @@ public class UserDOAImpl implements UserDOA {
         }
         return isUpdated;
     }
+    
+      @Override
+    public boolean delete(String email) {
+       boolean isDeleted=false;
+        try {
+            con = dbpm.getConnection();
+            ps = con.prepareStatement("update user set isActive=? where email=?");
+            ps.setString(1,"N");
+            ps.setString(2,email);
+            ps.executeUpdate();
+            isDeleted=true;
+        } catch (SQLException ex) {
+            System.out.println("Error: " + ex.getMessage());
+        } finally {
+            closeStreams();
+        }
+        
+        return isDeleted; 
+    }
 // ***********************************Clossing the connection************************************
-
     private void closeStreams() {
         if (rs != null) {
             try {
@@ -252,5 +286,7 @@ public class UserDOAImpl implements UserDOA {
     // ************************************************************************
 
    
+
+  
 
 }
