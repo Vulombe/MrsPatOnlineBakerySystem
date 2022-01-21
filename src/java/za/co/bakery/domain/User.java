@@ -37,6 +37,14 @@ public class User
      
     public User() {
     }
+
+    public User(String title, String firstName, String lastName, String emailAddress, String contactNumber, String password) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    public User(String emailAddress) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
     public int getID() {
         return ID;
     }
