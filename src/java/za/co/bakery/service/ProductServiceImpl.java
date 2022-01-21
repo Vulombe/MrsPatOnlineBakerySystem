@@ -10,7 +10,7 @@ import za.co.bakery.domain.Category;
 import za.co.bakery.domain.Ingredient;
 import za.co.bakery.domain.Product;
 import za.co.bakery.domain.User;
-import za.co.bakery.domain.Cart;
+import za.co.bakery.domain.LineItemCollection;
 import za.co.bakery.domain.IngredientItem;
 import za.co.bakery.domain.LineItem;
 import za.co.bakery.manager.DBPoolManagerBasic;
@@ -66,14 +66,11 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public int addToCart(String productID, String qty, String userID) {
+    public int addToCart(String productID, String qty, LineItemCollection cart) {
         Product p = this.getProduct(productID);
         int quantity = Integer.parseInt(qty);
-        int user_ID = Integer.parseInt(userID);
-        User user = userDAO.read(user_ID);
-        Cart userCart = Cart.cart(user);
-        userCart.addProduct(p, quantity);
-        return userCart.getCart().size();
+        cart.addProduct(p, quantity);
+        return cart.getCart().size();
     }
 
     @Override
@@ -82,22 +79,20 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public int editCart(String productID, String qty, String userID) {
+    public int editCart(String productID, String qty, User user) {
         Product p = this.getProduct(productID);
         int quantity = Integer.parseInt(qty);
-        int user_ID = Integer.parseInt(userID);
-        User user = userDAO.read(user_ID);
-        Cart userCart = Cart.cart(user);
+        User user = userDAO.read(userEmail);
+        LineItemCollection userCart = LineItemCollection.cart(user);
         userCart.editCart(p, quantity);
         return userCart.getCart().size();
     }
 
     @Override
-    public List<LineItem> getCart(String userID) {
-        int user_ID = Integer.parseInt(userID);
-        User user = userDAO.read(user_ID);
+    public List<LineItem> getCart(String userEmail) {
+        User user = userDAO.read(userEmail);
 
-        Cart userCart = Cart.cart(user);
+        LineItemCollection userCart = LineItemCollection.cart(user);
 
         return userCart.getCart();
     }

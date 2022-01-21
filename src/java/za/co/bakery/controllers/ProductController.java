@@ -12,8 +12,10 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import za.co.bakery.domain.LineItemCollection;
 import za.co.bakery.domain.Category;
 import za.co.bakery.domain.Product;
+import za.co.bakery.domain.User;
 import za.co.bakery.manager.DBPoolManagerBasic;
 import za.co.bakery.service.ProductService;
 import za.co.bakery.service.ProductServiceImpl;
@@ -44,6 +46,7 @@ public class ProductController extends HttpServlet {
             DBPoolManagerBasic dbpm = (DBPoolManagerBasic) sc.getAttribute("dbconn");
             ProductService productService = new ProductServiceImpl(dbpm);
             UserService userService = new UserServiceImpl(dbpm);
+
             prs = prs.toLowerCase();
             switch (prs) {
                 case "pview-single":
@@ -52,25 +55,25 @@ public class ProductController extends HttpServlet {
                     view.forward(request, response);
                     break;
                 case "pview":
-                    request.setAttribute("prod", productService.getProducts(request.getParameter("category")));
+                    request.setAttribute("prodList", productService.getProducts(request.getParameter("category")));
                     view = request.getRequestDispatcher("TestingPage.jsp");
                     view.forward(request, response);
                     break;
                 case "pcreate":
-                    
-                    boolean res=productService.productAdd(request.getParameter("name"), 
-                            request.getParameter("picture"), 
-                            Double.parseDouble(request.getParameter("price")), 
-                            Category.valueOf(request.getParameter("category").toUpperCase()), 
-                            request.getParameter("warning"), request.getParameter("description"), 
+
+                    boolean res = productService.productAdd(request.getParameter("name"),
+                            request.getParameter("picture"),
+                            Double.parseDouble(request.getParameter("price")),
+                            Category.valueOf(request.getParameter("category").toUpperCase()),
+                            request.getParameter("warning"), request.getParameter("description"),
                             Integer.parseInt(request.getParameter("productID")));
-                            request.setAttribute("isAdded", res);                    
+                    request.setAttribute("isAdded", res);
                     view = request.getRequestDispatcher("TestingPage.jsp");
                     view.forward(request, response);
                     break;
                 case "pdelete":
-                                        
-                    request.setAttribute("isDeleted", 
+
+                    request.setAttribute("isDeleted",
                             productService.productDelete(Integer.parseInt(request.getParameter("productID"))));
                     view = request.getRequestDispatcher("TestingPage.jsp");
                     view.forward(request, response);
@@ -78,16 +81,32 @@ public class ProductController extends HttpServlet {
                 case "pedit":
                     break;
                 case "cadd":
+                    if (request.getSession().getAttribute("cart") != null) {
+                        request.setAttribute("cart-count", productService.addToCart(request.getParameter("prodid"),
+                                request.getParameter("qty"),
+                                (LineItemCollection) request.getSession().getAttribute("cart")));
+                    } else {
+                        LineItemCollection cart = new LineItemCollection((Product) request.getSession().getAttribute("prodid"),
+                                Integer.parseInt(request.getParameter("qty")));
+                        request.getSession().setAttribute("cart", cart);
+                    }
+
+                    view = request.getRequestDispatcher("TestingPage.jsp");
+                    view.forward(request, response);
+                    break;
+                case "cedit":
                     request.setAttribute("cart-count", productService.addToCart(request.getParameter("prodid"),
                             request.getParameter("qty"),
-                            userService.read("userEmail")));
+                            (LineItemCollection)request.getSession().getAttribute("cart")));
                     view = request.getRequestDispatcher("TestingPage.jsp");
-                    view.forward(request, response);                    
-                    
-                    break;
+                    view.forward(request, response);
+                case "cget":
+                    request.setAttribute("cart-items", productService.getCart((User)request.getSession().getAttribute("user")));
+                    view = request.getRequestDispatcher("TestingPage.jsp");
+                    view.forward(request, response);
                 case "pupdate":
-                    request.setAttribute("update", productService.productUpdate(Integer.parseInt(request.getParameter("productID")), 
-                            request.getParameter("field"), 
+                    request.setAttribute("update", productService.productUpdate(Integer.parseInt(request.getParameter("productID")),
+                            request.getParameter("field"),
                             request.getParameter("change")));
             }
 
