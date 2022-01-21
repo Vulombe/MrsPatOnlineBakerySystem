@@ -6,14 +6,14 @@ public class Order {
 
     private int orderID;
     private User user;
-    private List<LineItem> lineItem;
+    private LineItemCollection lineItem;
     private UserAddress custAddress;
     private double totalPrice;
-    
-    public Order(User user, UserAddress custAddress, List<LineItem> lineItem) {
+
+    public Order(User user, LineItemCollection lineItem, UserAddress custAddress) {
         this.user = user;
-        this.custAddress = custAddress;
         this.lineItem = lineItem;
+        this.custAddress = custAddress;
     }
 
     public int getOrderID() {
@@ -24,20 +24,20 @@ public class Order {
         this.orderID = orderID;
     }
 
-    public List<LineItem> getLineItem() {
-        return lineItem;
-    }
-
-    public void setLineItem(List<LineItem> lineItem) {
-        this.lineItem = lineItem;
-    }
-
     public User getUser() {
         return user;
     }
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public LineItemCollection getLineItem() {
+        return lineItem;
+    }
+
+    public void setLineItem(LineItemCollection lineItem) {
+        this.lineItem = lineItem;
     }
 
     public UserAddress getCustAddress() {
@@ -55,5 +55,7 @@ public class Order {
     public void setTotalPrice(double totalPrice) {
         this.totalPrice = totalPrice;
     }
+    
+
 
 }
