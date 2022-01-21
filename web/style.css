@@ -455,7 +455,7 @@ body1 {
 .item {
     background-color: #fff;
     float: left;
-    margin: 0 10px 10px 0;
+    margin: 0 100px 10px 0;
     width: 205px;
     padding: 10px;
     height: 290px;
@@ -464,8 +464,8 @@ body1 {
     display: block;
     margin: auto;
     color: white;
-    
-    
+    width: 50%;
+    height: 20%;
 }
 
 button {
@@ -493,7 +493,7 @@ span1 {
     margin: 0 10px 0 0;
 }
 div1 {
-height: 600px;
+height: 400px;
 background-color: white;
 font-family: white;
 

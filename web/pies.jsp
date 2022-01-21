@@ -27,31 +27,61 @@
     <div1 class="items">
         <!-- single item -->
         <div1 class="item" >
-            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQPDvPn7KJo8usaZIDkrFX1f538hqDshPSwxg&usqp=CAU" alt="item"  style="width:100%">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQPDvPn7KJo8usaZIDkrFX1f538hqDshPSwxg&usqp=CAU" alt="item"  style="width:50%">
             <h4> Item 1 </h4>
+<label for="cars">how many would you like:</label>
 
+<select name="pick" id="pick">
+  <option value="1">1</option>
+  <option value="2">1</option>
+  <option value="3">3</option>
+  <option value="4i">4</option>
+</select>
             <p>Price: <em>R50</em>
             </p>
+             <div1 class="tooltip">
+                <span class="tooltiptext"><p>contains nuts and dairy products</p> </span>
+</div1>
             <button class="add-to-cart" type="button">Add to cart</button>
         </div1 >
         <!--/ single item -->
         <!-- single item -->
         <div1 class="item">
-            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQPDvPn7KJo8usaZIDkrFX1f538hqDshPSwxg&usqp=CAU" alt="item" style="width:100%">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQPDvPn7KJo8usaZIDkrFX1f538hqDshPSwxg&usqp=CAU" alt="item" style="width:50%">
              <h4>item 2 </h4>
+<label for="cars">how many would you like:</label>
 
+<select name="pick" id="pick">
+  <option value="1">1</option>
+  <option value="2">1</option>
+  <option value="3">3</option>
+  <option value="4i">4</option>
+</select>
             <p> Price: <em>R50</em>
             </p>
+             <div1 class="tooltip">
+                <span class="tooltiptext"><p>contains nuts and dairy products</p> </span>
+</div1>
             <button class="add-to-cart" type="button">Add to cart</button>
         </div1>
         <!--/ single item -->
         <!-- single item -->
         <div1 class="item">
-            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQPDvPn7KJo8usaZIDkrFX1f538hqDshPSwxg&usqp=CAU" alt="item" style="width:100%">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQPDvPn7KJo8usaZIDkrFX1f538hqDshPSwxg&usqp=CAU" alt="item" style="width:50%">
              <h4> Item 3 </h4>
+<label for="cars">how many would you like:</label>
 
+<select name="pick" id="pick">
+  <option value="1">1</option>
+  <option value="2">1</option>
+  <option value="3">3</option>
+  <option value="4i">4</option>
+</select>
             <p> Price: <em>R50</em>
             </p>
+             <div1 class="tooltip">
+                <span class="tooltiptext"><p>contains nuts and dairy products</p> </span>
+</div1>
             <button class="add-to-cart" type="button">Add to cart</button>
         </div1>
         <!--/ single item -->

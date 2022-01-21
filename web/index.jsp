@@ -26,9 +26,9 @@
 
         <nav class="dropdownmenu">
             <ul>
-                <li><a href="logpg.jsp">Welcome Admin</a></li>
+                <li><a href="logpg.jsp">login</a></li>
                 
-                <li><a href="catagories.jsp">cakes</a></li>
+                <li><a href="cakes.jsp">cakes</a></li>
                 <li><a href="pies.jsp">pies</a>
                 <li><a href="bread.jsp">bread</a></li>
                 <li><a href="cupcake.jsp">cupcakes</a></li>

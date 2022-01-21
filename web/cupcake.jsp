@@ -1,4 +1,4 @@
-<<%-- 
+<%-- 
     Document   : catagories
     Created on : Jan 18, 2022, 11:11:54 AM
     Author     : student11
@@ -8,17 +8,17 @@
 <!DOCTYPE html>
 <html>
     <head>
-         
+        
     
         <link rel="stylesheet" type="text/css" href="style.css">
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Cupcakes</title>
+        <title>cakes</title>
     </head>
     <body1>
     
          <link rel="stylesheet" type="text/css" href="style.css">
         <div1 class="wrapper">
-            <h3>Cupcakes</h3>
+            <h3>Cakes</h3>
             <h3></h3>
  <span1><i class="shopping-cart"></i></span1>
 
@@ -27,9 +27,16 @@
     <div1 class="items">
         <!-- single item -->
         <div1 class="item" >
-            <img src="https://natashaskitchen.com/wp-content/uploads/2021/04/Chocolate-Cupcakes-5-728x1092.jpg" alt="item"  style="width:100%">
+            <img src="https://natashaskitchen.com/wp-content/uploads/2021/04/Chocolate-Cupcakes-5-728x1092.jpg" alt="item"  style="width:50%">
             <h4> Item 1 </h4>
+<label for="cars">how many would you like:</label>
 
+<select name="pick" id="pick">
+  <option value="1">1</option>
+  <option value="2">1</option>
+  <option value="3">3</option>
+  <option value="4i">4</option>
+</select>
             <p>Price: <em>R50</em>
             </p>
             <button class="add-to-cart" type="button">Add to cart</button>
@@ -37,9 +44,16 @@
         <!--/ single item -->
         <!-- single item -->
         <div1 class="item">
-            <img src="https://natashaskitchen.com/wp-content/uploads/2021/04/Chocolate-Cupcakes-5-728x1092.jpg" alt="item" style="width:100%">
+            <img src="https://natashaskitchen.com/wp-content/uploads/2021/04/Chocolate-Cupcakes-5-728x1092.jpg" alt="item" style="width:50%">
              <h4>item 2 </h4>
+<label for="cars">how many would you like:</label>
 
+<select name="pick" id="pick">
+  <option value="1">1</option>
+  <option value="2">1</option>
+  <option value="3">3</option>
+  <option value="4i">4</option>
+</select>
             <p> Price: <em>R50</em>
             </p>
             <button class="add-to-cart" type="button">Add to cart</button>
@@ -47,9 +61,16 @@
         <!--/ single item -->
         <!-- single item -->
         <div1 class="item">
-            <img src="https://natashaskitchen.com/wp-content/uploads/2021/04/Chocolate-Cupcakes-5-728x1092.jpg" alt="item" style="width:100%">
+            <img src="https://natashaskitchen.com/wp-content/uploads/2021/04/Chocolate-Cupcakes-5-728x1092.jpg" alt="item" style="width:50%">
              <h4> Item 3 </h4>
+<label for="cars">how many would you like:</label>
 
+<select name="pick" id="pick">
+  <option value="1">1</option>
+  <option value="2">1</option>
+  <option value="3">3</option>
+  <option value="4i">4</option>
+</select>
             <p> Price: <em>R50</em>
             </p>
             <button class="add-to-cart" type="button">Add to cart</button>
@@ -61,7 +82,6 @@
 <!--/ wrapper -->
  
     </body1>
-    <button id="back" onclick="goBack()">BACK</button>
+     <button id="back" onclick="goBack()">BACK</button>
      <script src="cart.js"></script>
 </html>
-
