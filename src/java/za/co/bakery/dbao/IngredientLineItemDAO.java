@@ -6,6 +6,7 @@
 package za.co.bakery.dbao;
 
 import java.util.List;
+import za.co.bakery.domain.Ingredient;
 import za.co.bakery.domain.IngredientItem;
 
 /**
@@ -14,10 +15,10 @@ import za.co.bakery.domain.IngredientItem;
  */
 public interface IngredientLineItemDAO {
     public boolean addIgredientItem(IngredientItem it); 
-    public IngredientItem readIngridientItem(String name);
-    public IngredientItem readIngridientItem(IngredientItem it);
+    public IngredientItem readIngridientItem(int ngredientItemId);
+    public IngredientItem readIngridientItem(Ingredient i);
     public List<IngredientItem> readAll();
-    public List<IngredientItem> readAllProductOfIngredient(String name);
+    public List<IngredientItem> readAllProductOfIngredient(Ingredient i);
     public boolean update(IngredientItem it);
     public boolean delete(IngredientItem it);
 }

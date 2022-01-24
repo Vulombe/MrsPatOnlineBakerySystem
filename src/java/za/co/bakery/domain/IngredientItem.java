@@ -12,6 +12,10 @@ public class IngredientItem{
     private Ingredient ingredient;
     private int ingredientItemId;
 
+    public IngredientItem() {
+        
+    }
+
     public Ingredient getIngredient() {
         return ingredient;
     }

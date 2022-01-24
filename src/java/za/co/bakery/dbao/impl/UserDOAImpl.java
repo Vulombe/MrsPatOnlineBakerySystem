@@ -92,8 +92,7 @@ public class UserDOAImpl implements UserDOA {
         User u = null;
         try {
             con = dbpm.getConnection();
-            ps = con.prepareStatement("SELECT * FROM USER WHERE EMAIL=?");
-            ps.setString(1, u.getEmailAddress());
+            ps = con.prepareStatement("SELECT * FROM USER");
             rs = ps.executeQuery();
 
             if (rs.next()) {
@@ -113,7 +112,7 @@ public class UserDOAImpl implements UserDOA {
 
                 }
             }
-        } catch (Exception e) {
+        } catch (SQLException e) {
             System.out.println(e.getMessage());
         } finally {
             closeStreams();
@@ -148,7 +147,7 @@ public class UserDOAImpl implements UserDOA {
 
                 
             }
-        } catch (Exception e) {
+        } catch (SQLException e) {
             System.out.println(e.getMessage());
         } finally {
             closeStreams();
@@ -199,7 +198,7 @@ public class UserDOAImpl implements UserDOA {
             if (rs.next()) {
                 return false;
             }
-        } catch (Exception e) {
+        } catch (SQLException e) {
             System.err.println(e);
         } finally {
             closeStreams();

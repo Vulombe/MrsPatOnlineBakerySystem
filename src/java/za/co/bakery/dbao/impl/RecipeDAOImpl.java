@@ -9,8 +9,10 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import za.co.bakery.dbao.RecipeDAO;
+import za.co.bakery.domain.Category;
 import za.co.bakery.domain.Ingredient;
 import za.co.bakery.domain.IngredientItem;
 import za.co.bakery.domain.Product;
@@ -45,17 +47,13 @@ public class RecipeDAOImpl implements RecipeDAO {
 
             //  ps.setInt(1, p.getProductID());
             ps.setString(1, r.getRecipeName());
-            ps.setString(2, r.getSteps());
-            
-            
-       
-            
-            ps.setDouble(3, p.getPrice());
-            ps.setString(4, p.getCategory().toString().toLowerCase());
-            ps.setString(5, p.getWarning());
-            ps.setString(6, p.getDescription());
-            ps.setInt(7, p.getRecipeID());
-
+            List<IngredientItem> ingredientItems = r.getIngredients();
+            String ingreItems = "";
+            for (IngredientItem i : ingredientItems) {
+                ingreItems += i.getIngredientItemId() + ",";
+            }
+            ps.setString(2, ingreItems.substring(0, ingreItems.length() - 1).trim());
+            ps.setString(3, r.getSteps());
             if (ps.executeUpdate() > 0) {
                 isAdded = true;
             }
@@ -70,36 +68,214 @@ public class RecipeDAOImpl implements RecipeDAO {
 
     @Override
     public Recipe read(String name) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        Recipe r = null;
+        try {
+            con = dbpm.getConnection();
+            ps = con.prepareStatement("SELECT * FROM RECIPE WHERE RECIPENAME=?");
+            ps.setString(1, name);
+            rs = ps.executeQuery();
+
+            if (rs.next()) {
+                r = new Recipe();
+                r.setRecipeID(rs.getInt("recipeId"));
+                r.setRecipeName(rs.getString("recipeName"));
+                String ingreItem = rs.getString("ingredients");
+                String[] ingreItemsstring = ingreItem.split(",");
+                List<IngredientItem> ingreItemsStringList = new ArrayList();
+                for (String s : ingreItemsstring) {
+                    IngredientItem it = new IngredientItem();
+                    it.setIngredientItemId(Integer.parseInt(s));
+                    ingreItemsStringList.add(it);
+                }
+                r.setIngredients(ingreItemsStringList);
+                r.setSteps(rs.getString("Steps"));
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        } finally {
+            closeStreams();
+        }
+        return r;
     }
 
     @Override
     public Product read(Recipe r) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        Product p = null;
+
+        try {
+            con = dbpm.getConnection();
+
+            ps = con.prepareStatement("SELECT * FROM PRODUCT WHERE RECIPEID= ?");
+            ps.setInt(1, r.getRecipeID());
+            rs = ps.executeQuery();
+
+            if (rs.next()) {
+
+                String cat = rs.getString("CATEGORY");
+
+                if (cat.equalsIgnoreCase("cookies")) {
+                    p = new Product(rs.getInt("PRODUCTID"), rs.getString("NAME"), rs.getString("PICTURE"), rs.getDouble("PRICE"), Category.COOKIES, rs.getString("WARNING"), rs.getString("DESCRIPTION"), rs.getInt("RECIPEID"));
+                } else if (cat.equalsIgnoreCase("cakes")) {
+                    p = new Product(rs.getInt("PRODUCTID"), rs.getString("NAME"), rs.getString("PICTURE"), rs.getDouble("PRICE"), Category.CAKES, rs.getString("WARNING"), rs.getString("DESCRIPTION"), rs.getInt("RECIPEID"));
+                } else if (cat.equalsIgnoreCase("cupcakes")) {
+                    p = new Product(rs.getInt("PRODUCTID"), rs.getString("NAME"), rs.getString("PICTURE"), rs.getDouble("PRICE"), Category.CUPCAKES, rs.getString("WARNING"), rs.getString("DESCRIPTION"), rs.getInt("RECIPEID"));
+                } else if (cat.equalsIgnoreCase("fresh_bread")) {
+                    p = new Product(rs.getInt("PRODUCTID"), rs.getString("NAME"), rs.getString("PICTURE"), rs.getDouble("PRICE"), Category.FRESH_BREAD, rs.getString("WARNING"), rs.getString("DESCRIPTION"), rs.getInt("RECIPEID"));
+                } else if (cat.equalsIgnoreCase("pastries")) {
+                    p = new Product(rs.getInt("PRODUCTID"), rs.getString("NAME"), rs.getString("PICTURE"), rs.getDouble("PRICE"), Category.PASTRIES, rs.getString("WARNING"), rs.getString("DESCRIPTION"), rs.getInt("RECIPEID"));
+                } else if (cat.equalsIgnoreCase("pies")) {
+                    p = new Product(rs.getInt("PRODUCTID"), rs.getString("NAME"), rs.getString("PICTURE"), rs.getDouble("PRICE"), Category.PIES, rs.getString("WARNING"), rs.getString("DESCRIPTION"), rs.getInt("RECIPEID"));
+                } else if (cat.equalsIgnoreCase("brownies")) {
+                    p = new Product(rs.getInt("PRODUCTID"), rs.getString("NAME"), rs.getString("PICTURE"), rs.getDouble("PRICE"), Category.BROWNIES, rs.getString("WARNING"), rs.getString("DESCRIPTION"), rs.getInt("RECIPEID"));
+
+                }
+
+            }
+
+        } catch (SQLException ex) {
+            System.out.println("Error: " + ex.getMessage());
+        } finally {
+            closeStreams();
+        }
+
+        return p;
     }
 
     @Override
     public List<Recipe> readAll() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        List<Recipe> recipes = new ArrayList<>();
+
+        try {
+            con = dbpm.getConnection();
+
+            ps = con.prepareStatement("SELECT * FROM RECIPE");
+            rs = ps.executeQuery();
+
+            while (rs.next()) {
+                Recipe r = new Recipe();
+                r.setRecipeID(rs.getInt("recipeId"));
+                r.setRecipeName(rs.getString("recipeName"));
+                String ingreItem = rs.getString("ingredients");
+                String[] ingreItemsstring = ingreItem.split(",");
+                List<IngredientItem> ingreItemsStringList = new ArrayList();
+                for (String s : ingreItemsstring) {
+                    IngredientItem it = new IngredientItem();
+                    it.setIngredientItemId(Integer.parseInt(s));
+                    ingreItemsStringList.add(it);
+                }
+                r.setIngredients(ingreItemsStringList);
+                r.setSteps(rs.getString("Steps"));
+                recipes.add(r);
+            }
+
+        } catch (SQLException ex) {
+        } finally {
+            closeStreams();
+        }
+
+        return recipes;
     }
 
     @Override
     public List<Product> readProductOfRecipe(Recipe r) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        List<Product> products = new ArrayList<>();
+
+        try {
+            con = dbpm.getConnection();
+
+            ps = con.prepareStatement("SELECT * FROM PRODUCT WHERE RECIPEID= ?");
+            ps.setInt(1, r.getRecipeID());
+            rs = ps.executeQuery();
+
+            while (rs.next()) {
+                Product p = new Product();
+
+                String cat = rs.getString("CATEGORY");
+
+                if (cat.equalsIgnoreCase("cookies")) {
+                    p = new Product(rs.getInt("PRODUCTID"), rs.getString("NAME"), rs.getString("PICTURE"), rs.getDouble("PRICE"), Category.COOKIES, rs.getString("WARNING"), rs.getString("DESCRIPTION"), rs.getInt("RECIPEID"));
+                    products.add(p);
+                } else if (cat.equalsIgnoreCase("cakes")) {
+                    p = new Product(rs.getInt("PRODUCTID"), rs.getString("NAME"), rs.getString("PICTURE"), rs.getDouble("PRICE"), Category.CAKES, rs.getString("WARNING"), rs.getString("DESCRIPTION"), rs.getInt("RECIPEID"));
+                    products.add(p);
+                } else if (cat.equalsIgnoreCase("cupcakes")) {
+                    p = new Product(rs.getInt("PRODUCTID"), rs.getString("NAME"), rs.getString("PICTURE"), rs.getDouble("PRICE"), Category.CUPCAKES, rs.getString("WARNING"), rs.getString("DESCRIPTION"), rs.getInt("RECIPEID"));
+                    products.add(p);
+                } else if (cat.equalsIgnoreCase("fresh_bread")) {
+                    p = new Product(rs.getInt("PRODUCTID"), rs.getString("NAME"), rs.getString("PICTURE"), rs.getDouble("PRICE"), Category.FRESH_BREAD, rs.getString("WARNING"), rs.getString("DESCRIPTION"), rs.getInt("RECIPEID"));
+                    products.add(p);
+                } else if (cat.equalsIgnoreCase("pastries")) {
+                    p = new Product(rs.getInt("PRODUCTID"), rs.getString("NAME"), rs.getString("PICTURE"), rs.getDouble("PRICE"), Category.PASTRIES, rs.getString("WARNING"), rs.getString("DESCRIPTION"), rs.getInt("RECIPEID"));
+                    products.add(p);
+                } else if (cat.equalsIgnoreCase("pies")) {
+                    p = new Product(rs.getInt("PRODUCTID"), rs.getString("NAME"), rs.getString("PICTURE"), rs.getDouble("PRICE"), Category.PIES, rs.getString("WARNING"), rs.getString("DESCRIPTION"), rs.getInt("RECIPEID"));
+                    products.add(p);
+                } else if (cat.equalsIgnoreCase("brownies")) {
+                    p = new Product(rs.getInt("PRODUCTID"), rs.getString("NAME"), rs.getString("PICTURE"), rs.getDouble("PRICE"), Category.BROWNIES, rs.getString("WARNING"), rs.getString("DESCRIPTION"), rs.getInt("RECIPEID"));
+                    products.add(p);
+                }
+
+            }
+
+        } catch (SQLException ex) {
+        } finally {
+            closeStreams();
+        }
+
+        return products;
     }
 
     @Override
     public boolean update(Recipe r) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        boolean isUpdated = false;
+        try {
+            con = dbpm.getConnection();
+            ps = con.prepareStatement("update recipe set recipeName=?,ingredients=?,steps=? where recipeId=?");
+
+            ps.setString(1, r.getRecipeName());
+
+            List<IngredientItem> ingredientItems = r.getIngredients();
+            String ingreItems = "";
+            for (IngredientItem i : ingredientItems) {
+                ingreItems += i.getIngredientItemId() + ",";
+            }
+            ps.setString(2, ingreItems.substring(0, ingreItems.length() - 1).trim());
+            ps.setString(3, r.getSteps());
+            ps.setInt(4, r.getRecipeID());
+            if (ps.executeUpdate() > 0) {
+                isUpdated = true;
+            }
+
+        } catch (SQLException ex) {
+            System.out.println("Error: " + ex.getMessage());
+        } finally {
+            closeStreams();
+
+        }
+        return isUpdated;
     }
 
     @Override
     public boolean delete(Recipe r) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        boolean isDeleted = false;
+        try {
+            con = dbpm.getConnection();
+            ps = con.prepareStatement("update Recipe set isActive=? where recipeId=?");
+            ps.setString(1, "N");
+            ps.setInt(2, r.getRecipeID());
+            if (ps.executeUpdate() > 0) {
+                isDeleted = true;
+            }
+        } catch (SQLException ex) {
+            System.out.println("Error: " + ex.getMessage());
+        } finally {
+            closeStreams();
+        }
+
+        return isDeleted;
     }
 
-    
-     private void closeStreams() {
+    private void closeStreams() {
         if (rs != null) {
             try {
                 rs.close();

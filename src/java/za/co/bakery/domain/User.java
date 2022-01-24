@@ -39,11 +39,18 @@ public class User
     }
 
     public User(String title, String firstName, String lastName, String emailAddress, String contactNumber, String password) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+     
+        this.title = title;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.emailAddress = emailAddress;
+        this.contactNumber = contactNumber;
+        this.password = password;
+   
     }
 
     public User(String emailAddress) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        this.emailAddress = emailAddress;
     }
     public int getID() {
         return ID;
