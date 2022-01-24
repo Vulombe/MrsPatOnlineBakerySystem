@@ -5,9 +5,6 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<% 
-    boolean y = (boolean)request.getAttribute("isDeleted");
-%>
 <!DOCTYPE html>
 <html>
     <head>
@@ -16,7 +13,6 @@
     </head>
     <body>
         <h1>Testing Page!!!!</h1>
-        <%= y %>
         
     </body>
 </html>

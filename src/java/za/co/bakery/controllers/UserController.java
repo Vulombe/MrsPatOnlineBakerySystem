@@ -24,22 +24,22 @@ public class UserController extends HttpServlet {
         String prs = request.getParameter("pro");
         RequestDispatcher view=null;
         if (prs != null) {
-            String email = request.getParameter("email");
-            String password = request.getParameter("password");
-            if (prs.equals("login")) {
-                String email = request.getParameter("email");
-                String password = request.getParameter("password");
-                boolean userValidation = userService.isUserValid(email, password);
-                HttpSession session = request.getSession();
-                if (userValidation) {
-                    message = "Valid User";
-                } else {
-                    message = "Invalid User";
-                }
-                session.setAttribute("Valid", message);
-                view = request.getRequestDispatcher("davelogin.jsp");
-                view.forward(request, response);
-            }
+//            String email = request.getParameter("email");
+//            String password = request.getParameter("password");
+//            if (prs.equals("login")) {
+//                String email = request.getParameter("email");
+//                String password = request.getParameter("password");
+//                boolean userValidation = userService.isUserValid(email, password);
+//                HttpSession session = request.getSession();
+//                if (userValidation) {
+//                    message = "Valid User";
+//                } else {
+//                    message = "Invalid User";
+//                }
+//                session.setAttribute("Valid", message);
+//                view = request.getRequestDispatcher("davelogin.jsp");
+//                view.forward(request, response);
+//            }
         }
 
     }

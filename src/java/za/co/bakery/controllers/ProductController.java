@@ -57,8 +57,10 @@ public class ProductController extends HttpServlet {
                     view.forward(request, response);
                     break;
                 case "pview":
-                    request.setAttribute("prodList", productService.getProducts(request.getParameter("category")));
-                    view = request.getRequestDispatcher("TestingPage.jsp");
+                    String name = request.getParameter("category");
+                    request.setAttribute("theTitle", name);
+                    request.setAttribute("prodList", productService.getProducts(name));
+                    view = request.getRequestDispatcher("cakes.jsp");
                     view.forward(request, response);
                     break;
                 case "pcreate":
@@ -122,6 +124,12 @@ public class ProductController extends HttpServlet {
                     view = request.getRequestDispatcher("TestingPage.jsp");
                     view.forward(request, response);
                     break;
+                case "redit":
+                    request.setAttribute("update", productService.recipeUpdate(request.getParameter("recipeName")),
+                            request.getParameter("field"),
+                            request.getParameter("change")));
+                    view = request.getRequestDispatcher("TestingPage.jsp");
+                    view.forward(request, response);
             }
 
         } else {

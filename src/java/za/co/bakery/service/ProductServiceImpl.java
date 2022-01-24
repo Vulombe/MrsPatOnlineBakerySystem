@@ -141,4 +141,11 @@ public class ProductServiceImpl implements ProductService {
         return productDAO.update(p);
     }
 
+    @Override
+    public boolean recipeUpdate(String recipeName, String field, String update) {
+        Recipe r = this.recipeDAO.read(recipeName);
+        
+        String
+    }
+
 }

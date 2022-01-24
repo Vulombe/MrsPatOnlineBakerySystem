@@ -48,7 +48,7 @@ p {
 
 span {
     font-size: 12px;
-    color: beige;
+    color: black;
 }
 
 a {
@@ -455,7 +455,7 @@ body1 {
 .item {
     background-color: #fff;
     float: left;
-    margin: 0 10px 10px 0;
+    margin: 0 100px 10px 0;
     width: 205px;
     padding: 10px;
     height: 290px;
@@ -464,8 +464,8 @@ body1 {
     display: block;
     margin: auto;
     color: white;
-    
-    
+    width: 50%;
+    height: 20%;
 }
 
 button {
@@ -492,10 +492,23 @@ span1 {
     height: 44px;
     margin: 0 10px 0 0;
 }
-div1 {
-    height: 400px;
+.div1 {
+height: 400px;
 background-color: white;
 font-family: white;
 
 
+}
+
+
+button.btnback{
+     border: 1px solid #722A1B;
+    padding: 4px 14px;
+    background-color: #fff;
+    color: #722A1B;
+    text-transform: uppercase;
+    float: right;
+    margin:54px 0;
+    font-weight: bold;
+    cursor: pointer;
 }
