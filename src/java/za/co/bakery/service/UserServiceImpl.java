@@ -15,25 +15,34 @@ public class UserServiceImpl implements UserService {
 
     public UserServiceImpl(DBPoolManagerBasic dbpm) {
         this.userdao = new UserDOAImpl(dbpm);
-
     }
 
     @Override
     public boolean isUserValid(String email, String password) {
-        boolean t = userdao.isUserValid(email, password);
-        return t;
-        // return userdao.isUserValid(email, password);
+        if (email == null || email.isEmpty()) {
+            return false;
+        }
+        if (password == null || password.isEmpty()) {
+            return false;
+        }
+        return userdao.isUserValid(email, password);
     }
 
     @Override
-    public User create(String title, String firstName, String lastName, String emailAddress, String contactNumber, String password) {
+    public User create(String title, String firstName, String lastName, String emailAddress,
+            String contactNumber, String password, String passwordConfirm) {
+        //error check all parameters
+        if (emailAddress != null) {    // if it is null, then what?
+            emailAddress = emailAddress.toLowerCase();
+        }
+
         User user = new User(title, firstName, lastName, emailAddress, contactNumber, password);
-        return (userdao.create(user) > 0) ? user:null;
+        return (userdao.create(user) > 0) ? user : null;
     }
 
     @Override
     public List<User> getUsers() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+         return null;   //userdao.readAll();
     }
 
     @Override
@@ -42,15 +51,44 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public boolean read(String title, String firstName, String lastName, String emailAddress,
+            String contactNumber, String password) {
+
+        if (emailAddress == null || emailAddress.isEmpty()) {
+            return false;
+        }
+        User user = userdao.read(emailAddress);
+
+        if (title != null) {
+            user.setTitle(title);
+        }
+        if (lastName != null) {
+            user.setLastName(lastName);
+        }
+        if (firstName != null) {
+            user.setFirstName(firstName);
+        }
+        if (contactNumber != null) {
+            user.setContactNumber(contactNumber);
+        }
+        if (password != null) {
+            user.setPassword(password);
+        }
+        return update(user);
+    }
+
+    @Override
     public User read(String email) {
         return userdao.read(email);
     }
 
-   @Override
-   public boolean delete(String email)
-   {
-       return userdao.delete(email);
-   }
+    @Override
+    public boolean delete(String email) {
+        if(email==null || email.isEmpty()){
+            return false;
+        }
+        return userdao.delete(email);
+    }
 
     @Override
     public boolean update(User u) {

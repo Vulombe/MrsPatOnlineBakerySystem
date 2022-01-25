@@ -18,7 +18,7 @@ import javax.servlet.http.HttpServletResponse;
  * @author student12
  */
 
-public class OrderControl extends HttpServlet {
+public class OrderController extends HttpServlet {
 
  
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
