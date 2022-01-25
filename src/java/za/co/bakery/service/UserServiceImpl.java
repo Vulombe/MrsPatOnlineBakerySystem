@@ -50,7 +50,7 @@ public class UserServiceImpl implements UserService {
             errorMessage = "Last Name cannot be null";
         }
         if (contactNumber == null || contactNumber.isEmpty()) {
-            errorMessage = "Contact Numbercannot be null";
+            errorMessage = "Contact Number cannot be null";
         }
         if (password == null || password.isEmpty()) {
             errorMessage = "Password cannot be null";
@@ -70,7 +70,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<User> getUsers() {
-         return null;
+         return userdao.readUsers();
     }
 
     @Override
@@ -88,35 +88,38 @@ public class UserServiceImpl implements UserService {
         
         User user = userdao.read(emailAddress);
 
-        if (title != null || title.isEmpty()) {
+        if (title != null || !title.isEmpty()) {
             user.setTitle(title);
         }
-        if (lastName != null || lastName.isEmpty()) {
+        if (lastName != null || !lastName.isEmpty()) {
             user.setLastName(lastName);
         }
-        if (firstName != null || firstName.isEmpty()) {
+        if (firstName != null || !firstName.isEmpty()) {
             user.setFirstName(firstName);
         }
-        if (contactNumber != null || contactNumber.isEmpty()) {
+        if (contactNumber != null || !contactNumber.isEmpty()) {
             user.setContactNumber(contactNumber);
         }
-        if (password != null || password.isEmpty()) {
+        if (password != null || !password.isEmpty()) {
             user.setPassword(password);
         }
         return update(user);
     }
 
     @Override
-    public User read(String email) {
-        return userdao.read(email);
+    public User read(String emailAddress) {
+         if (emailAddress == null || emailAddress.isEmpty()) {
+            return null;
+        }
+        return userdao.read(emailAddress);
     }
 
     @Override
-    public boolean delete(String email) {
-        if(email==null || email.isEmpty()){
+    public boolean delete(String emailAddress) {
+        if(emailAddress==null || emailAddress.isEmpty()){
             return false;
         }
-        return userdao.delete(email);
+        return userdao.delete(emailAddress);
     }
 
     @Override

@@ -38,7 +38,7 @@ public class UserController extends HttpServlet {
                     view = request.getRequestDispatcher("TestingPage.jsp");
                 } else {
                     request.setAttribute("errormsg", "Invalid email or password try again");
-                    view = request.getRequestDispatcher("Error.jsp");
+                    view = request.getRequestDispatcher("error.jsp");
                 }
                 view.forward(request, response);
             }
@@ -55,7 +55,7 @@ public class UserController extends HttpServlet {
                         request.getParameter("loginPassword"));
                 if (user == null) {
                     request.setAttribute("errormsg", "Invalid information");
-                    view = request.getRequestDispatcher("Error.jsp");
+                    view = request.getRequestDispatcher("error.jsp");
                 } else {
                     session.setAttribute("user", user);
                     view = request.getRequestDispatcher("TestingPage.jsp");
@@ -76,7 +76,7 @@ public class UserController extends HttpServlet {
                     view = request.getRequestDispatcher("TestingPage.jsp");
                 } else {
                     request.setAttribute("errormsg", "Unable to update user. Try again!");
-                    view = request.getRequestDispatcher("Error.jsp");
+                    view = request.getRequestDispatcher("error.jsp");
                 }
                 view.forward(request, response);
             }
@@ -88,11 +88,16 @@ public class UserController extends HttpServlet {
                     view = request.getRequestDispatcher("TestingPage.jsp");
                 } else {
                     request.setAttribute("errormsg", "Unable to delete user");
-                    view = request.getRequestDispatcher("Error.jsp");
+                    view = request.getRequestDispatcher("error.jsp");
                 }
                 view.forward(request, response);
             }
 
+            //---------------------
+            if(prs.equals("viewusers"))
+            {
+                
+            }
             //---------------------
             if (prs.equals("logout")) {
                 session.removeAttribute("user");

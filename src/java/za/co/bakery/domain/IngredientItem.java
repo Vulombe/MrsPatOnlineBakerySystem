@@ -10,6 +10,11 @@ public class IngredientItem{
 
     private int qty;
     private Ingredient ingredient;
+    private int ingredientItemId;
+
+    public IngredientItem() {
+        
+    }
 
     public Ingredient getIngredient() {
         return ingredient;
@@ -35,6 +40,14 @@ public class IngredientItem{
     @Override
     public String toString() {
         return ingredient.getName() + qty;
+    }
+
+    public int getIngredientItemId() {
+        return ingredientItemId;
+    }
+
+    public void setIngredientItemId(int ingredientItemId) {
+        this.ingredientItemId = ingredientItemId;
     }
     
 }

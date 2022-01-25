@@ -2,54 +2,49 @@
 package za.co.bakery.service;
 
 import java.util.List;
-import za.co.bakery.dbao.OrderDAO;
-import za.co.bakery.dbao.impl.OrderDAOImpl;
-import za.co.bakery.domain.Order;
 import za.co.bakery.domain.User;
+import za.co.bakery.domain.UserAddress;
 
-
-public class OrderServiceImpl implements OrderService{
+public class UserAddressServiceImpl implements UserAddressService{
 
     @Override
-    public boolean add(Order o) {
+    public boolean add(UserAddress ua) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Order readOrder(Order o) {
+    public UserAddress readUserAddress(User u) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Order readOrder(int OrderId) {
+    public UserAddress readUserAddressById(int AddressId) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Order readOrder(User u) {
+    public User readAddress(UserAddress ua) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public List<Order> listOrder() {
+    public List<UserAddress> readAll() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public List<Order> listOrder(User u) {
+    public List<User> readAllProductOfIngredient(UserAddress ua) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public boolean update(Order o) {
+    public boolean update(UserAddress ua) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public boolean delete(Order o) {
+    public boolean delete(UserAddress ua) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-  
     
- 
 }

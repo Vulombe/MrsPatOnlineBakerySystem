@@ -7,18 +7,25 @@ package za.co.bakery.domain;
 
 public class UserAddress {
 
+    private int AddressId;
     private int houseNumber;
     private String streetAddress;
     private String city;
     private String state;
     private String zipCode;
+    private User user;
 
-    public UserAddress(int houseNumber, String streetAddress, String city, String state, String zipCode) {
+    public UserAddress(int houseNumber, String streetAddress, String city, String state, String zipCode, User user) {
         this.houseNumber = houseNumber;
         this.streetAddress = streetAddress;
         this.city = city;
         this.state = state;
         this.zipCode = zipCode;
+        this.user= user;
+    }
+
+    public UserAddress() {
+        
     }
 
     public int getHouseNumber() {
@@ -59,6 +66,22 @@ public class UserAddress {
 
     public void setZipCode(String zipCode) {
         this.zipCode = zipCode;
+    }
+
+    public int getAddressId() {
+        return AddressId;
+    }
+
+    public void setAddressId(int AddressId) {
+        this.AddressId = AddressId;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
     
     
