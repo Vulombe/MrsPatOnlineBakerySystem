@@ -15,7 +15,7 @@ import za.co.bakery.domain.UserAddress;
  */
 public interface UserAddressService {
 
-    public boolean add(UserAddress ua);
+    public boolean add(int houseNumber,String streetAddress, String city,String state,String zipCode,User user);
 
     public UserAddress readUserAddress(User u);
 

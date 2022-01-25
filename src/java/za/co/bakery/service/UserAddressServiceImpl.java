@@ -8,7 +8,7 @@ import za.co.bakery.domain.UserAddress;
 public class UserAddressServiceImpl implements UserAddressService{
 
     @Override
-    public boolean add(UserAddress ua) {
+    public boolean add(int houseNumber,String streetAddress, String city,String state,String zipCode,User user) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
@@ -46,5 +46,7 @@ public class UserAddressServiceImpl implements UserAddressService{
     public boolean delete(UserAddress ua) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
+
+ 
     
 }
