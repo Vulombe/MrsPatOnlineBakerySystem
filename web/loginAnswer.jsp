@@ -1,7 +1,7 @@
 <%-- 
-    Document   : TestingPage
-    Created on : 18 Jan 2022, 12:58:38 PM
-    Author     : Student03
+    Document   : loginAnswer
+    Created on : Jan 17, 2022, 11:32:43 AM
+    Author     : student12
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -9,10 +9,9 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>David and My test Page</title>
+        <title>JSP Page</title>
     </head>
     <body>
-        <h1>Testing Page!!!!</h1>
-        
+        <h1>Hello World!</h1>
     </body>
 </html>

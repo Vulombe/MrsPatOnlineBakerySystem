@@ -8,8 +8,8 @@
 <!DOCTYPE html>
 <html>
     <head>
-          <button id="back" onclick="goBack()">BACK</button>
-    <button id="forward" onclick="goForward()">FORWARD</button>
+          
+    
         
         <link rel="stylesheet" type="text/css" href="style.css">
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -32,7 +32,7 @@
                 <li><a href="pies.jsp">pies</a>
                 <li><a href="bread.jsp">bread</a></li>
                 <li><a href="cupcake.jsp">cupcakes</a></li>
-                     <li><a href="">Contact Us</a></li> 
+                     <li><a href="contactUs.jsp">Contact Us</a></li> 
             </ul>
         </li>
 
@@ -111,5 +111,6 @@
 
             </div>
             </body>
+            <button id="back" onclick="goBack()">BACK</button>
             <script src="login.js"></script>
             </html>

@@ -17,6 +17,7 @@ public interface UserDOA {
     public boolean delete(String email);
     public boolean isNewUser(User u);
     boolean isUserValid(String email, String password);
+    public List<User> readUsers();
 
     //lots of user related methods
 }

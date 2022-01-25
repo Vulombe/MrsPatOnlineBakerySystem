@@ -32,17 +32,45 @@ public class UserServiceImpl implements UserService {
     public User create(String title, String firstName, String lastName, String emailAddress,
             String contactNumber, String password, String passwordConfirm) {
         //error check all parameters
+        User user = null;
+        String errorMessage = null;
+        if (emailAddress == null || emailAddress.isEmpty()) {
+            errorMessage = "Email Address cannot be null";
+        }
+        if (password == null || password.isEmpty()) {
+            errorMessage = "Password cannot be null";
+        }
+        if (title == null || title.isEmpty()) {
+            errorMessage = "Title cannot be null";
+        }
+        if (firstName == null || firstName.isEmpty()) {
+            errorMessage = "First Name cannot be null";
+        }
+           if (lastName == null || lastName.isEmpty()) {
+            errorMessage = "Last Name cannot be null";
+        }
+        if (contactNumber == null || contactNumber.isEmpty()) {
+            errorMessage = "Contact Numbercannot be null";
+        }
+        if (password == null || password.isEmpty()) {
+            errorMessage = "Password cannot be null";
+        }
+        if (passwordConfirm == null || passwordConfirm.isEmpty()) {
+            errorMessage = "First Name cannot be null";
+        }
         if (emailAddress != null) {    // if it is null, then what?
             emailAddress = emailAddress.toLowerCase();
         }
-
-        User user = new User(title, firstName, lastName, emailAddress, contactNumber, password);
+        if(errorMessage !=null){
+            if(password.equals(passwordConfirm))
+                user = new User(title, firstName, lastName, emailAddress, contactNumber, password);
+        }
         return (userdao.create(user) > 0) ? user : null;
     }
 
     @Override
     public List<User> getUsers() {
-         return null;   //userdao.readAll();
+         return null;
     }
 
     @Override
@@ -57,21 +85,22 @@ public class UserServiceImpl implements UserService {
         if (emailAddress == null || emailAddress.isEmpty()) {
             return false;
         }
+        
         User user = userdao.read(emailAddress);
 
-        if (title != null) {
+        if (title != null || title.isEmpty()) {
             user.setTitle(title);
         }
-        if (lastName != null) {
+        if (lastName != null || lastName.isEmpty()) {
             user.setLastName(lastName);
         }
-        if (firstName != null) {
+        if (firstName != null || firstName.isEmpty()) {
             user.setFirstName(firstName);
         }
-        if (contactNumber != null) {
+        if (contactNumber != null || contactNumber.isEmpty()) {
             user.setContactNumber(contactNumber);
         }
-        if (password != null) {
+        if (password != null || password.isEmpty()) {
             user.setPassword(password);
         }
         return update(user);
