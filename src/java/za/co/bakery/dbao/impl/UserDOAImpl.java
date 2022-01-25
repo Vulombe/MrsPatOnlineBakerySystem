@@ -9,6 +9,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import za.co.bakery.dbao.UserDOA;
 import za.co.bakery.domain.Role;
@@ -97,20 +98,19 @@ public class UserDOAImpl implements UserDOA {
 
             if (rs.next()) {
                 u = new User();
-                if (rs.getString("password").equals(u.getPassword())) {
-                    u.setID(rs.getInt("Id"));
-                    u.setTitle("title");
-                    u.setFirstName(rs.getString("firstName"));
-                    u.setLastName(rs.getString("lastName"));
-                    u.setContactNumber(rs.getString("contactNumber"));
-                    String userRole = rs.getString("isClient");
-                    if (userRole.equalsIgnoreCase("Y")) {
-                        u.setUserRole(Role.CLIENT);
-                    } else {
-                        u.setUserRole(Role.ADMIN);
-                    }
-
+                u.setPassword(rs.getString("password"));
+                u.setID(rs.getInt("Id"));
+                u.setTitle("title");
+                u.setFirstName(rs.getString("firstName"));
+                u.setLastName(rs.getString("lastName"));
+                u.setContactNumber(rs.getString("contactNumber"));
+                String userRole = rs.getString("isClient");
+                if (userRole.equalsIgnoreCase("Y")) {
+                    u.setUserRole(Role.CLIENT);
+                } else {
+                    u.setUserRole(Role.ADMIN);
                 }
+
             }
         } catch (SQLException e) {
             System.out.println(e.getMessage());
@@ -131,21 +131,20 @@ public class UserDOAImpl implements UserDOA {
 
             if (rs.next()) {
                 u = new User();
-                    u.setPassword(rs.getString("password")) ;
-                    u.setID(rs.getInt("Id"));
-                    u.setTitle(rs.getString("title"));
-                    u.setFirstName(rs.getString("firstName"));
-                    u.setLastName(rs.getString("lastName"));
-                    u.setContactNumber(rs.getString("contactNumber"));
-                    u.setEmailAddress(email);
-                    String userRole = rs.getString("isClient");
-                    if (userRole.equalsIgnoreCase("Y")) {
-                        u.setUserRole(Role.CLIENT);
-                    } else {
-                        u.setUserRole(Role.ADMIN);
-                    }
+                u.setPassword(rs.getString("password"));
+                u.setID(rs.getInt("Id"));
+                u.setTitle(rs.getString("title"));
+                u.setFirstName(rs.getString("firstName"));
+                u.setLastName(rs.getString("lastName"));
+                u.setContactNumber(rs.getString("contactNumber"));
+                u.setEmailAddress(email);
+                String userRole = rs.getString("isClient");
+                if (userRole.equalsIgnoreCase("Y")) {
+                    u.setUserRole(Role.CLIENT);
+                } else {
+                    u.setUserRole(Role.ADMIN);
+                }
 
-                
             }
         } catch (SQLException e) {
             System.out.println(e.getMessage());
@@ -205,8 +204,9 @@ public class UserDOAImpl implements UserDOA {
         }
         return true;
     }
+
     //***********updating user ******************************************
- @Override
+    @Override
     public boolean update(User u) {
         boolean isUpdated = false;
         try {
@@ -223,7 +223,7 @@ public class UserDOAImpl implements UserDOA {
             } else {
                 ps.setString(6, "Y");
             }
-           ps.setString(7, u.getEmailAddress());
+            ps.setString(7, u.getEmailAddress());
 
             ps.executeUpdate();
             isUpdated = true;
@@ -236,26 +236,63 @@ public class UserDOAImpl implements UserDOA {
         }
         return isUpdated;
     }
-    
-      @Override
+
+    @Override
     public boolean delete(String email) {
-       boolean isDeleted=false;
+        boolean isDeleted = false;
         try {
             con = dbpm.getConnection();
             ps = con.prepareStatement("update user set isActive=? where email=?");
-            ps.setString(1,"N");
-            ps.setString(2,email);
+            ps.setString(1, "N");
+            ps.setString(2, email);
             ps.executeUpdate();
-            isDeleted=true;
+            isDeleted = true;
         } catch (SQLException ex) {
             System.out.println("Error: " + ex.getMessage());
         } finally {
             closeStreams();
         }
-        
-        return isDeleted; 
+
+        return isDeleted;
+    }
+    
+    public List<User> readUsers()
+    {
+    
+     List<User> users= new ArrayList<>();
+        try {
+            con = dbpm.getConnection();
+            ps = con.prepareStatement("SELECT * FROM USER");
+            rs = ps.executeQuery();
+
+            while(rs.next()) {
+                User u  = new User();
+                u.setPassword(rs.getString("password"));
+                u.setID(rs.getInt("Id"));
+                u.setTitle("title");
+                u.setFirstName(rs.getString("firstName"));
+                u.setLastName(rs.getString("lastName"));
+                u.setContactNumber(rs.getString("contactNumber"));
+                String userRole = rs.getString("isClient");
+                if (userRole.equalsIgnoreCase("Y")) {
+                    u.setUserRole(Role.CLIENT);
+                } else {
+                    u.setUserRole(Role.ADMIN);
+                }
+                users.add(u);
+
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        } finally {
+            closeStreams();
+        }
+        return users;
+    
+    
     }
 // ***********************************Clossing the connection************************************
+
     private void closeStreams() {
         if (rs != null) {
             try {
@@ -283,9 +320,5 @@ public class UserDOAImpl implements UserDOA {
         con = null;
     }
     // ************************************************************************
-
-   
-
-  
 
 }
