@@ -21,11 +21,19 @@ public class UserAddress {
         this.city = city;
         this.state = state;
         this.zipCode = zipCode;
-        this.user= user;
+        this.user = user;
     }
 
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+  
     public UserAddress() {
-        
+
     }
 
     public int getHouseNumber() {
@@ -76,13 +84,4 @@ public class UserAddress {
         this.AddressId = AddressId;
     }
 
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-    
-    
 }

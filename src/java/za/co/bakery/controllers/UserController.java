@@ -84,7 +84,7 @@ public class UserController extends HttpServlet {
                 }
                 view.forward(request, response);
             }
-            
+
             //---------------------
             if (prs.equals("delete")) {
                 if (userService.delete(request.getParameter("loginEmail"))) {
@@ -98,9 +98,8 @@ public class UserController extends HttpServlet {
             }
 
             //---------------------
-            if(prs.equals("viewusers"))
-            {
-                
+            if (prs.equals("viewusers")) {
+
             }
             //---------------------
             if (prs.equals("logout")) {
@@ -109,15 +108,25 @@ public class UserController extends HttpServlet {
                 view.forward(request, response);
             }
             //---------------------
-            if(prs.equals("adduseraddress")){
+            if (prs.equals("adduseraddress")) {
                 User user = userService.read(request.getParameter("emailAddress"));
                 boolean userAddress = userAddressService.add(
-                                          Integer.parseInt(request.getParameter("houseNumber")),
-                                          request.getParameter("streetAddress"),
-                                          request.getParameter("city"),
-                                          request.getParameter("state"),
-                                          request.getParameter("zipCode"),
-                                          user);
+                        Integer.parseInt(request.getParameter("houseNumber")),
+                        request.getParameter("streetAddress"),
+                        request.getParameter("city"),
+                        request.getParameter("state"),
+                        request.getParameter("zipCode"),
+                        user);
+                if (userAddress) {
+                    request.setAttribute("useraddress", userAddress);
+                    view = request.getRequestDispatcher("TestingPage.jsp");
+                    
+                } else {
+                    request.setAttribute("errormsg", "Invalid information");
+                    view = request.getRequestDispatcher("error.jsp");
+                }
+
+                view.forward(request, response);
             }
         }
 
