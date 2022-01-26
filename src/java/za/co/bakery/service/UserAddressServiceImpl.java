@@ -1,52 +1,118 @@
-
 package za.co.bakery.service;
 
 import java.util.List;
+import za.co.bakery.dbao.UserAddressDAO;
+import za.co.bakery.dbao.impl.UserAddressDAOImpl;
+import za.co.bakery.dbao.impl.UserDOAImpl;
 import za.co.bakery.domain.User;
 import za.co.bakery.domain.UserAddress;
+import za.co.bakery.manager.DBPoolManagerBasic;
 
-public class UserAddressServiceImpl implements UserAddressService{
+public class UserAddressServiceImpl implements UserAddressService {
 
-    @Override
-    public boolean add(int houseNumber,String streetAddress, String city,String state,String zipCode,User user) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    private UserAddressDAO userAddressDAO;
+
+    public UserAddressServiceImpl(DBPoolManagerBasic dbpm) {
+        this.userAddressDAO = new UserAddressDAOImpl(dbpm);
     }
 
     @Override
-    public UserAddress readUserAddress(User u) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public boolean add(int houseNumber, String streetAddress, String city, String state, String zipCode, User user) {
+        UserAddress userAddress = null;
+      boolean checkErrors = checkAddressErrors(houseNumber,streetAddress,city,state,zipCode,user);
+        if(checkErrors)
+        {
+            userAddress = new UserAddress(houseNumber, streetAddress, city, state, zipCode, user);
+        return userAddressDAO.add(userAddress);
+        }else{
+            return false;
+        }
+        
     }
 
     @Override
-    public UserAddress readUserAddressById(int AddressId) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public UserAddress readUserAddress(User user) {
+        if (user.getEmailAddress() == null || user.getEmailAddress().isEmpty()) {
+            return null;
+        }
+        return userAddressDAO.readUserAddress(user);
+    }
+
+    @Override
+    public UserAddress readUserAddressById(int addressId) {
+        if (addressId < 0) {
+            return null;
+        }
+        return userAddressDAO.readUserAddressById(addressId);
     }
 
     @Override
     public User readAddress(UserAddress ua) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        if (ua.getAddressId() <= 0) {
+            return null;
+        }
+        return userAddressDAO.readAddress(ua);
     }
 
     @Override
     public List<UserAddress> readAll() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return userAddressDAO.readAll();
     }
 
     @Override
     public List<User> readAllProductOfIngredient(UserAddress ua) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        if (ua.getAddressId() <= 0) {
+            return null;
+        }
+        return userAddressDAO.readAllProductOfIngredient(ua);
     }
 
     @Override
-    public boolean update(UserAddress ua) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public boolean update(UserAddress ua, int houseNumber, String streetAddress, String city, String state, String zipCode, User user) {
+
+        if (ua.getAddressId() <= 0) {
+            return false;
+        }
+        boolean checkErrors = checkAddressErrors(houseNumber,streetAddress,city,state,zipCode,user);
+        if(checkErrors)
+        {
+            return userAddressDAO.update(ua);
+        }else{
+            return false;
+        }
+        
     }
 
     @Override
     public boolean delete(UserAddress ua) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        if (ua.getAddressId() <= 0) {
+            return false;
+        }
+        return userAddressDAO.delete(ua);
     }
 
- 
-    
+    @Override
+    public boolean checkAddressErrors(int houseNumber, String streetAddress, String city, String state, String zipCode, User user) {
+        if (houseNumber < 0) {
+            return false;
+        }
+        if (streetAddress == null || streetAddress.isEmpty()) {
+            return false;
+        }
+        if (city == null || city.isEmpty()) {
+            return false;
+        }
+        if (state == null || state.isEmpty()) {
+            return false;
+        }
+        if (zipCode == null || zipCode.isEmpty()) {
+            return false;
+        }
+        if (user.getEmailAddress() == null || user.getEmailAddress().isEmpty()) {
+            return false;
+        }
+
+        return true;
+    }
+
 }

@@ -1,6 +1,7 @@
 package za.co.bakery.controllers;
 
 import za.co.bakery.service.UserService;
+import za.co.bakery.service.UserAddressService;
 import za.co.bakery.service.UserServiceImpl;
 import java.io.IOException;
 import javax.servlet.RequestDispatcher;
@@ -11,7 +12,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import za.co.bakery.domain.User;
+import za.co.bakery.domain.UserAddress;
 import za.co.bakery.manager.DBPoolManagerBasic;
+import za.co.bakery.service.UserAddressServiceImpl;
 
 public class UserController extends HttpServlet {
 
@@ -26,6 +29,7 @@ public class UserController extends HttpServlet {
             ServletContext sc = request.getServletContext();
             DBPoolManagerBasic dbpm = (DBPoolManagerBasic) sc.getAttribute("dbconn");
             UserService userService = new UserServiceImpl(dbpm);
+            UserAddressService userAddressService = new UserAddressServiceImpl(dbpm);
             HttpSession session = request.getSession();
             //---------------------
             if (prs.equals("login")) {
@@ -103,6 +107,17 @@ public class UserController extends HttpServlet {
                 session.removeAttribute("user");
                 view = request.getRequestDispatcher("TestingPage.jsp");
                 view.forward(request, response);
+            }
+            //---------------------
+            if(prs.equals("adduseraddress")){
+                User user = userService.read(request.getParameter("emailAddress"));
+                boolean userAddress = userAddressService.add(
+                                          Integer.parseInt(request.getParameter("houseNumber")),
+                                          request.getParameter("streetAddress"),
+                                          request.getParameter("city"),
+                                          request.getParameter("state"),
+                                          request.getParameter("zipCode"),
+                                          user);
             }
         }
 

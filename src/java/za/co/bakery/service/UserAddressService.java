@@ -26,8 +26,8 @@ public interface UserAddressService {
     public List<UserAddress> readAll();
 
     public List<User> readAllProductOfIngredient(UserAddress ua);
-
-    public boolean update(UserAddress ua);
+    public boolean checkAddressErrors(int houseNumber,String streetAddress, String city,String state,String zipCode,User user);
+    public boolean update(UserAddress ua,int houseNumber,String streetAddress, String city,String state,String zipCode,User user);
 
     public boolean delete(UserAddress ua);
 }
