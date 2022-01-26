@@ -57,8 +57,10 @@ public class ProductController extends HttpServlet {
                     view.forward(request, response);
                     break;
                 case "pview":
-                    request.setAttribute("prodList", productService.getProducts(request.getParameter("category")));
-                    view = request.getRequestDispatcher("TestingPage.jsp");
+                    String name = request.getParameter("category");
+                    request.setAttribute("theTitle", name);
+                    request.setAttribute("prodList", productService.getProducts(name));
+                    view = request.getRequestDispatcher("viewProducts.jsp");
                     view.forward(request, response);
                     break;
                 case "pcreate":
@@ -70,17 +72,58 @@ public class ProductController extends HttpServlet {
                             request.getParameter("warning"), request.getParameter("description"),
                             Integer.parseInt(request.getParameter("productID")));
                     request.setAttribute("isAdded", res);
+                    
+                    
+                    if ((boolean) request.getAttribute("isAdded")) {
+                        request.setAttribute("msg", "Product was added");
+                    } else {
+                        request.setAttribute("msg", "Product was not added");
+                    }
+                    
                     view = request.getRequestDispatcher("TestingPage.jsp");
                     view.forward(request, response);
                     break;
                 case "pdelete":
 
                     request.setAttribute("isDeleted",
-                            productService.productDelete(Integer.parseInt(request.getParameter("productID"))));
+                            productService.productDelete(Integer.parseInt(request.getParameter("prodid"))));
+                    
+                    if ((boolean) request.getAttribute("isDeleted")) {
+                        request.setAttribute("msg", "Product was deleted");
+                    } else {
+                        request.setAttribute("msg", "Product was not deleted");
+                    }
+
                     view = request.getRequestDispatcher("TestingPage.jsp");
                     view.forward(request, response);
                     break;
                 case "pedit":
+                    request.setAttribute("isUpdated", productService.productUpdate(Integer.parseInt("prodid"),
+                            request.getParameter("field"), request.getParameter("update")));
+
+
+
+                    if ((boolean) request.getAttribute("isUpdated")) {
+                        request.setAttribute("msg", "Product was updated");
+                    } else {
+                        request.setAttribute("msg", "Product was not updated");
+                    }
+                    view = request.getRequestDispatcher("TestingPage.jsp");
+                    view.forward(request, response);
+                    break;
+                case "pupdate":
+                    request.setAttribute("update", productService.productUpdate(Integer.parseInt(request.getParameter("productID")),
+                            request.getParameter("field"),
+                            request.getParameter("change")));
+                    
+                    if ((boolean) request.getAttribute("update")) {
+                        request.setAttribute("msg", "Product was updated");
+                    } else {
+                        request.setAttribute("msg", "Product was not updated");
+                    }
+                    
+                    view = request.getRequestDispatcher("TestingPage.jsp");
+                    view.forward(request, response);
                     break;
                 case "cadd":
                     if (request.getSession().getAttribute("cart") != null) {
@@ -99,19 +142,41 @@ public class ProductController extends HttpServlet {
                 case "cedit":
                     request.setAttribute("cart-count", productService.addToCart(request.getParameter("prodid"),
                             request.getParameter("qty"),
-                            (LineItemCollection)request.getSession().getAttribute("cart")));
+                            (LineItemCollection) request.getSession().getAttribute("cart")));
                     view = request.getRequestDispatcher("TestingPage.jsp");
                     view.forward(request, response);
+                    break;
                 case "cget":
                     request.setAttribute("cart-items", request.getSession().getAttribute("cart"));
                     view = request.getRequestDispatcher("TestingPage.jsp");
                     view.forward(request, response);
-                case "pupdate":
-                    request.setAttribute("update", productService.productUpdate(Integer.parseInt(request.getParameter("productID")),
-                            request.getParameter("field"),
-                            request.getParameter("change")));
+                    break;
                 case "radd":
-                    request.setAttribute("isAdded", productService.addRecipe("steps", "rname", (List<IngredientItem>)request.getSession().getAttribute("ingredients")));
+                    request.setAttribute("isAdded", productService.addRecipe("steps", "rname", (List<IngredientItem>) request.getSession().getAttribute("ingredients")));
+                    
+                    
+                    if ((boolean) request.getAttribute("isAdded")) {
+                        request.setAttribute("msg", "Recipe was added");
+                    } else {
+                        request.setAttribute("msg", "Recipe was not added");
+                    }
+                    view = request.getRequestDispatcher("TestingPage.jsp");
+                    view.forward(request, response);
+                    break;
+                case "redit":
+                    request.setAttribute("update", productService.recipeUpdate(Integer.parseInt(request.getParameter("recipeID")),
+                            request.getParameter("steps"),
+                            (List<IngredientItem>) request.getSession().getAttribute("ingredients"), request.getParameter("recipeName")));
+                    
+                    
+                    if ((boolean) request.getAttribute("update")) {
+                        request.setAttribute("msg", "Recipe was updated");
+                    } else {
+                        request.setAttribute("msg", "Recipe was not updated");
+                    }
+                    
+                    view = request.getRequestDispatcher("TestingPage.jsp");
+                    view.forward(request, response);
             }
 
         } else {

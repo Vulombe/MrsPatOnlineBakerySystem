@@ -26,6 +26,10 @@ public class Recipe {
     public Recipe() {
      
     }
+
+    public Recipe(int ID, String steps, List<IngredientItem> ingredients, String recipeName) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
     
     public String getRecipeName() {
         return recipeName;

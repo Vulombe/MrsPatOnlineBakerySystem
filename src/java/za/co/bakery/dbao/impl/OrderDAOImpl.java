@@ -30,6 +30,10 @@ public class OrderDAOImpl implements OrderDAO {
     public OrderDAOImpl(DBPoolManagerBasic dbpm) {
         this.dbpm = dbpm;
     }
+
+    public OrderDAOImpl() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
     
     @Override
     public boolean add(Order o) {
@@ -97,7 +101,7 @@ public class OrderDAOImpl implements OrderDAO {
     
     @Override
     public Order readOrder(int OrderId) {
-           Order o= null;    
+        Order o = null;        
         try {
             con = dbpm.getConnection();
             ps = con.prepareStatement("SELECT * FROM ORDER WHERE ORDERID=?");
@@ -132,11 +136,11 @@ public class OrderDAOImpl implements OrderDAO {
     
     @Override
     public Order readOrder(User u) {
-          Order o= null;    
+        Order o = null;        
         try {
             con = dbpm.getConnection();
             ps = con.prepareStatement("SELECT * FROM ORDER WHERE USEREMAIL=?");
-            ps.setString(1,u.getEmailAddress());
+            ps.setString(1, u.getEmailAddress());
             rs = ps.executeQuery();
             
             if (rs.next()) {
@@ -144,7 +148,7 @@ public class OrderDAOImpl implements OrderDAO {
                 o.setOrderID(rs.getInt("orderId"));
                 o.setUser(u);
                 String productsItemIds = rs.getString("productLineItemId");                
-                String[] productItems = productsItemIds.split(","); 
+                String[] productItems = productsItemIds.split(",");                
                 List<LineItem> productItemList = new ArrayList();
                 for (String s : productItems) {
                     LineItem li = productLineItemDAO.readProductLineItem(Integer.parseInt(s));
@@ -165,47 +169,106 @@ public class OrderDAOImpl implements OrderDAO {
     
     @Override
     public List<Order> listOrder() {
-                List<Order> recipes = new ArrayList<>();
-
+        List<Order> orders = new ArrayList<>();
+        
         try {
             con = dbpm.getConnection();
-
+            
             ps = con.prepareStatement("SELECT * FROM ORDER");
             rs = ps.executeQuery();
-
+            
             while (rs.next()) {
                 Order o = new Order();
-                o.getOrderID();
-                r.setRecipeName(rs.getString("recipeName"));
-                String ingreItem = rs.getString("ingredients");
-                String[] ingreItemsstring = ingreItem.split(",");
-                List<IngredientItem> ingreItemsStringList = new ArrayList();
-                for (String s : ingreItemsstring) {
-                    IngredientItem it = new IngredientItem();
-                    it.setIngredientItemId(Integer.parseInt(s));
-                    ingreItemsStringList.add(it);
+                o.setOrderID(rs.getInt("orderId"));
+                User u = userDOA.read(rs.getString("userEmail"));
+                o.setUser(u);
+                String productsItemIds = rs.getString("productLineItemId");                
+                String[] productItems = productsItemIds.split(",");                
+                List<LineItem> productItemList = new ArrayList();
+                for (String s : productItems) {
+                    LineItem li = productLineItemDAO.readProductLineItem(Integer.parseInt(s));
+                    
+                    productItemList.add(li);
                 }
-                r.setIngredients(ingreItemsStringList);
-                r.setSteps(rs.getString("Steps"));
-                recipes.add(r);
+                o.setLineItem(productItemList);
+                o.setCustAddress(userAddressDAO.readUserAddress(u));
+                o.setTotalPrice(rs.getDouble("totalPrice"));
+                orders.add(o);
             }
-
+            
         } catch (SQLException ex) {
         } finally {
             closeStreams();
         }
-
-        return recipes;
+        
+        return orders;
     }
     
     @Override
     public List<Order> listOrder(User u) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        List<Order> orders = new ArrayList<>();
+        
+        try {
+            con = dbpm.getConnection();
+            
+            ps = con.prepareStatement("SELECT * FROM ORDER WHERE  CUSTEMAIL=?");
+            ps.setString(1, u.getEmailAddress());
+            rs = ps.executeQuery();
+            
+            while (rs.next()) {
+                Order o = new Order();
+                o.setOrderID(rs.getInt("orderId"));
+                o.setUser(u);
+                String productsItemIds = rs.getString("productLineItemId");                
+                String[] productItems = productsItemIds.split(",");                
+                List<LineItem> productItemList = new ArrayList();
+                for (String s : productItems) {
+                    LineItem li = productLineItemDAO.readProductLineItem(Integer.parseInt(s));
+                    
+                    productItemList.add(li);
+                }
+                o.setLineItem(productItemList);
+                o.setCustAddress(userAddressDAO.readUserAddress(u));
+                o.setTotalPrice(rs.getDouble("totalPrice"));
+                orders.add(o);
+            }
+            
+        } catch (SQLException ex) {
+        } finally {
+            closeStreams();
+        }
+        
+        return orders;
     }
     
     @Override
     public boolean update(Order o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+          boolean isUpdated = false;
+        try {
+            con = dbpm.getConnection();
+            ps = con.prepareStatement("UPDATE ORDER SET USEREMAIL=?,PRODUCTLINEITEMID=?,ADDRESSID=?,TOTALPRICE=? WHERE ORDERID=?");
+
+            ps.setString(1, o.getUser().getEmailAddress());
+
+           List<LineItem> productItems = o.getLineItem();
+            String proItems = "";
+            for (LineItem li : productItems) {
+                proItems += li.getLineItemId() + ",";
+            }
+            ps.setString(2, proItems.substring(0, proItems.length() - 1).trim());
+            ps.setInt(3, o.getCustAddress().getAddressId());
+            ps.setDouble(4, o.getTotalPrice());
+            if (ps.executeUpdate() > 0) {
+               isUpdated = true;
+            }
+
+        } catch (SQLException ex) {
+            System.out.println("Error: " + ex.getMessage());
+        } finally {
+            closeStreams();
+
+        }
+        return isUpdated;
     }
     
     @Override
