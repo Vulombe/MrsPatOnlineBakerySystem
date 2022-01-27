@@ -39,7 +39,7 @@ public class UserController extends HttpServlet {
                 if (userValidation) {
                     User user = userService.read(new User(email, password));
                     session.setAttribute("user", user);
-                    view = request.getRequestDispatcher("TestingPage.jsp");
+                    view = request.getRequestDispatcher("index.jsp");
                 } else {
                     request.setAttribute("errormsg", "Invalid email or password try again");
                     view = request.getRequestDispatcher("error.jsp");
@@ -56,14 +56,14 @@ public class UserController extends HttpServlet {
                         request.getParameter("loginEmail"),
                         request.getParameter("contactNumber"),
                         request.getParameter("loginPassword"),
-                        request.getParameter("loginPassword"));
+                        request.getParameter("confPassword"));
                 if (user == null) {
                     request.setAttribute("errormsg", "Invalid information");
                     view = request.getRequestDispatcher("error.jsp");
-                } else {
+                } 
                     session.setAttribute("user", user);
-                    view = request.getRequestDispatcher("TestingPage.jsp");
-                }
+                    view = request.getRequestDispatcher("index.jsp");
+                
                 view.forward(request, response);
             }//git addedd
 

@@ -60,8 +60,10 @@ public class UserServiceImpl implements UserService {
         }
         if (emailAddress != null) {    // if it is null, then what?
             emailAddress = emailAddress.toLowerCase();
+        }else{
+            errorMessage = "Email Address cannot be null";
         }
-        if(errorMessage !=null){
+        if(errorMessage == null){
             if(password.equals(passwordConfirm))
                 user = new User(title, firstName, lastName, emailAddress, contactNumber, password);
         }

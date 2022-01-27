@@ -36,13 +36,14 @@
                 <li><a href="http://localhost:8080/MrsPatOnlineBakerySystem/pcontrol?pro=pview&category=fresh_bread">Fresh bread</a></li>
                 <li><a href="http://localhost:8080/MrsPatOnlineBakerySystem/pcontrol?pro=pview&category=cupcakes">Cupcakes</a></li>
                 <li><a href="http://localhost:8080/MrsPatOnlineBakerySystem/pcontrol?pro=pview&category=cookies">Cookies</a></li>
+               
                  <li><a href="admin.jsp">Admin</a></li>
                      <li><a href="contactUs.jsp">Contact Us</a></li> 
                      
             </ul>
         </li>
 
-           
+        
 
 
     </nav>

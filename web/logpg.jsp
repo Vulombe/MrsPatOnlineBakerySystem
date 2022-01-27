@@ -24,10 +24,10 @@
 
     <div class="container" id="container">
         <div class="form-container sign-up-container">
-            <form method="post"   action="http://localhost/MrsPatOnlineBakerySystem/UserController">
+            <form method="post"   action="http://localhost:8080/MrsPatOnlineBakerySystem/ucontrol">
                 <input type="hidden" name="pro" value="register">
                 <h1>Create Account</h1>
-                <p style="color:white"> <label for="title" >Title: </label>
+                <p style="color:white"> <label form="title" >Title: </label>
                 <select name= "title" id="title">
                     <option value=””>Mr</option>
                     <option value=””>Mrs</option>
@@ -37,21 +37,21 @@
                     </select></p> 
                 <input type="text" name="firstName" placeholder="First Name"  required=""/>
                 <input type="text" name="lastName" placeholder="Last Name"  required=""/>
-                <input type="text"  name="signEmail" placeholder="Email"  required=""/>
+                <input type="text"  name="loginEmail" placeholder="Email"  required=""/>
                 <input  type="text"  name="contactNumber" placeholder="Contact Number"  required=""/>
-                <input type="password"  name="signPassword" placeholder="Password"  required=""/>
+                <input type="password"  name="loginPassword" placeholder="Password"  required=""/>
                 <input type="Confirm password"  name="confPassword" placeholder="confirm password"  required=""/>
-                <button>Sign Up</button>
+                <button type="submit" class="btnCreate"> Sign Up </button>
             </form>
         </div>
         <div class="form-container sign-in-container">
-            <form method="post" action="http://localhost/MrsPatOnlineBakerySystem/UserController>
+            <form class="form" method="get" action="http://localhost:8080/MrsPatOnlineBakerySystem/ucontrol">
                 <input type="hidden" name="pro" value="login">
                 <h1> Login </h1>
         
-                <input type="email" name="loginEmail" placeholder="Email">
-                <input type="Password" name="loginPassword" placeholder="Password">
-                <button type="submit"> Login </button>
+                <input type="text" name="loginEmail" placeholder="Email" required>
+                <input type="password" name="loginPassword" placeholder="Password" required>
+                <button type="submit" class="btnLogin"> Login </button>
             </form>
         </div>
         <div class="overlay-container">

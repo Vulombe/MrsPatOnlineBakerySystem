@@ -18,11 +18,15 @@ public class UserAddressServiceImpl implements UserAddressService {
 
     @Override
     public boolean add(int houseNumber, String streetAddress, String city, String state, String zipCode, User user) {
-        UserAddress userAddress = null;
-        //boolean checkErrors = checkAddressErrors(houseNumber,streetAddress,city,state,zipCode,user);
 
-        userAddress = new UserAddress(houseNumber, streetAddress, city, state, zipCode, user);
-        return userAddressDAO.add(userAddress);
+        UserAddress userAddress = null;
+        boolean checkErrors = checkAddressErrors(houseNumber, streetAddress, city, state, zipCode, user);
+        if (checkErrors) {
+            userAddress = new UserAddress(houseNumber, streetAddress, city, state, zipCode, user);
+            return userAddressDAO.add(userAddress);
+        } else {
+            return false;
+        }
 
     }
 

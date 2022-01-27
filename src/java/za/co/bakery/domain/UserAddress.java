@@ -23,6 +23,7 @@ public class UserAddress {
         this.zipCode = zipCode;
         this.user = user;
     }
+ 
 
     public User getUser() {
         return user;
@@ -83,5 +84,6 @@ public class UserAddress {
     public void setAddressId(int AddressId) {
         this.AddressId = AddressId;
     }
+ 
 
 }
