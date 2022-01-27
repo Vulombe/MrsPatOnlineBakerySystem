@@ -12,7 +12,6 @@ import java.util.List;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -25,13 +24,9 @@ import za.co.bakery.service.OrderService;
 import za.co.bakery.service.OrderServiceImpl;
 import za.co.bakery.service.UserAddressService;
 import za.co.bakery.service.UserAddressServiceImpl;
-import za.co.bakery.service.UserService;
-import za.co.bakery.service.UserServiceImpl;
 
-/**
- *
- * @author student12
- */
+
+
 public class OrderController extends HttpServlet {
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
