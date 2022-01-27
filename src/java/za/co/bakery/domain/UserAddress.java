@@ -9,7 +9,7 @@ public class UserAddress {
 
     private int AddressId;
     private int houseNumber;
-    private String streetAddress;
+    private String streetName;
     private String city;
     private String state;
     private String zipCode;
@@ -17,7 +17,7 @@ public class UserAddress {
 
     public UserAddress(int houseNumber, String streetAddress, String city, String state, String zipCode, User user) {
         this.houseNumber = houseNumber;
-        this.streetAddress = streetAddress;
+        this.streetName = streetAddress;
         this.city = city;
         this.state = state;
         this.zipCode = zipCode;
@@ -45,12 +45,12 @@ public class UserAddress {
         this.houseNumber = houseNumber;
     }
 
-    public String getStreetAddress() {
-        return streetAddress;
+    public String getStreetName() {
+        return streetName;
     }
 
-    public void setStreetAddress(String streetAddress) {
-        this.streetAddress = streetAddress;
+    public void setStreetName(String streetName) {
+        this.streetName = streetName;
     }
 
     public String getCity() {

@@ -29,11 +29,11 @@
                 <h1>Create Account</h1>
                 <p style="color:white"> <label form="title" >Title: </label>
                 <select name= "title" id="title">
-                    <option value=””>Mr</option>
-                    <option value=””>Mrs</option>
-                    <option value=””>Ms</option>
-                    <option value=””>Dr</option>
-                    <option value=””>Prof</option>
+                    <option value="Mr">Mr</option>
+                    <option value="Mrs">Mrs</option>
+                    <option value="Ms">Ms</option>
+                    <option value="Dr">Dr</option>
+                    <option value="Prof">Prof</option>
                     </select></p> 
                 <input type="text" name="firstName" placeholder="First Name"  required=""/>
                 <input type="text" name="lastName" placeholder="Last Name"  required=""/>

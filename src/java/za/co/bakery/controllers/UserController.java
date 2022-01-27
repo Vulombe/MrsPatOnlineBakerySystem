@@ -118,7 +118,7 @@ public class UserController extends HttpServlet {
                         request.getParameter("zipCode"),
                         user);
                 if (userAddress) {
-                    request.setAttribute("useraddress", userAddress);
+                    request.setAttribute("useraddressvalid", userAddress);
                     view = request.getRequestDispatcher("TestingPage.jsp");
                     
                 } else {

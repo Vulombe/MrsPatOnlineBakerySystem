@@ -31,6 +31,30 @@ public class UserAddressServiceImpl implements UserAddressService {
     }
 
     @Override
+    public boolean checkAddressErrors(int houseNumber, String streetAddress, String city, String state, String zipCode, User user) {
+        if (houseNumber <=0) {
+            return false;
+        }
+        if (streetAddress == null || streetAddress.isEmpty()) {
+            return false;
+        }
+        if (city == null || city.isEmpty()) {
+            return false;
+        }
+        if (state == null || state.isEmpty()) {
+            return false;
+        }
+        if (zipCode == null || zipCode.isEmpty()) {
+            return false;
+        }
+        if (user.getEmailAddress() == null || user.getEmailAddress().isEmpty()) {
+            return false;
+        }
+
+        return true;
+    }
+
+    @Override
     public UserAddress readUserAddress(User user) {
         if (user.getEmailAddress() == null || user.getEmailAddress().isEmpty()) {
             return null;
@@ -88,30 +112,6 @@ public class UserAddressServiceImpl implements UserAddressService {
             return false;
         }
         return userAddressDAO.delete(ua);
-    }
-
-    @Override
-    public boolean checkAddressErrors(int houseNumber, String streetAddress, String city, String state, String zipCode, User user) {
-        if (houseNumber < 0) {
-            return false;
-        }
-        if (streetAddress == null || streetAddress.isEmpty()) {
-            return false;
-        }
-        if (city == null || city.isEmpty()) {
-            return false;
-        }
-        if (state == null || state.isEmpty()) {
-            return false;
-        }
-        if (zipCode == null || zipCode.isEmpty()) {
-            return false;
-        }
-        if (user.getEmailAddress() == null || user.getEmailAddress().isEmpty()) {
-            return false;
-        }
-
-        return true;
     }
 
 }
