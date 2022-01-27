@@ -22,6 +22,6 @@ public interface OrderService {
     public List<Order> listOrder(User u);
 
     public boolean update(Order order,User user, List<LineItem> lineItem, UserAddress userAddress, double totalPrice, Date ordrDate);
-
+    public boolean orderErrorCheck(Order order,User user, List<LineItem> lineItem, UserAddress userAddress, double totalPrice, Date ordrDate);
     public boolean delete(Order o);
 }
