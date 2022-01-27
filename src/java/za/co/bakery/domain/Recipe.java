@@ -23,6 +23,13 @@ public class Recipe {
         this.recipeName = recipeName;
     }
     
+    public Recipe(int ID, String steps, List<IngredientItem> ingredients, String recipeName){
+        this.recipeID = ID;
+        this.steps = steps;
+        this.ingredients = ingredients;
+        this.recipeName = recipeName;
+    }
+    
     public String getRecipeName() {
         return recipeName;
     }

@@ -25,8 +25,11 @@ public class LineItemCollection {
     }
 
     public void addProduct(Product p, int qty) {
+ 
+
         LineItem e = new LineItem(p, qty);
         this.getCart().add(e);
+        
     }
 
     public void editCartQty(Product p, int qty) {
@@ -43,6 +46,10 @@ public class LineItemCollection {
 
     public void clearCart() {
         this.getCart().clear();
+    }
+    
+    public int size(){
+        return cart.size();
     }
 
 }

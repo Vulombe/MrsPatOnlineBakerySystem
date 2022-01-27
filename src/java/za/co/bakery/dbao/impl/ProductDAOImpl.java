@@ -30,8 +30,7 @@ public class ProductDAOImpl implements ProductDAO {
         this.dbpm = dbpm;
     }
 
-    
-   //*****************add product to database*******************************
+    //*****************add product to database*******************************
     public boolean add(Product p) {
         boolean isAdded = false;
         try {
@@ -39,7 +38,7 @@ public class ProductDAOImpl implements ProductDAO {
             ps = con.prepareStatement("INSERT INTO PRODUCT(productId,Name,picture,price,"
                     + "Category, warning,description, recipeId) VALUES(null,?,?,?,?,?,?,?)");
 
-          //  ps.setInt(1, p.getProductID());
+            //  ps.setInt(1, p.getProductID());
             ps.setString(1, p.getName());
             ps.setString(2, p.getPicture());
             ps.setDouble(3, p.getPrice());
@@ -48,8 +47,9 @@ public class ProductDAOImpl implements ProductDAO {
             ps.setString(6, p.getDescription());
             ps.setInt(7, p.getRecipeID());
 
-            if(ps.executeUpdate()>0)
+            if (ps.executeUpdate() > 0) {
                 isAdded = true;
+            }
 
         } catch (SQLException ex) {
             System.out.println("Error: " + ex.getMessage());
@@ -59,6 +59,7 @@ public class ProductDAOImpl implements ProductDAO {
         return isAdded;
     }
 //****************read product by productId**********************
+
     @Override
     public Product read(int Id) {
         Product p = null;
@@ -221,28 +222,30 @@ public class ProductDAOImpl implements ProductDAO {
 
     @Override
     public boolean update(Product p) {
-        boolean isUpdated=false;
+        boolean isUpdated = false;
         try {
             con = dbpm.getConnection();
-            ps = con.prepareStatement("update Product set name=?,picture=?,price=?,category=?,warning-?,description=?,recipeId=? where productId=?");
+
+            ps = con.prepareStatement("update Product set Name=?,picture=?,price=?,Category=?,warning=?,description=?,recipeId=? where productId=?");
 
             ps.setString(1, p.getName());
             ps.setString(2, p.getPicture());
             ps.setDouble(3, p.getPrice());
             ps.setString(4, p.getCategory().toString().toLowerCase());
-            ps.setString(6, p.getWarning());
+            ps.setString(5, p.getWarning());
             ps.setString(6, p.getDescription());
             ps.setInt(7, p.getRecipeID());
             ps.setInt(8, p.getProductID());
 
-            ps.executeUpdate();
-            isUpdated=true;
+            if (ps.executeUpdate() > 0) {
+                isUpdated = true;
+            }
 
         } catch (SQLException ex) {
             System.out.println("Error: " + ex.getMessage());
         } finally {
             closeStreams();
-           
+
         }
         return isUpdated;
     }
@@ -250,24 +253,24 @@ public class ProductDAOImpl implements ProductDAO {
     //**************delete product in the database**************************
     @Override
     public boolean delete(int productId) {
-        
-        boolean isDeleted=false;
+
+        boolean isDeleted = false;
         try {
             con = dbpm.getConnection();
             ps = con.prepareStatement("update Product set isActive=? where productId=?");
-            ps.setString(1,"N");
-            ps.setInt(2,productId);
+            ps.setString(1, "N");
+            ps.setInt(2, productId);
             ps.executeUpdate();
-            isDeleted=true;
+            isDeleted = true;
         } catch (SQLException ex) {
             System.out.println("Error: " + ex.getMessage());
         } finally {
             closeStreams();
         }
-        
+
         return isDeleted;
     }
-    
+
     @Override
     public Recipe readRecipe(Product p) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
@@ -296,7 +299,6 @@ public class ProductDAOImpl implements ProductDAO {
     //        }
     //        return choices;
     //    }
-
     // ***********************************Clossing the connection************************************
     private void closeStreams() {
         if (rs != null) {
@@ -326,5 +328,4 @@ public class ProductDAOImpl implements ProductDAO {
     }
     // ************************************************************************
 
-    
 }

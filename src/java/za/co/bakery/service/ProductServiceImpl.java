@@ -110,7 +110,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public boolean productUpdate(int productID, String field, String update) {
-        Product p = this.productDAO.read(productID);
+        Product p = productDAO.read(productID);
         String f = field.toLowerCase();
 
         switch (f) {
@@ -142,10 +142,15 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public boolean recipeUpdate(String recipeName, String field, String update) {
-        Recipe r = this.recipeDAO.read(recipeName);
-        
-        String
+    public boolean recipeUpdate(int ID, String steps, List<IngredientItem> ingredients, String recipeName) {
+        Recipe r = new Recipe(ID,steps,ingredients,recipeName);
+        //return recipeDAO.update(r);
+        return true;
+    }
+
+    @Override
+    public int getCartSize(LineItemCollection cart) {
+        return cart.size();
     }
 
 }

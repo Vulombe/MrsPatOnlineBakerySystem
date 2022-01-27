@@ -4,6 +4,7 @@
     Author     : Student03
 --%>
 
+<%@page import="za.co.bakery.domain.LineItemCollection"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -13,6 +14,7 @@
     </head>
     <body>
         <h1>Testing Page!!!!</h1>
-        
+        <h3>cart; <%= request.getAttribute("cart-count")%></h3>
+           
     </body>
 </html>

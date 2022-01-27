@@ -20,8 +20,9 @@ public interface ProductService {
     public Ingredient getIngredient(int ingredientID);
     public boolean productDelete(int productID);
     public boolean productUpdate(int productID, String field, String update);
-    public boolean recipeUpdate(String recipeName, String field, String update);
+    public boolean recipeUpdate(int ID, String steps, List<IngredientItem> ingredients, String recipeName);
     public boolean addRecipe(String steps, String recipeName, List<IngredientItem> ingredients);
     public int addToCart(String productID, String qty, LineItemCollection cart);
     public int editCart(String productID, String qty, LineItemCollection cart);
+    public int getCartSize(LineItemCollection cart);
 }
