@@ -69,8 +69,10 @@
                             <li class=" productsInline"> 
 
                                 <div  class="item">
+                                    <a href="">
                                     <img src="<%=p.getPicture()%>"alt="item" style="width: 200px; height: 150px;" "/>
                                     <h2 class="name"><%=p.getName()%></h2>
+                                     </a>
                                     <p class="price">Price: R <em><%=p.getPrice()%></em>
                                     </p>
                                     <button class="add-to-cart" type="button">Add to cart</button>

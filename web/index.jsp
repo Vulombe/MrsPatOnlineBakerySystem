@@ -503,25 +503,11 @@ img {
         width: 457px;
         bottom: 15%;
     }
-    .about__container, .skills__container {
-        -ms-grid-columns: (1fr)[2];
-        grid-template-columns: repeat(2, 1fr);
-        -webkit-box-align: center;
-        -ms-flex-align: center;
-        align-items: center;
-        text-align: initial;
-    }
+
     .about__img img {
         width: 300px;
     }
-    .work__container {
-        -ms-grid-columns: (1fr)[3];
-        grid-template-columns: repeat(3, 1fr);
-        -ms-grid-rows: (1fr)[2];
-        grid-template-rows: repeat(2, 1fr);
-        -webkit-column-gap: 2rem;
-        column-gap: 2rem;
-    }
+
 }
 
 @media screen and (min-width: 1024px) {

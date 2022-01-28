@@ -40,8 +40,7 @@ public class UserAddressDAOImpl implements UserAddressDAO {
         boolean isAdded = false;
         try {
             con = dbpm.getConnection();
-            ps = con.prepareStatement("INSERT INTO ADDRESS(addressId,houseNumber,street,city,state, code,custEmail,isActive) VALUES(null,?,?,?,?,?,?,null)");
-
+            ps = con.prepareStatement("INSERT INTO ADDRESS(addressId,houseNumber,street,city,state, code,custEmail,isActive) VALUES(null,?,?,?,?,?,?,'Y')");
             //  ps.setInt(1, p.getProductID());
             ps.setInt(1, ua.getHouseNumber());
             ps.setString(2, ua.getStreetAddress());
@@ -49,11 +48,7 @@ public class UserAddressDAOImpl implements UserAddressDAO {
             ps.setString(4, ua.getState());
             ps.setString(5, ua.getZipCode());
             ps.setString(6, ua.getUser().getEmailAddress());
-
-            if (ps.executeUpdate() > 0) {
-                isAdded = true;
-            }
-
+            isAdded = ps.executeUpdate() > 0;
         } catch (SQLException ex) {
             System.out.println("Error: " + ex.getMessage());
         } finally {
@@ -212,10 +207,7 @@ public class UserAddressDAOImpl implements UserAddressDAO {
             ps.setString(6, ua.getZipCode());
             ps.setString(6, ua.getUser().getEmailAddress());
             ps.setInt(7, ua.getAddressId());
-            if (ps.executeUpdate() > 0) {
-                isUpdated = true;
-            }
-
+            isUpdated = ps.executeUpdate() > 0;
         } catch (SQLException ex) {
             System.out.println("Error: " + ex.getMessage());
         } finally {
@@ -233,9 +225,7 @@ public class UserAddressDAOImpl implements UserAddressDAO {
             ps = con.prepareStatement("UPDATE ADDRESS SET ISACTIVE=? WHERE ADDRESSID=?");
             ps.setString(1, "N");
             ps.setInt(2, ua.getAddressId());
-            if (ps.executeUpdate() > 0) {
-                isDeleted = true;
-            }
+            isDeleted = ps.executeUpdate() > 0;
         } catch (SQLException ex) {
             System.out.println("Error: " + ex.getMessage());
         } finally {
