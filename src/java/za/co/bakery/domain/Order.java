@@ -1,5 +1,6 @@
 package za.co.bakery.domain;
 
+import java.util.Date;
 import java.util.List;
 
 public class Order {
@@ -7,12 +8,42 @@ public class Order {
     private int orderID;
     private User user;
     private List<LineItem> lineItem;
-    private UserAddress custAddress;
+    private UserAddress userAddress;
     private double totalPrice;
+    private Date ordrDate;
 
     public int getOrderID() {
         return orderID;
     }
+
+    public Order() {
+    }
+
+    public Order(User user, List<LineItem> lineItem, UserAddress userAddress, double totalPrice, Date ordrDate) {
+        this.user = user;
+        this.lineItem = lineItem;
+        this.userAddress = userAddress;
+        this.totalPrice = totalPrice;
+        this.ordrDate = ordrDate;
+    }
+
+    public UserAddress getUserAddress() {
+        return userAddress;
+    }
+
+    public void setUserAddress(UserAddress userAddress) {
+        this.userAddress = userAddress;
+    }
+
+    public Date getOrdrDate() {
+        return ordrDate;
+    }
+
+    public void setOrdrDate(Date ordrDate) {
+        this.ordrDate = ordrDate;
+    }
+
+    
 
     public void setOrderID(int orderID) {
         this.orderID = orderID;
@@ -34,14 +65,6 @@ public class Order {
         this.lineItem = lineItem;
     }
 
-    public UserAddress getCustAddress() {
-        return custAddress;
-    }
-
-    public void setCustAddress(UserAddress custAddress) {
-        this.custAddress = custAddress;
-    }
-
     public double getTotalPrice() {
         return totalPrice;
     }
@@ -49,9 +72,5 @@ public class Order {
     public void setTotalPrice(double totalPrice) {
         this.totalPrice = totalPrice;
     }
-
-   
-    
-
 
 }

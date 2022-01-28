@@ -43,7 +43,7 @@ public class UserAddressDAOImpl implements UserAddressDAO {
             ps = con.prepareStatement("INSERT INTO ADDRESS(addressId,houseNumber,street,city,state, code,custEmail,isActive) VALUES(null,?,?,?,?,?,?,'Y')");
             //  ps.setInt(1, p.getProductID());
             ps.setInt(1, ua.getHouseNumber());
-            ps.setString(2, ua.getStreetAddress());
+            ps.setString(2, ua.getStreetName());
             ps.setString(3, ua.getCity());
             ps.setString(4, ua.getState());
             ps.setString(5, ua.getZipCode());
@@ -62,19 +62,19 @@ public class UserAddressDAOImpl implements UserAddressDAO {
         UserAddress ua = null;
         try {
             con = dbpm.getConnection();
-            ps = con.prepareStatement("SELECT * FROM ADDRESS WHERE CUSTEMAIL= ?");
-            ps.setInt(1, u.getID());
+            ps = con.prepareStatement("SELECT * FROM ADDRESS WHERE CUSTEMAIL=?");
+            ps.setString(1, u.getEmailAddress());
             rs = ps.executeQuery();
 
             if (rs.next()) {
-                ua = new UserAddress();
-                ua.setAddressId(rs.getInt("addressId"));
-                ua.setHouseNumber(rs.getInt("houseNumber"));
-                ua.setStreetAddress(rs.getString("street"));
-                ua.setCity(rs.getString("city"));
-                ua.setState(rs.getString("state"));
-                ua.setZipCode(rs.getString("code"));
-                ua.setUser(u);
+                ua = new UserAddress(rs.getInt("addressId"),rs.getInt("houseNumber"),rs.getString("street"),rs.getString("city"),rs.getString("state"),rs.getString("code"),u);
+//                ua.setAddressId(rs.getInt("addressId"));
+//                ua.setHouseNumber(rs.getInt("houseNumber"));
+//                ua.setStreetName(rs.getString("street"));
+//                ua.setCity(rs.getString("city"));
+//                ua.setState(rs.getString("state"));
+//                ua.setZipCode(rs.getString("code"));
+//                ua.setUser(u);
             }
 
         } catch (SQLException ex) {
@@ -82,7 +82,7 @@ public class UserAddressDAOImpl implements UserAddressDAO {
         } finally {
             closeStreams();
         }
-
+        System.out.println(ua);
         return ua;
     }
 
@@ -99,7 +99,7 @@ public class UserAddressDAOImpl implements UserAddressDAO {
                 ua = new UserAddress();
                 ua.setAddressId(rs.getInt("addressId"));
                 ua.setHouseNumber(rs.getInt("houseNumber"));
-                ua.setStreetAddress(rs.getString("street"));
+                ua.setStreetName(rs.getString("street"));
                 ua.setCity(rs.getString("city"));
                 ua.setState(rs.getString("state"));
                 ua.setZipCode(rs.getString("code"));
@@ -151,7 +151,7 @@ public class UserAddressDAOImpl implements UserAddressDAO {
                 UserAddress ua = new UserAddress();
                 ua.setAddressId(rs.getInt("addressId"));
                 ua.setHouseNumber(rs.getInt("houseNumber"));
-                ua.setStreetAddress(rs.getString("street"));
+                ua.setStreetName(rs.getString("street"));
                 ua.setCity(rs.getString("city"));
                 ua.setState(rs.getString("state"));
                 ua.setZipCode(rs.getString("code"));
@@ -198,13 +198,13 @@ public class UserAddressDAOImpl implements UserAddressDAO {
         boolean isUpdated = false;
         try {
             con = dbpm.getConnection();
-            ps = con.prepareStatement("UPDATE ADDRESS SET HOUSENUMBER=?,STREET=?,CITY=?,STATE=?,CODE?,CUSTEMAIL=? WHERE ADDRESSID=?");
+            ps = con.prepareStatement("UPDATE ADDRESS SET HOUSENUMBER=?,STREET=?,CITY=?,STATE=?,CODE=?,CUSTEMAIL=? WHERE ADDRESSID=?");
 
             ps.setInt(1, ua.getHouseNumber());
-            ps.setString(2, ua.getStreetAddress());
+            ps.setString(2, ua.getStreetName());
             ps.setString(3, ua.getCity());
             ps.setString(4, ua.getState());
-            ps.setString(6, ua.getZipCode());
+            ps.setString(5, ua.getZipCode());
             ps.setString(6, ua.getUser().getEmailAddress());
             ps.setInt(7, ua.getAddressId());
             isUpdated = ps.executeUpdate() > 0;

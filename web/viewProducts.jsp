@@ -552,6 +552,7 @@
             height: 190px;
             position:left;
             display: grid;
+            border-radius: 25% 10%;
 
         }
 

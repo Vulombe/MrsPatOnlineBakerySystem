@@ -18,6 +18,7 @@ public interface ProductLineItemDAO {
      public boolean addProductLineItem(LineItem li); 
     public LineItem readProductLineItem(int lineItemId);
     public LineItem readProductLineItem(LineItem l);
+   public LineItem readProductLineItem(Product p);
     public List<LineItem> readAll();
     public List<LineItem> readAllProductLineItem(Product p);
     public boolean update(LineItem l);

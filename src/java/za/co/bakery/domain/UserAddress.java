@@ -1,15 +1,11 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package za.co.bakery.domain;
 
 public class UserAddress {
 
     private int AddressId;
     private int houseNumber;
-    private String streetAddress;
+    private String streetName;
     private String city;
     private String state;
     private String zipCode;
@@ -17,15 +13,34 @@ public class UserAddress {
 
     public UserAddress(int houseNumber, String streetAddress, String city, String state, String zipCode, User user) {
         this.houseNumber = houseNumber;
-        this.streetAddress = streetAddress;
+        this.streetName = streetAddress;
         this.city = city;
         this.state = state;
         this.zipCode = zipCode;
-        this.user= user;
+        this.user = user;
     }
 
+    public UserAddress(int AddressId, int houseNumber, String streetName, String city, String state, String zipCode, User user) {
+        this.AddressId = AddressId;
+        this.houseNumber = houseNumber;
+        this.streetName = streetName;
+        this.city = city;
+        this.state = state;
+        this.zipCode = zipCode;
+        this.user = user;
+    }
+ 
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+  
     public UserAddress() {
-        
+
     }
 
     public int getHouseNumber() {
@@ -36,12 +51,12 @@ public class UserAddress {
         this.houseNumber = houseNumber;
     }
 
-    public String getStreetAddress() {
-        return streetAddress;
+    public String getStreetName() {
+        return streetName;
     }
 
-    public void setStreetAddress(String streetAddress) {
-        this.streetAddress = streetAddress;
+    public void setStreetName(String streetName) {
+        this.streetName = streetName;
     }
 
     public String getCity() {
@@ -76,13 +91,10 @@ public class UserAddress {
         this.AddressId = AddressId;
     }
 
-    public User getUser() {
-        return user;
+    @Override
+    public String toString() {
+        return "UserAddress{" + "AddressId=" + AddressId + ", houseNumber=" + houseNumber + ", streetName=" + streetName + ", city=" + city + ", state=" + state + ", zipCode=" + zipCode + ", user=" + user + '}';
     }
+ 
 
-    public void setUser(User user) {
-        this.user = user;
-    }
-    
-    
 }

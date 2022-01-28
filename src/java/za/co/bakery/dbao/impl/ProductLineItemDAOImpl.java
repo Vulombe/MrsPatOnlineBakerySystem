@@ -234,4 +234,28 @@ public class ProductLineItemDAOImpl implements ProductLineItemDAO {
     }
     // ************************************************************************
 
+    @Override
+    public LineItem readProductLineItem(Product p) {
+        LineItem l = null;
+        try {
+            con = dbpm.getConnection();
+
+            ps = con.prepareStatement("SELECT * FROM PRODUCTLINEITEM WHERE PRODUCTID= ?");
+            ps.setInt(1,p.getProductID());
+            rs = ps.executeQuery();
+
+            if (rs.next()) {
+                l = new LineItem(rs.getInt("lineItemId"), productDAO.read(rs.getInt("product")), rs.getInt("qty"));
+
+            }
+
+        } catch (SQLException ex) {
+            System.out.println("Error: " + ex.getMessage());
+        } finally {
+            closeStreams();
+        }
+
+        return l;
+    }
+
 }

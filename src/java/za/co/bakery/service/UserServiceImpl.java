@@ -15,25 +15,64 @@ public class UserServiceImpl implements UserService {
 
     public UserServiceImpl(DBPoolManagerBasic dbpm) {
         this.userdao = new UserDOAImpl(dbpm);
-
     }
 
     @Override
     public boolean isUserValid(String email, String password) {
-        boolean t = userdao.isUserValid(email, password);
-        return t;
-        // return userdao.isUserValid(email, password);
+        if (email == null || email.isEmpty()) {
+            return false;
+        }
+        if (password == null || password.isEmpty()) {
+            return false;
+        }
+        return userdao.isUserValid(email, password);
     }
 
     @Override
-    public User create(String title, String firstName, String lastName, String emailAddress, String contactNumber, String password) {
-        User user = new User(title, firstName, lastName, emailAddress, contactNumber, password);
-        return (userdao.create(user) > 0) ? user:null;
+    public User create(String title, String firstName, String lastName, String emailAddress,
+            String contactNumber, String password, String passwordConfirm) {
+        //error check all parameters
+        User user = null;
+        String errorMessage = null;
+        if (emailAddress == null || emailAddress.isEmpty()) {
+            errorMessage = "Email Address cannot be null";
+        }
+        if (password == null || password.isEmpty()) {
+            errorMessage = "Password cannot be null";
+        }
+        if (title == null || title.isEmpty()) {
+            errorMessage = "Title cannot be null";
+        }
+        if (firstName == null || firstName.isEmpty()) {
+            errorMessage = "First Name cannot be null";
+        }
+           if (lastName == null || lastName.isEmpty()) {
+            errorMessage = "Last Name cannot be null";
+        }
+        if (contactNumber == null || contactNumber.isEmpty()) {
+            errorMessage = "Contact Number cannot be null";
+        }
+        if (password == null || password.isEmpty()) {
+            errorMessage = "Password cannot be null";
+        }
+        if (passwordConfirm == null || passwordConfirm.isEmpty()) {
+            errorMessage = "First Name cannot be null";
+        }
+        if (emailAddress != null) {    // if it is null, then what?
+            emailAddress = emailAddress.toLowerCase();
+        }else{
+            errorMessage = "Email Address cannot be null";
+        }
+        if(errorMessage == null){
+            if(password.equals(passwordConfirm))
+                user = new User(title, firstName, lastName, emailAddress, contactNumber, password);
+        }
+        return (userdao.create(user) > 0) ? user : null;
     }
 
     @Override
     public List<User> getUsers() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+         return userdao.readUsers();
     }
 
     @Override
@@ -42,15 +81,48 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User read(String email) {
-        return userdao.read(email);
+    public boolean read(String title, String firstName, String lastName, String emailAddress,
+            String contactNumber, String password) {
+
+        if (emailAddress == null || emailAddress.isEmpty()) {
+            return false;
+        }
+        
+        User user = userdao.read(emailAddress);
+
+        if (title != null || !title.isEmpty()) {
+            user.setTitle(title);
+        }
+        if (lastName != null || !lastName.isEmpty()) {
+            user.setLastName(lastName);
+        }
+        if (firstName != null || !firstName.isEmpty()) {
+            user.setFirstName(firstName);
+        }
+        if (contactNumber != null || !contactNumber.isEmpty()) {
+            user.setContactNumber(contactNumber);
+        }
+        if (password != null || !password.isEmpty()) {
+            user.setPassword(password);
+        }
+        return update(user);
     }
 
-   @Override
-   public boolean delete(String email)
-   {
-       return userdao.delete(email);
-   }
+    @Override
+    public User read(String emailAddress) {
+         if (emailAddress == null || emailAddress.isEmpty()) {
+            return null;
+        }
+        return userdao.read(emailAddress);
+    }
+
+    @Override
+    public boolean delete(String emailAddress) {
+        if(emailAddress==null || emailAddress.isEmpty()){
+            return false;
+        }
+        return userdao.delete(emailAddress);
+    }
 
     @Override
     public boolean update(User u) {
