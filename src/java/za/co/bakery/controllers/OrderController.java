@@ -6,7 +6,6 @@
 package za.co.bakery.controllers;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.Date;
 import java.util.List;
 import javax.servlet.RequestDispatcher;
@@ -45,6 +44,7 @@ public class OrderController extends HttpServlet {
 
             case "ocreate":
                 User user = (User) request.getAttribute("user");
+                
                 List<LineItem> lineItemList = (List) request.getAttribute("cart-items");
                 UserAddress userAddress = userAddressService.readUserAddress(user);
                 Date ordrDate = new Date();

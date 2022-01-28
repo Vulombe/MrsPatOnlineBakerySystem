@@ -19,6 +19,16 @@ public class UserAddress {
         this.zipCode = zipCode;
         this.user = user;
     }
+
+    public UserAddress(int AddressId, int houseNumber, String streetName, String city, String state, String zipCode, User user) {
+        this.AddressId = AddressId;
+        this.houseNumber = houseNumber;
+        this.streetName = streetName;
+        this.city = city;
+        this.state = state;
+        this.zipCode = zipCode;
+        this.user = user;
+    }
  
 
     public User getUser() {

@@ -22,7 +22,8 @@ public interface UserAddressService {
     
     public boolean checkAddressErrors(int houseNumber,String streetAddress, String city,String state,String zipCode,User user);
     
-    public boolean update(UserAddress ua,int houseNumber,String streetAddress, String city,String state,String zipCode,User user);
+    public boolean update(UserAddress userAddress);
+    public boolean readtoUpdate(int houseNumber,String streetAddress, String city,String state,String zipCode,User user);
 
     public boolean delete(UserAddress ua);
 }

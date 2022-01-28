@@ -32,7 +32,7 @@ public class UserAddressServiceImpl implements UserAddressService {
 
     @Override
     public boolean checkAddressErrors(int houseNumber, String streetAddress, String city, String state, String zipCode, User user) {
-        if (houseNumber <=0) {
+        if (houseNumber <= 0) {
             return false;
         }
         if (streetAddress == null || streetAddress.isEmpty()) {
@@ -92,21 +92,42 @@ public class UserAddressServiceImpl implements UserAddressService {
     }
 
     @Override
-    public boolean update(UserAddress ua, int houseNumber, String streetAddress, String city, String state, String zipCode, User user) {
+    public boolean readtoUpdate(int houseNumber, String streetName, String city, String state, String zipCode, User user) {
 
-        if (ua.getAddressId() <= 0) {
-            return false;
-        }
-        boolean checkErrors = checkAddressErrors(houseNumber, streetAddress, city, state, zipCode, user);
-        if (checkErrors) {
-            return userAddressDAO.update(ua);
-        } else {
-            return false;
-        }
+        UserAddress userAddress = userAddressDAO.readUserAddress(user);
+        //UserAddress userAddress= new UserAddress();
+        
+      if (houseNumber > 0) {
+            userAddress.setHouseNumber(houseNumber);
+           }
+
+//        if (streetName != null || !streetName.isEmpty()) {
+//            userAddress.setStreetName(streetName);
+//        }
+//
+//        if (city != null || !city.isEmpty()) {
+//            userAddress.setCity(city);
+//        }
+//
+//        if (state != null || !state.isEmpty()) {
+//            userAddress.setState(state);
+//        }
+//
+//        if (zipCode != null || !zipCode.isEmpty()) {
+//            userAddress.setZipCode(zipCode);
+//        }
+
+        return update(userAddress);
 
     }
 
     @Override
+    public boolean update(UserAddress useradres) 
+    {
+        return userAddressDAO.update(useradres);
+    }
+    @Override
+
     public boolean delete(UserAddress ua) {
         if (ua.getAddressId() <= 0) {
             return false;

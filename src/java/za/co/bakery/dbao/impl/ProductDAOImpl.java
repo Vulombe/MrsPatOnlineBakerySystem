@@ -9,7 +9,6 @@ import java.util.List;
 import za.co.bakery.dbao.ProductDAO;
 import za.co.bakery.domain.Category;
 import za.co.bakery.domain.Product;
-import za.co.bakery.domain.User;
 import za.co.bakery.manager.DBPoolManagerBasic;
 
 /**

@@ -62,19 +62,19 @@ public class UserAddressDAOImpl implements UserAddressDAO {
         UserAddress ua = null;
         try {
             con = dbpm.getConnection();
-            ps = con.prepareStatement("SELECT * FROM ADDRESS WHERE CUSTEMAIL= ?");
-            ps.setInt(1, u.getID());
+            ps = con.prepareStatement("SELECT * FROM ADDRESS WHERE CUSTEMAIL=?");
+            ps.setString(1, u.getEmailAddress());
             rs = ps.executeQuery();
 
             if (rs.next()) {
-                ua = new UserAddress();
-                ua.setAddressId(rs.getInt("addressId"));
-                ua.setHouseNumber(rs.getInt("houseNumber"));
-                ua.setStreetName(rs.getString("street"));
-                ua.setCity(rs.getString("city"));
-                ua.setState(rs.getString("state"));
-                ua.setZipCode(rs.getString("code"));
-                ua.setUser(u);
+                ua = new UserAddress(rs.getInt("addressId"),rs.getInt("houseNumber"),rs.getString("street"),rs.getString("city"),rs.getString("state"),rs.getString("code"),u);
+//                ua.setAddressId(rs.getInt("addressId"));
+//                ua.setHouseNumber(rs.getInt("houseNumber"));
+//                ua.setStreetName(rs.getString("street"));
+//                ua.setCity(rs.getString("city"));
+//                ua.setState(rs.getString("state"));
+//                ua.setZipCode(rs.getString("code"));
+//                ua.setUser(u);
             }
 
         } catch (SQLException ex) {
@@ -82,7 +82,7 @@ public class UserAddressDAOImpl implements UserAddressDAO {
         } finally {
             closeStreams();
         }
-
+        System.out.println(ua);
         return ua;
     }
 
