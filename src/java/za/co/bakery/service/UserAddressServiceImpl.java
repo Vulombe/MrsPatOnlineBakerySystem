@@ -94,13 +94,16 @@ public class UserAddressServiceImpl implements UserAddressService {
     @Override
     public boolean readtoUpdate(int houseNumber, String streetName, String city, String state, String zipCode, User user) {
 
+        if (user.getEmailAddress() == null || user.getEmailAddress().isEmpty()) {
+            return false;
+        }
         UserAddress userAddress = userAddressDAO.readUserAddress(user);
         //UserAddress userAddress= new UserAddress();
-        
-      if (houseNumber > 0) {
-            userAddress.setHouseNumber(houseNumber);
-           }
 
+//        if (houseNumber > 0) {
+//            userAddress.setHouseNumber(houseNumber);
+//        }
+//
 //        if (streetName != null || !streetName.isEmpty()) {
 //            userAddress.setStreetName(streetName);
 //        }
@@ -122,10 +125,10 @@ public class UserAddressServiceImpl implements UserAddressService {
     }
 
     @Override
-    public boolean update(UserAddress useradres) 
-    {
+    public boolean update(UserAddress useradres) {
         return userAddressDAO.update(useradres);
     }
+
     @Override
 
     public boolean delete(UserAddress ua) {

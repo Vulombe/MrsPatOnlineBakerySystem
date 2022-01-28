@@ -198,13 +198,13 @@ public class UserAddressDAOImpl implements UserAddressDAO {
         boolean isUpdated = false;
         try {
             con = dbpm.getConnection();
-            ps = con.prepareStatement("UPDATE ADDRESS SET HOUSENUMBER=?,STREET=?,CITY=?,STATE=?,CODE?,CUSTEMAIL=? WHERE ADDRESSID=?");
+            ps = con.prepareStatement("UPDATE ADDRESS SET HOUSENUMBER=?,STREET=?,CITY=?,STATE=?,CODE=?,CUSTEMAIL=? WHERE ADDRESSID=?");
 
             ps.setInt(1, ua.getHouseNumber());
             ps.setString(2, ua.getStreetName());
             ps.setString(3, ua.getCity());
             ps.setString(4, ua.getState());
-            ps.setString(6, ua.getZipCode());
+            ps.setString(5, ua.getZipCode());
             ps.setString(6, ua.getUser().getEmailAddress());
             ps.setInt(7, ua.getAddressId());
             isUpdated = ps.executeUpdate() > 0;

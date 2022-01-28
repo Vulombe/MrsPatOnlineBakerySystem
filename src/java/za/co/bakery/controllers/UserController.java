@@ -60,10 +60,10 @@ public class UserController extends HttpServlet {
                 if (user == null) {
                     request.setAttribute("errormsg", "Invalid information");
                     view = request.getRequestDispatcher("error.jsp");
-                } 
-                    session.setAttribute("user", user);
-                    view = request.getRequestDispatcher("index.jsp");
-                
+                }
+                session.setAttribute("user", user);
+                view = request.getRequestDispatcher("index.jsp");
+
                 view.forward(request, response);
             }//git addedd
 
@@ -120,7 +120,7 @@ public class UserController extends HttpServlet {
                 if (userAddress) {
                     request.setAttribute("useraddressvalid", userAddress);
                     view = request.getRequestDispatcher("TestingPage.jsp");
-                    
+
                 } else {
                     request.setAttribute("errormsg", "Invalid information");
                     view = request.getRequestDispatcher("error.jsp");
@@ -129,30 +129,24 @@ public class UserController extends HttpServlet {
                 view.forward(request, response);
             }
             //---------------------
-            if(prs.equals("uaddress"))
-            {
-                //User user = (User)session.getAttribute("user");
-                User user = userService.read(request.getParameter("emailAddress"));
+            if (prs.equals("uaddress")) {
                 boolean addressUpdated = false;
-                UserAddress userAddress = null;
-                if(user!=null)
-                {
-                   // userAddress = userAddressService.readUserAddress(user);
-                    
-                       //boolean addresUpdate = update(int houseNumber, String streetAddress, String city, String state, String zipCode, User user);
-                        addressUpdated = userAddressService.readtoUpdate(
-                        Integer.parseInt(request.getParameter("houseNumber")),
-                        request.getParameter("streetAddress"),
-                        request.getParameter("city"),
-                        request.getParameter("state"),
-                        request.getParameter("zipCode"),
-                        user);
-                        request.setAttribute("addressupdated", addressUpdated);
+                User user = userService.read(request.getParameter("emailAddress"));
+
+                if (user != null) {
+
+                    addressUpdated = userAddressService.readtoUpdate(
+                            Integer.parseInt(request.getParameter("houseNumber")),
+                            request.getParameter("streetAddress"),
+                            request.getParameter("city"),
+                            request.getParameter("state"),
+                            request.getParameter("zipCode"),
+                            user);
+                    request.setAttribute("addressupdated", addressUpdated);
                     view = request.getRequestDispatcher("TestingPage.jsp");
                 }
             }
         }
-
     }
 
     @Override

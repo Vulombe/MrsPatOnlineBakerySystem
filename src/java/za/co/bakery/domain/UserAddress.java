@@ -90,6 +90,11 @@ public class UserAddress {
     public void setAddressId(int AddressId) {
         this.AddressId = AddressId;
     }
+
+    @Override
+    public String toString() {
+        return "UserAddress{" + "AddressId=" + AddressId + ", houseNumber=" + houseNumber + ", streetName=" + streetName + ", city=" + city + ", state=" + state + ", zipCode=" + zipCode + ", user=" + user + '}';
+    }
  
 
 }
