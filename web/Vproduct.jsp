@@ -1,26 +1,20 @@
 <%-- 
-    Document   : viewProducts
-    Created on : 26 Jan 2022, 10:01:39 AM
-    Author     : Studio13
+    Document   : Vproduct
+    Created on : Jan 28, 2022, 12:38:53 PM
+    Author     : student11
 --%>
 
-<%@page import="java.util.ArrayList"%>
-<%@page import="za.co.bakery.domain.Product"%>
-<%@page import="java.util.List"%>
-<%@page import="java.util.List"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@page import="za.co.bakery.domain.Product"%>
 <!DOCTYPE html>
-<html lang="en">
-
+<html>
     <head>
-        <%ArrayList<Product> products = (ArrayList<Product>) request.getAttribute("prodList");%>
-        <meta charset="UTF-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title><%= request.getAttribute("theTitle")%></title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <%Product products = (Product) request.getAttribute("prod");%>
+        <title>Item Information</title>
+
     </head>
     <header>
-
         <nav class="nav bd-grid">
             <div>
                 <a href="#" class="nav__logo">Mrs Pat's Bakery</a>
@@ -42,14 +36,12 @@
 
 
         </nav>
-
     </header>
-
     <body>
         <br>
         <div class="view bd-grid2">
 
-            <h1 class="catName"><%= request.getAttribute("theTitle")%></h1>
+            <h1 class="catName"><%=products.getName()%> </h1>
 
             <div class="product" >
 
@@ -60,29 +52,39 @@
                         <!-- single item -->
                         <ul class="nav__list2">
 
-                            <% if (products != null) {
 
-                                    for (Product p : products) {
-
-                            %>
 
                             <li class=" productsInline"> 
 
                                 <div  class="item">
-                                    <a href="http://localhost:8080/MrsPatOnlineBakerySystem/pcontrol?pro=pview-single&prodid=<%=p.getProductID()%>">
-                                    <img src="<%=p.getPicture()%>"alt="item" style="width: 200px; height: 150px;" "/>
-                                    <h2 class="name"><%=p.getName()%></h2>
-                                     </a>
-                                    <p class="price">Price: R <em><%=p.getPrice()%></em>
-                                    </p>
-                               <a href="http://localhost:8080/MrsPatOnlineBakerySystem/pcontrol?pro=cadd&qty=1&prodid=<%=p.getProductID()%>">
+                                    <h1 class=""></h1>
+
+                                    <% if (products != null) {%>
+                                    <li> <img src="<%=products.getPicture()%> "alt="item" style="width: 720px; height: 200px;" "/>
+                                        <br>
+                                         <p class="price">Price: R <em><%=products.getPrice()%> </em></p>
+                                        <br>
+                                        <a href="http://localhost:8080/MrsPatOnlineBakerySystem/pcontrol?pro=cadd&prodid=<%=products.getProductID()%>">
                                    <button class="add-to-cart" type="button" >Add to cart</button></a>
+                                    </li>
+                                    <li>   <h2  class="name" ><%=products.getName()%> </h2> 
+                                       
+                                        <p> <b>Description:</b></p><p><%=products.getDescription()%></p><br>
+                                        <p><b> Warning:</b></p><p><%=products.getWarning()%></P></li>
+                                    <li>
                                      
+                                    </li>
+                                      
+
+                                    <%} else {%>
+                                     <p>No Items Available</p>
+                                    <%}%>
+
+
                                 </div>
                             </li>
 
-                            <%}
-                                }%>
+
                             <!--/ single item -->
                         </ul>
 
@@ -96,13 +98,10 @@
 
 
         </div>
-
     </body>
-
-
     <style>
         /*===== GOOGLE FONTS =====*/
-        
+
 
         /*===== VARIABLES CSS =====*/
         :root {
@@ -185,7 +184,13 @@
 
         a {
             text-decoration: none;
+            color: #fff;
+            font-size: 14px;
+            text-decoration: none;
+            margin: 15px 0;
+
         }
+
 
         img {
             max-width: 100%;
@@ -556,6 +561,7 @@
         .item img {
             display: block;
             margin: auto;
+
         }
 
         .name {
@@ -598,4 +604,5 @@
 
     </style>
 
+    </
 </html>

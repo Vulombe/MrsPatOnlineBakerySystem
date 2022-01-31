@@ -94,38 +94,41 @@ public class UserAddressServiceImpl implements UserAddressService {
     @Override
     public boolean readtoUpdate(int houseNumber, String streetName, String city, String state, String zipCode, User user) {
 
+        if (user.getEmailAddress() == null || user.getEmailAddress().isEmpty()) {
+            return false;
+        }
         UserAddress userAddress = userAddressDAO.readUserAddress(user);
         //UserAddress userAddress= new UserAddress();
-        
-      if (houseNumber > 0) {
-            userAddress.setHouseNumber(houseNumber);
-           }
 
-//        if (streetName != null || !streetName.isEmpty()) {
-//            userAddress.setStreetName(streetName);
-//        }
-//
-//        if (city != null || !city.isEmpty()) {
-//            userAddress.setCity(city);
-//        }
-//
-//        if (state != null || !state.isEmpty()) {
-//            userAddress.setState(state);
-//        }
-//
-//        if (zipCode != null || !zipCode.isEmpty()) {
-//            userAddress.setZipCode(zipCode);
-//        }
+        if (houseNumber > 0) {
+            userAddress.setHouseNumber(houseNumber);
+        }
+
+        if (streetName != null || !streetName.isEmpty()) {
+            userAddress.setStreetName(streetName);
+        }
+
+        if (city != null || !city.isEmpty()) {
+            userAddress.setCity(city);
+        }
+
+        if (state != null || !state.isEmpty()) {
+            userAddress.setState(state);
+        }
+
+        if (zipCode != null || !zipCode.isEmpty()) {
+            userAddress.setZipCode(zipCode);
+        }
 
         return update(userAddress);
 
     }
 
     @Override
-    public boolean update(UserAddress useradres) 
-    {
+    public boolean update(UserAddress useradres) {
         return userAddressDAO.update(useradres);
     }
+
     @Override
 
     public boolean delete(UserAddress ua) {

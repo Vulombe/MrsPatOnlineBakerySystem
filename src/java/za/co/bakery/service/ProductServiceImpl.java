@@ -1,11 +1,17 @@
 package za.co.bakery.service;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
+import za.co.bakery.dbao.IngredientDAO;
 import za.co.bakery.dbao.ProductDAO;
+import za.co.bakery.dbao.ProductLineItemDAO;
 import za.co.bakery.dbao.RecipeDAO;
 import za.co.bakery.dbao.UserDOA;
+import za.co.bakery.dbao.impl.IngredientDAOImpl;
 import za.co.bakery.dbao.impl.ProductDAOImpl;
+import za.co.bakery.dbao.impl.ProductLineItemDAOImpl;
+import za.co.bakery.dbao.impl.RecipeDAOImpl;
 import za.co.bakery.dbao.impl.UserDOAImpl;
 import za.co.bakery.domain.Category;
 import za.co.bakery.domain.Ingredient;
@@ -26,9 +32,14 @@ public class ProductServiceImpl implements ProductService {
     private ProductDAO productDAO;
     private UserDOA userDAO;
     private RecipeDAO recipeDAO;
+    private IngredientDAO ingredientDAO;
+    private ProductLineItemDAO productLineItemDAO;
 
     public ProductServiceImpl(DBPoolManagerBasic dbpm) {
         this.productDAO = new ProductDAOImpl(dbpm);
+        this.productLineItemDAO = new ProductLineItemDAOImpl(dbpm);
+        this.recipeDAO = new RecipeDAOImpl(dbpm);
+        this.ingredientDAO = new IngredientDAOImpl(dbpm);
     }
 
     @Override
@@ -51,32 +62,48 @@ public class ProductServiceImpl implements ProductService {
         return productDAO.read(pId);
     }
 
+//    @Override
+//    public Ingredient getIngredient(int ingredientID) {
+//        return ingredientDAO.readIngridientById(ingredientID);
+//    }
     @Override
-    public Ingredient getIngredient(int ingredientID) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public boolean addRecipe(String steps, String recipeName, List<IngredientItem> ingredients) {
+        Recipe r = new Recipe(steps, ingredients, recipeName);
+        return recipeDAO.add(r);
     }
 
     @Override
-    public boolean addRecipe(String steps, String recipeName,List<IngredientItem> ingredients) {
-        Recipe r = new Recipe(steps,ingredients, recipeName);
-        return recipeDAO.add(r);
-    }   
-
-    @Override
     public int addToCart(String productID, String qty, LineItemCollection cart) {
+        if (cart == null) {
+            return 0;
+        }
         Product p = this.getProduct(productID);
-        int quantity = Integer.parseInt(qty);
-        cart.addProduct(p, quantity);
+        int quantity = 0;
+        try {
+            quantity = Integer.parseInt(qty);
+        } catch (NumberFormatException nfe) {
+        }
+        List<LineItem> j = productLineItemDAO.readAllProductLineItem(p);
+
+        if (!Collections.disjoint(j, cart.getCart())) {
+            cart.editCartQty(p, cart.getCart().get(cart.getCart().indexOf(p)).getQty() + quantity);
+        } else {
+            cart.addProduct(p, quantity);
+        }
+
         return cart.getCart().size();
     }
 
     @Override
-    public boolean productDelete(int productID) {
+    public boolean productDelete(int productID
+    ) {
         return productDAO.delete(productID);
     }
 
     @Override
-    public int editCart(String productID, String qty, LineItemCollection cart) {
+    public int editCart(String productID, String qty,
+            LineItemCollection cart
+    ) {
         Product p = this.getProduct(productID);
         int quantity = Integer.parseInt(qty);
         cart.editCartQty(p, quantity);
@@ -91,7 +118,8 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public boolean equals(Object obj) {
+    public boolean equals(Object obj
+    ) {
         if (this == obj) {
             return true;
         }
@@ -110,7 +138,8 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public boolean productUpdate(int productID, String field, String update) {
-        Product p = this.productDAO.read(productID);
+        
+        Product p = productDAO.read(productID);
         String f = field.toLowerCase();
 
         switch (f) {
@@ -142,9 +171,17 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public boolean recipeUpdate(int ID, String steps, List<IngredientItem> ingredients, String recipeName) {
-        Recipe r = new Recipe(ID,steps,ingredients,recipeName);
-        return recipeDAO.update(r);
+    public boolean recipeUpdate(int ID, String steps,
+            List<IngredientItem> ingredients, String recipeName
+    ) {
+        Recipe r = new Recipe(ID, steps, ingredients, recipeName);
+//        return recipeDAO.update(r);
+        return true;
+    }
+
+    @Override
+    public int getCartSize(LineItemCollection cart) {
+        return cart.size();
     }
 
 }

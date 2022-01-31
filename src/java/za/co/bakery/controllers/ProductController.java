@@ -60,7 +60,7 @@ public class ProductController extends HttpServlet {
                     String name = request.getParameter("category");
                     request.setAttribute("theTitle", name);
                     request.setAttribute("prodList", productService.getProducts(name));
-                    view = request.getRequestDispatcher("viewProducts.jsp");
+                    view = request.getRequestDispatcher("cakes.jsp");
                     view.forward(request, response);
                     break;
                 case "pcreate":
@@ -70,7 +70,7 @@ public class ProductController extends HttpServlet {
                             Double.parseDouble(request.getParameter("price")),
                             Category.valueOf(request.getParameter("category").toUpperCase()),
                             request.getParameter("warning"), request.getParameter("description"),
-                            Integer.parseInt(request.getParameter("productID")));
+                            Integer.parseInt(request.getParameter("recipeID")));
                     request.setAttribute("isAdded", res);
                     
                     
@@ -112,7 +112,7 @@ public class ProductController extends HttpServlet {
                     view.forward(request, response);
                     break;
                 case "pupdate":
-                    request.setAttribute("update", productService.productUpdate(Integer.parseInt(request.getParameter("productID")),
+                    request.setAttribute("pupdate", productService.productUpdate(Integer.parseInt(request.getParameter("productID")),
                             request.getParameter("field"),
                             request.getParameter("change")));
                     
@@ -131,8 +131,10 @@ public class ProductController extends HttpServlet {
                                 request.getParameter("qty"),
                                 (LineItemCollection) request.getSession().getAttribute("cart")));
                     } else {
-                        LineItemCollection cart = new LineItemCollection((Product) request.getSession().getAttribute("prodid"),
-                                Integer.parseInt(request.getParameter("qty")));
+                        LineItemCollection cart = new LineItemCollection(dbpm);
+                        request.setAttribute("cart-count", productService.addToCart(request.getParameter("prodid"),
+                                request.getParameter("qty"),
+                                (LineItemCollection) request.getSession().getAttribute("cart")));
                         request.getSession().setAttribute("cart", cart);
                     }
 
@@ -140,7 +142,7 @@ public class ProductController extends HttpServlet {
                     view.forward(request, response);
                     break;
                 case "cedit":
-                    request.setAttribute("cart-count", productService.addToCart(request.getParameter("prodid"),
+                    request.setAttribute("cart-count", productService.editCart(request.getParameter("prodid"),
                             request.getParameter("qty"),
                             (LineItemCollection) request.getSession().getAttribute("cart")));
                     view = request.getRequestDispatcher("TestingPage.jsp");

@@ -7,7 +7,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>welcome to our beer App</title>
+        <title>Welcome to Miss Pat's bakery</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
@@ -31,15 +31,25 @@
                         <li class="nav__item"><a href="http://localhost:8080/MrsPatOnlineBakerySystem/pcontrol?pro=pview&category=cupcakes" class="nav__link">Cupcakes</a></li>
                         <li class="nav__item"><a href="http://localhost:8080/MrsPatOnlineBakerySystem/pcontrol?pro=pview&category=pastries" class="nav__link">Pastries</a></li>
                         <li class="nav__item"><a href="http://localhost:8080/MrsPatOnlineBakerySystem/pcontrol?pro=pview&category=brownies" class="nav__link">Brownies</a></li>
-                        <li class="nav__item"><a href="http://localhost:8080/MrsPatOnlineBakerySystem/pcontrol?pro=pview&category=cakes" class="nav__link">Login</a></li>
-
-                    </ul>
+                         <li class="nav__item"><a href= "myaccount.jsp"  class="nav__link">My Account</a></li>
+                           <li class="nav__item"><a href= "logpg.jsp"  class="nav__link">Login</a></li>
+                           <li class="nav__item"><a href= "cart.jsp"  class="nav__link">Logout</a></li>
+                         
+                            
+ 
+ 
                 </div>
 
-                
+                 
             </nav>
+</ul>
+                    
+                 
 
-        </header>
+
+                    
+
+        
 
         <div class="products">
             <div class="container">
@@ -503,11 +513,22 @@ img {
         width: 457px;
         bottom: 15%;
     }
-
+    .about__container, .skills__container {
+        grid-template-columns: repeat(2, 1fr);
+        -webkit-box-align: center;
+        -ms-flex-align: center;
+        align-items: center;
+        text-align: initial;
+    }
     .about__img img {
         width: 300px;
     }
-
+    .work__container {
+        grid-template-columns: repeat(3, 1fr);
+        grid-template-rows: repeat(2, 1fr);
+        -webkit-column-gap: 2rem;
+        column-gap: 2rem;
+    }
 }
 
 @media screen and (min-width: 1024px) {
@@ -554,7 +575,7 @@ img {
 }
 
 /*-------------------------------------------*/
-@property --k {
+@property {
     syntax: '<number>';
     initial-value: 0;
     inherits: false;

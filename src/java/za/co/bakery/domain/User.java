@@ -34,23 +34,19 @@ public class User
         this.password = password;
         this.userRole = userRole;
     }
-     
-    public User() {
-    }
-
     public User(String title, String firstName, String lastName, String emailAddress, String contactNumber, String password) {
-     
-        this.title = title;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.emailAddress = emailAddress;
-        this.contactNumber = contactNumber;
-        this.password = password;
-   
+        this(0,title,firstName, lastName, emailAddress,contactNumber, password, Role.CLIENT);
+    }
+    
+     public User(String title, String firstName, String lastName, String emailAddress, String contactNumber, String password, Role userRole) {
+        this(0,title,firstName, lastName, emailAddress,contactNumber, password, Role.CLIENT);
     }
 
     public User(String emailAddress) {
         this.emailAddress = emailAddress;
+    }
+     
+    public User() {
     }
     public int getID() {
         return ID;
