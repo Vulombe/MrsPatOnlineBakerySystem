@@ -99,7 +99,9 @@ public class UserController extends HttpServlet {
 
             //---------------------
             if (prs.equals("viewusers")) {
-
+                request.setAttribute("userList", userService.getUsers());
+                view = request.getRequestDispatcher("TestingPage.jsp");
+                view.forward(request, response);
             }
             //---------------------
             if (prs.equals("logout")) {
@@ -145,6 +147,18 @@ public class UserController extends HttpServlet {
                     request.setAttribute("addressupdated", addressUpdated);
                     view = request.getRequestDispatcher("TestingPage.jsp");
                 }
+            }
+            if (prs.equals("daddress")) {
+                User user = userService.read(request.getParameter("emailAddress"));
+                UserAddress ua = userAddressService.readUserAddress(user);
+                if (userAddressService.delete(ua)) {
+                    request.setAttribute("msg", "User Address Was Deleted");
+                    view = request.getRequestDispatcher("TestingPage.jsp");
+                } else {
+                    request.setAttribute("errormsg", "Unable to delete user address");
+                    view = request.getRequestDispatcher("error.jsp");
+                }
+                view.forward(request, response);
             }
         }
     }

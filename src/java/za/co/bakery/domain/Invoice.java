@@ -10,10 +10,37 @@ package za.co.bakery.domain;
  * @author student12
  */
 public class Invoice {
-    private InvoiceLineItem ILN;
+    private Order order;
+    private int invoiceID;
 
-    public Invoice(InvoiceLineItem ILN) {
-        this.ILN = ILN;
+    public Invoice(Order order, int invoice) {
+        this.order = order;
+        this.invoiceID = invoice;
     }
+
+    public Invoice() {
+    }
+
+    public Order getOrder() {
+        return order;
+    }
+
+    public void setOrder(Order order) {
+        this.order = order;
+    }
+
+    public int getInvoiceID() {
+        return invoiceID;
+    }
+
+    public void setInvoiceID(int invoiceID) {
+        this.invoiceID = invoiceID;
+    }
+
+    @Override
+    public String toString() {
+        return "Invoice{" + "order=" + order + ", invoice=" + invoiceID + '}';
+    }
+
     
 }

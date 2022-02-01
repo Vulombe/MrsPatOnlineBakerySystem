@@ -40,7 +40,7 @@ public class UserAddressDAOImpl implements UserAddressDAO {
         boolean isAdded = false;
         try {
             con = dbpm.getConnection();
-            ps = con.prepareStatement("INSERT INTO ADDRESS(addressId,houseNumber,street,city,state, code,custEmail,isActive) VALUES(null,?,?,?,?,?,?,'Y')");
+            ps = con.prepareStatement("INSERT INTO ADDRESS(addressId,houseNumber,street,city,state,code,custEmail,isValid) VALUES(NULL,?,?,?,?,?,?,?)");
             //  ps.setInt(1, p.getProductID());
             ps.setInt(1, ua.getHouseNumber());
             ps.setString(2, ua.getStreetName());
@@ -48,6 +48,7 @@ public class UserAddressDAOImpl implements UserAddressDAO {
             ps.setString(4, ua.getState());
             ps.setString(5, ua.getZipCode());
             ps.setString(6, ua.getUser().getEmailAddress());
+            ps.setString(7,"Y");
             isAdded = ps.executeUpdate() > 0;
         } catch (SQLException ex) {
             System.out.println("Error: " + ex.getMessage());
@@ -222,7 +223,7 @@ public class UserAddressDAOImpl implements UserAddressDAO {
         boolean isDeleted = false;
         try {
             con = dbpm.getConnection();
-            ps = con.prepareStatement("UPDATE ADDRESS SET ISACTIVE=? WHERE ADDRESSID=?");
+            ps = con.prepareStatement("UPDATE ADDRESS SET ISVALID=? WHERE ADDRESSID=?");
             ps.setString(1, "N");
             ps.setInt(2, ua.getAddressId());
             isDeleted = ps.executeUpdate() > 0;
