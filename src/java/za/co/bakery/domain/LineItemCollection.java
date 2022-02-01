@@ -70,9 +70,15 @@ public class LineItemCollection {
         if (this.getCart() != null) {
             
             for (LineItem lineItem : this.getCart()) {
-                total = total + lineItem.price();
+                total = total + lineItem.productPrice();
             }
         }
         return total;
     }
+
+    @Override
+    public String toString() {
+        return "LineItemCollection{" + "cart=" + cart + ", productLineItemDAO=" + productLineItemDAO + '}';
+    }
+    
 }

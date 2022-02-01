@@ -74,41 +74,66 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public int addToCart(String productID, String qty, LineItemCollection cart) {
-        if (cart == null) {
-            return 0;
-        }
-        Product p = this.getProduct(productID);
+        boolean check = false;
         int quantity = 0;
         try {
             quantity = Integer.parseInt(qty);
         } catch (NumberFormatException nfe) {
+            return -1;
         }
-        List<LineItem> j = productLineItemDAO.readAllProductLineItem(p);
-
-        if (!Collections.disjoint(j, cart.getCart())) {
-            cart.editCartQty(p, cart.getCart().get(cart.getCart().indexOf(p)).getQty() + quantity);
-        } else {
-            cart.addProduct(p, quantity);
+        int prodId = 0;
+        try {
+            prodId = Integer.parseInt(productID);
+        } catch (NumberFormatException nfe) {
+            return -2;
         }
-
+        for (LineItem li : cart.getCart()) {
+            if (li.getProduct().getProductID() == prodId) {
+                li.setQty(li.getQty() + quantity);
+                check = true;
+                break;
+            }
+        }
+        if (!check) {
+            cart.addProduct(this.getProduct(productID), quantity);
+        }
         return cart.getCart().size();
     }
 
     @Override
-    public boolean productDelete(int productID
-    ) {
+    public boolean productDelete(int productID) {
         return productDAO.delete(productID);
     }
 
-    @Override
-    public int editCart(String productID, String qty,
-            LineItemCollection cart
-    ) {
-        Product p = this.getProduct(productID);
-        int quantity = Integer.parseInt(qty);
-        cart.editCartQty(p, quantity);
+ @Override
+    public int editCart(String productID, String qty, LineItemCollection cart) {
+        int quantity = 0;
+        try {
+            quantity = Integer.parseInt(qty);
+        } catch (NumberFormatException nfe) {
+            return -1;
+        }
+        int prodId = 0;
+        try {
+            prodId = Integer.parseInt(productID);
+        } catch (NumberFormatException nfe) {
+            return -2;
+        }
+        for (LineItem li : cart.getCart()) {
+            if (li.getProduct().getProductID() == prodId) {
+                li.setQty(li.getQty() - quantity);
+                if(li.getQty()<1){
+                    cart.getCart().remove(li);
+                }
+                break;
+            }
+        }
         return cart.getCart().size();
     }
+
+
+
+
 
     @Override
     public int hashCode() {
@@ -138,7 +163,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public boolean productUpdate(int productID, String field, String update) {
-        
+
         Product p = productDAO.read(productID);
         String f = field.toLowerCase();
 

@@ -37,6 +37,7 @@ public class ProductLineItemDAOImpl implements ProductLineItemDAO {
 
     public ProductLineItemDAOImpl(DBPoolManagerBasic dbpm) {
         this.dbpm = dbpm;
+        this.productDAO = new ProductDAOImpl(dbpm);
     }
 
     //*****************add product to database*******************************
@@ -75,7 +76,7 @@ public class ProductLineItemDAOImpl implements ProductLineItemDAO {
             rs = ps.executeQuery();
 
             if (rs.next()) {
-                l = new LineItem(rs.getInt("lineItemId"), productDAO.read(rs.getInt("product")), rs.getInt("qty"));
+                l = new LineItem(rs.getInt("lineItemId"), productDAO.read(rs.getInt("productId")), rs.getInt("qty"));
 
             }
 
@@ -99,7 +100,7 @@ public class ProductLineItemDAOImpl implements ProductLineItemDAO {
             rs = ps.executeQuery();
 
             if (rs.next()) {
-                l = new LineItem(rs.getInt("lineItemId"), productDAO.read(rs.getInt("product")), rs.getInt("qty"));
+                l = new LineItem(rs.getInt("lineItemId"), productDAO.read(rs.getInt("productId")), rs.getInt("qty"));
 
             }
 
@@ -124,7 +125,7 @@ public class ProductLineItemDAOImpl implements ProductLineItemDAO {
 
             while (rs.next()) {
 
-                LineItem l = new LineItem(rs.getInt("lineItemId"), productDAO.read(rs.getInt("product")), rs.getInt("qty"));
+                LineItem l = new LineItem(rs.getInt("lineItemId"), productDAO.read(rs.getInt("productId")), rs.getInt("qty"));
                 lineItems.add(l);
 
             }
@@ -140,7 +141,7 @@ public class ProductLineItemDAOImpl implements ProductLineItemDAO {
     @Override
     public List<LineItem> readAllProductLineItem(Product p) {
         List<LineItem> lineItems = new ArrayList<>();
-
+        LineItem l= null;
         try {
             con = dbpm.getConnection();
 
@@ -149,8 +150,9 @@ public class ProductLineItemDAOImpl implements ProductLineItemDAO {
             rs = ps.executeQuery();
 
             while (rs.next()) {
+               
 
-                LineItem l = new LineItem(rs.getInt("lineItemId"), productDAO.read(rs.getInt("product")), rs.getInt("qty"));
+                l = new LineItem(rs.getInt("lineItemId"),productDAO.read(rs.getInt("productId")), rs.getInt("qty"));
                 lineItems.add(l);
 
             }
@@ -240,12 +242,12 @@ public class ProductLineItemDAOImpl implements ProductLineItemDAO {
         try {
             con = dbpm.getConnection();
 
-            ps = con.prepareStatement("SELECT * FROM PRODUCTLINEITEM WHERE PRODUCTID= ?");
+            ps = con.prepareStatement("SELECT * FROM PRODUCTLINEITEMS WHERE PRODUCTID= ?");
             ps.setInt(1,p.getProductID());
             rs = ps.executeQuery();
 
             if (rs.next()) {
-                l = new LineItem(rs.getInt("lineItemId"), productDAO.read(rs.getInt("product")), rs.getInt("qty"));
+                l = new LineItem(rs.getInt("lineItemId"), productDAO.read(rs.getInt("productId")), rs.getInt("qty"));
 
             }
 

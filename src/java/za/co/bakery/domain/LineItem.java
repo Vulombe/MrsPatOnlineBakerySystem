@@ -76,5 +76,13 @@ public class LineItem {
     }
     
     
+    public double productPrice(){
+        return this.getProduct().getPrice()*this.getQty();
+    }
+
+    @Override
+    public String toString() {
+        return "LineItem{" + "product=" + product + ", qty=" + qty + ", ingredientId=" + ingredientId + ", productID=" + productID + ", lineItemId=" + lineItemId + '}';
+    }
     
 }

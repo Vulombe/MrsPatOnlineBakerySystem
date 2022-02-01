@@ -53,14 +53,14 @@ public class ProductController extends HttpServlet {
             switch (prs) {
                 case "pview-single":
                     request.setAttribute("prod", productService.getProduct(request.getParameter("prodid")));
-                    view = request.getRequestDispatcher("TestingPage.jsp");
+                    view = request.getRequestDispatcher("Vproduct.jsp");
                     view.forward(request, response);
                     break;
                 case "pview":
                     String name = request.getParameter("category");
                     request.setAttribute("theTitle", name);
                     request.setAttribute("prodList", productService.getProducts(name));
-                    view = request.getRequestDispatcher("cakes.jsp");
+                    view = request.getRequestDispatcher("viewProducts.jsp");
                     view.forward(request, response);
                     break;
                 case "pcreate":
@@ -134,23 +134,23 @@ public class ProductController extends HttpServlet {
                         LineItemCollection cart = new LineItemCollection(dbpm);
                         request.setAttribute("cart-count", productService.addToCart(request.getParameter("prodid"),
                                 request.getParameter("qty"),
-                                (LineItemCollection) request.getSession().getAttribute("cart")));
+                                cart));
                         request.getSession().setAttribute("cart", cart);
                     }
 
-                    view = request.getRequestDispatcher("TestingPage.jsp");
+                    view = request.getRequestDispatcher("cart.jsp");
                     view.forward(request, response);
                     break;
                 case "cedit":
                     request.setAttribute("cart-count", productService.editCart(request.getParameter("prodid"),
                             request.getParameter("qty"),
                             (LineItemCollection) request.getSession().getAttribute("cart")));
-                    view = request.getRequestDispatcher("TestingPage.jsp");
+                    view = request.getRequestDispatcher("cart.jsp");
                     view.forward(request, response);
                     break;
                 case "cget":
                     request.setAttribute("cart-items", request.getSession().getAttribute("cart"));
-                    view = request.getRequestDispatcher("TestingPage.jsp");
+                    view = request.getRequestDispatcher("cart.jsp");
                     view.forward(request, response);
                     break;
                 case "radd":
