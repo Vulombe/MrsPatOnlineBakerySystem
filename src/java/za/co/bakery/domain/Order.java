@@ -7,7 +7,7 @@ public class Order {
 
     private int orderID;
     private User user;
-    private List<LineItem> lineItem;
+    private LineItemCollection lineItem;
     private UserAddress userAddress;
     private double totalPrice;
     private Date ordrDate;
@@ -19,7 +19,7 @@ public class Order {
     public Order() {
     }
 
-    public Order(User user, List<LineItem> lineItem, UserAddress userAddress, double totalPrice, Date ordrDate) {
+    public Order(User user, LineItemCollection lineItem, UserAddress userAddress, double totalPrice, Date ordrDate) {
         this.user = user;
         this.lineItem = lineItem;
         this.userAddress = userAddress;
@@ -57,11 +57,11 @@ public class Order {
         this.user = user;
     }
 
-    public List<LineItem> getLineItem() {
+    public LineItemCollection getLineItem() {
         return lineItem;
     }
 
-    public void setLineItem(List<LineItem> lineItem) {
+    public void setLineItem(LineItemCollection lineItem) {
         this.lineItem = lineItem;
     }
 
@@ -71,6 +71,11 @@ public class Order {
 
     public void setTotalPrice(double totalPrice) {
         this.totalPrice = totalPrice;
+    }
+
+    @Override
+    public String toString() {
+        return "Order{" + "orderID=" + orderID + ", user=" + user + ", lineItem=" + lineItem + ", userAddress=" + userAddress + ", totalPrice=" + totalPrice + ", ordrDate=" + ordrDate + '}';
     }
 
 }

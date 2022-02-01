@@ -100,25 +100,25 @@ public class UserAddressServiceImpl implements UserAddressService {
         UserAddress userAddress = userAddressDAO.readUserAddress(user);
         //UserAddress userAddress= new UserAddress();
 
-//        if (houseNumber > 0) {
-//            userAddress.setHouseNumber(houseNumber);
-//        }
-//
-//        if (streetName != null || !streetName.isEmpty()) {
-//            userAddress.setStreetName(streetName);
-//        }
-//
-//        if (city != null || !city.isEmpty()) {
-//            userAddress.setCity(city);
-//        }
-//
-//        if (state != null || !state.isEmpty()) {
-//            userAddress.setState(state);
-//        }
-//
-//        if (zipCode != null || !zipCode.isEmpty()) {
-//            userAddress.setZipCode(zipCode);
-//        }
+        if (houseNumber > 0) {
+            userAddress.setHouseNumber(houseNumber);
+        }
+
+        if (streetName != null || !streetName.isEmpty()) {
+            userAddress.setStreetName(streetName);
+        }
+
+        if (city != null || !city.isEmpty()) {
+            userAddress.setCity(city);
+        }
+
+        if (state != null || !state.isEmpty()) {
+            userAddress.setState(state);
+        }
+
+        if (zipCode != null || !zipCode.isEmpty()) {
+            userAddress.setZipCode(zipCode);
+        }
 
         return update(userAddress);
 

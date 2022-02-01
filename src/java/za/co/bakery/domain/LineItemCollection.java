@@ -2,6 +2,11 @@ package za.co.bakery.domain;
 
 import java.util.ArrayList;
 import java.util.List;
+import za.co.bakery.dbao.ProductLineItemDAO;
+
+import za.co.bakery.dbao.impl.ProductLineItemDAOImpl;
+
+import za.co.bakery.manager.DBPoolManagerBasic;
 
 /**
  *
@@ -10,6 +15,12 @@ import java.util.List;
 public class LineItemCollection {
 
     private List<LineItem> cart = null;
+    private ProductLineItemDAO productLineItemDAO;
+    
+     public LineItemCollection(DBPoolManagerBasic dbpm) {
+        this.productLineItemDAO = new ProductLineItemDAOImpl(dbpm);
+        cart = new ArrayList<LineItem>();
+    }
 
     public LineItemCollection() {
         cart = new ArrayList<LineItem>();
@@ -25,8 +36,11 @@ public class LineItemCollection {
     }
 
     public void addProduct(Product p, int qty) {
-        LineItem e = new LineItem(p, qty);
+        LineItem e = productLineItemDAO.readProductLineItem(p);
+//        LineItem e = new LineItem(p,qty);
+        e.setQty(qty);
         this.getCart().add(e);
+
     }
 
     public void editCartQty(Product p, int qty) {
@@ -45,4 +59,19 @@ public class LineItemCollection {
         this.getCart().clear();
     }
 
+    public int size() {
+        return cart.size();
+    }
+
+    public double total() {
+        double total = 0.0;
+        
+        if (this.getCart() != null) {
+            
+            for (LineItem lineItem : this.getCart()) {
+                total = total + lineItem.price();
+            }
+        }
+        return total;
+    }
 }

@@ -11,12 +11,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import za.co.bakery.dbao.IngredientDAO;
+
 import za.co.bakery.dbao.ProductDAO;
 import za.co.bakery.dbao.ProductLineItemDAO;
-import za.co.bakery.domain.Ingredient;
+
 import za.co.bakery.domain.LineItem;
-import za.co.bakery.domain.LineItemCollection;
+
 import za.co.bakery.domain.Product;
 import za.co.bakery.manager.DBPoolManagerBasic;
 
@@ -205,6 +205,29 @@ public class ProductLineItemDAOImpl implements ProductLineItemDAO {
         return isDeleted;
     }
 
+    @Override
+    public LineItem readProductLineItem(Product p) {
+        LineItem l = null;
+        try {
+            con = dbpm.getConnection();
+
+            ps = con.prepareStatement("SELECT * FROM PRODUCTLINEITEM WHERE PRODUCTID= ?");
+            ps.setInt(1,p.getProductID());
+            rs = ps.executeQuery();
+
+//            if (rs.next()) {
+//                l = new LineItem(rs.getInt("lineItemId"), productDAO.read(rs.getInt("product")), rs.getInt("qty"));
+//
+//            }
+
+        } catch (SQLException ex) {
+            System.out.println("Error: " + ex.getMessage());
+        } finally {
+            closeStreams();
+        }
+
+        return l;
+    }
     // ***********************************Clossing the connection************************************
     private void closeStreams() {
         if (rs != null) {
@@ -233,5 +256,6 @@ public class ProductLineItemDAOImpl implements ProductLineItemDAO {
         con = null;
     }
     // ************************************************************************
+
 
 }

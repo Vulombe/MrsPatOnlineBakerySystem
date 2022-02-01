@@ -5,19 +5,54 @@ package za.co.bakery.domain;
  * @author Stuart Littles
  */
 public class LineItem {
-    private int lineItemId;
     private Product product;
     private int qty;
+    private int ingredientId;
+    private int productID;
+    private int lineItemId;
 
-    public LineItem(int lineItemId,Product product, int qty) {
-        this.lineItemId=lineItemId;
+    public int getProductID() {
+        return productID;
+    }
+
+    public int getLineItemId() {
+        return lineItemId;
+    }
+
+    public void setLineItemId(int lineItemID) {
+        this.lineItemId = lineItemID;
+    }
+
+    public void setProductID(int productID) {
+        this.productID = productID;
+    }
+
+    public LineItem(Product product, int qty) {
         this.product = product;
         this.qty = qty;
     }
-
-    LineItem(Product p, int qty) {
-        this.product = p;
+    
+    public LineItem(){
+        
+    }
+    
+    public LineItem(int ingredientID, int qty){
+        this.ingredientId = ingredientID;
         this.qty = qty;
+    }
+    
+    public LineItem(int lineItemID, Product p, int Qty){
+        this.product = p;
+        this.qty = Qty;
+        this.lineItemId = lineItemID;
+    }
+
+    public int getIngredientId() {
+        return ingredientId;
+    }
+
+    public void setIngredientId(int ingredientId) {
+        this.ingredientId = ingredientId;
     }
 
     public Product getProduct() {
@@ -35,13 +70,9 @@ public class LineItem {
     public void setQty(int qty) {
         this.qty = qty;
     }
-
-    public int getLineItemId() {
-        return lineItemId;
-    }
-
-    public void setLineItemId(int lineItemId) {
-        this.lineItemId = lineItemId;
+    
+    public double price(){
+        return this.getProduct().getPrice();
     }
     
     
