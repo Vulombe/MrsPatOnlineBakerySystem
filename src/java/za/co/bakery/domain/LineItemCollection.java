@@ -74,4 +74,38 @@ public class LineItemCollection {
         }
         return total;
     }
+    
+    public double tax(){
+        double tax = 0.0;
+        
+        if(this.getCart() != null){
+           tax = this.total()*0.15;
+        }
+        
+        return tax;
+    }
+    
+    public double shipping(){
+        double shipping = 0.0;
+        
+        if(this.getCart() != null){
+            if(this.total() > 500){
+                shipping = 0.0;
+            }else{
+                shipping = 50.0;
+            }
+        }
+        
+        return shipping;
+    }
+    
+    public double grandTotal(){
+        double grandTotal = 0.0;
+        
+        if(this.getCart() != null){
+            grandTotal = this.total() + this.shipping() + this.tax();
+        }
+        
+        return grandTotal;
+    }
 }

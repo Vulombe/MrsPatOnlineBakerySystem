@@ -15,8 +15,11 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import org.apache.pdfbox.pdmodel.PDDocument;
+import za.co.bakery.domain.Invoice;
 
 import za.co.bakery.domain.LineItemCollection;
+import za.co.bakery.domain.Order;
 
 import za.co.bakery.domain.User;
 import za.co.bakery.domain.UserAddress;
@@ -38,6 +41,7 @@ public class OrderController extends HttpServlet {
         String prs = request.getParameter("pro");
         RequestDispatcher view = null;
         User user = (User) request.getAttribute("user");
+        Order order = (Order) request.getAttribute("order");
         LineItemCollection lineItemList = (LineItemCollection) request.getAttribute("cart-items");
         double totalPrice = lineItemList.total();
         UserAddress userAddress = userAddressService.readUserAddress(user);
@@ -77,6 +81,8 @@ public class OrderController extends HttpServlet {
                 view = request.getRequestDispatcher("TestingPage.jsp");
                 view.forward(request, response);
                 break;
+            case "viewInvoice":
+                 
 //            case "oupdate":
 //                request.setAttribute("oupdate", orderService.update((User)session.getAttribute("user"),(LineItemCollection) session.getAttribute("cart"), (UserAddress)request.getAttribute("useraddressvalid"), totalPrice, ordrDate));
 

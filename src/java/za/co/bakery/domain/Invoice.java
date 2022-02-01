@@ -5,6 +5,8 @@
  */
 package za.co.bakery.domain;
 
+import org.apache.pdfbox.pdmodel.PDDocument;
+
 /**
  *
  * @author student12
@@ -12,13 +14,15 @@ package za.co.bakery.domain;
 public class Invoice {
     private Order order;
     private int invoiceID;
-
-    public Invoice(Order order, int invoice) {
+ 
+    public Invoice(Order order) {
         this.order = order;
-        this.invoiceID = invoice;
+       
     }
+ 
 
     public Invoice() {
+        
     }
 
     public Order getOrder() {
