@@ -28,4 +28,5 @@ public interface OrderService {
     public boolean orderErrorCheck(Order order,User user, LineItemCollection cart, UserAddress userAddress, double totalPrice, Date ordrDate);
     public boolean delete(Order o);
     public PDDocument getInvoice(Order order);
+    public PDDocument getInvoice();
 }

@@ -1,5 +1,6 @@
 package za.co.bakery.service;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -8,6 +9,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
+import org.apache.pdfbox.pdmodel.font.PDType1Font;
+import org.apache.pdfbox.pdmodel.font.PDFont;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
 import za.co.bakery.dbao.OrderDAO;
@@ -27,6 +30,9 @@ public class OrderServiceImpl implements OrderService {
     public OrderServiceImpl(DBPoolManagerBasic dbpm) {
         this.orderdao = new OrderDAOImpl(dbpm);
 
+    }
+
+    public OrderServiceImpl() {
     }
 
     @Override
@@ -148,61 +154,114 @@ public class OrderServiceImpl implements OrderService {
             //Add the blank page
             invoicePDF.addPage(invoicePage);
             invoicePage = invoicePDF.getPage(0);
-
+            PDFont font = PDType1Font.HELVETICA;
             PDPageContentStream cs = new PDPageContentStream(invoicePDF, invoicePage);
+            cs.setFont(font, 18);
             cs.beginText();
             cs.newLineAtOffset(140, 750);
             cs.showText("Invoice of: " + order.getUser().getFirstName() + " " + order.getUser().getLastName());
             cs.endText();
 
-            cs.beginText();
-            cs.setLeading(20f);
-            cs.newLineAtOffset(60, 610);
-            cs.showText("Products Purchased: ");
-            cs.newLine();
-            for (LineItem lineItem : order.getLineItem().getCart()) {
-                cs.showText("Name: " + lineItem.getProduct().getName() + "\t Price R" + lineItem.getProduct().getPrice());
-                cs.newLine();
-            }
-            cs.endText();
+           
 
             cs.beginText();
             cs.setLeading(20f);
             cs.newLineAtOffset(60, 610);
             cs.showText("User Address");
             cs.newLine();
-            cs.showText("House Number: " + order.getUserAddress().getHouseNumber());
+            cs.showText("House Number: " );
             cs.newLine();
-            cs.showText("Street Name: " + order.getUserAddress().getStreetName());
+            cs.showText("Street Name: " );
             cs.newLine();
-            cs.showText("City: " + order.getUserAddress().getCity());
+            cs.showText("City: " );
             cs.newLine();
-            cs.showText("State: " + order.getUserAddress().getState());
+            cs.showText("State: " );
             cs.newLine();
-            cs.showText("Code: " + order.getUserAddress().getZipCode());
+            cs.showText("Code: " );
             cs.newLine();
             cs.endText();
 
             cs.beginText();
             cs.newLineAtOffset(140, 750);
-            cs.showText("Order Date: " + order.getOrdrDate());
+            cs.showText("Order Date: " );
             cs.endText();
 
             cs.beginText();
             cs.setLeading(20f);
             cs.newLineAtOffset(140, 750);
-            cs.showText("Tax: " + order.getLineItem().tax());
+            cs.showText("Tax: " + order);
             cs.newLine();
-            cs.showText("Shipping Price: " + order.getLineItem().shipping());
+            cs.showText("Shipping Price: " );
             cs.newLine();
-            cs.showText("Total Price: " + order.getLineItem().total());
+            cs.showText("Total Price: " );
             cs.endText();
-
+            
             cs.close();
+            invoicePDF.save("c:/Invoice.pdf");
         } catch (IOException ex) {
             Logger.getLogger(OrderServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
         }
         return invoicePDF;
     }
+    @Override
+    public PDDocument getInvoice() {
+      
+        PDDocument invoicePDF = new PDDocument();
+        try {
 
+            //Create Blank Page
+            PDPage invoicePage = new PDPage();
+            //Add the blank page
+            invoicePDF.addPage(invoicePage);
+            invoicePage = invoicePDF.getPage(0);
+            PDFont font = PDType1Font.HELVETICA;
+            PDPageContentStream cs = new PDPageContentStream(invoicePDF, invoicePage);
+            cs.setFont(font, 18);
+            cs.beginText();
+            cs.newLineAtOffset(140, 750);
+            cs.showText("Invoice of: " );
+            cs.endText();
+
+           
+
+            cs.beginText();
+            cs.setLeading(20f);
+            cs.newLineAtOffset(60, 610);
+            cs.showText("User Address");
+            cs.newLine();
+            cs.showText("House Number: " );
+            cs.newLine();
+            cs.showText("Street Name: " );
+            cs.newLine();
+            cs.showText("City: " );
+            cs.newLine();
+            cs.showText("State: " );
+            cs.newLine();
+            cs.showText("Code: " );
+            cs.newLine();
+            cs.endText();
+
+            cs.beginText();
+            cs.newLineAtOffset(140, 750);
+            cs.showText("Order Date: " );
+            cs.endText();
+
+            cs.beginText();
+            cs.setLeading(20f);
+            cs.newLineAtOffset(140, 750);
+            cs.showText("Tax: " );
+            cs.newLine();
+            cs.showText("Shipping Price: " );
+            cs.newLine();
+            cs.showText("Total Price: " );
+            cs.endText();
+            
+            cs.close();
+            invoicePDF.save(new File("c:\\pdf\\Invoice.pdf"));
+            invoicePDF.close();
+        } catch (IOException ex) {
+            Logger.getLogger(OrderServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return invoicePDF;
+    }
 }

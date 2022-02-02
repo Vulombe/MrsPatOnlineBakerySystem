@@ -41,7 +41,7 @@ public class OrderController extends HttpServlet {
         String prs = request.getParameter("pro");
         RequestDispatcher view = null;
         User user = (User) request.getAttribute("user");
-        Order order = (Order) request.getAttribute("order");
+
         LineItemCollection lineItemList = (LineItemCollection) request.getAttribute("cart-items");
         double totalPrice = lineItemList.total();
         UserAddress userAddress = userAddressService.readUserAddress(user);
