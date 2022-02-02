@@ -20,8 +20,7 @@ import za.co.bakery.domain.User;
 import za.co.bakery.domain.UserAddress;
 import za.co.bakery.manager.DBPoolManagerBasic;
 import org.apache.pdfbox.pdmodel.PDPage;
-import org.apache.pdfbox.pdmodel.common.PDRectangle;
-import za.co.bakery.domain.InvoiceColumns;
+
 import za.co.bakery.domain.LineItemPractise;
 
 public class OrderServiceImpl implements OrderService {
