@@ -6,9 +6,15 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import org.eclipse.jdt.internal.compiler.ast.FalseLiteral;
 import za.co.bakery.dbao.ProductDAO;
+import za.co.bakery.dbao.RecipeDAO;
 import za.co.bakery.domain.Category;
+import za.co.bakery.domain.Ingredient;
+import za.co.bakery.domain.IngredientItem;
 import za.co.bakery.domain.Product;
+import za.co.bakery.domain.Recipe;
+import za.co.bakery.domain.User;
 import za.co.bakery.manager.DBPoolManagerBasic;
 
 /**
@@ -21,14 +27,13 @@ public class ProductDAOImpl implements ProductDAO {
     private Connection con = null;
     private PreparedStatement ps;
     private ResultSet rs;
-// ************************************************************************
 
+// ************************************************************************
     public ProductDAOImpl(DBPoolManagerBasic dbpm) {
         this.dbpm = dbpm;
     }
 
-    
-   //*****************add product to database*******************************
+    //*****************add product to database*******************************
     public boolean add(Product p) {
         boolean isAdded = false;
         try {
@@ -36,7 +41,7 @@ public class ProductDAOImpl implements ProductDAO {
             ps = con.prepareStatement("INSERT INTO PRODUCT(productId,Name,picture,price,"
                     + "Category, warning,description, recipeId) VALUES(null,?,?,?,?,?,?,?)");
 
-          //  ps.setInt(1, p.getProductID());
+            //  ps.setInt(1, p.getProductID());
             ps.setString(1, p.getName());
             ps.setString(2, p.getPicture());
             ps.setDouble(3, p.getPrice());
@@ -45,8 +50,9 @@ public class ProductDAOImpl implements ProductDAO {
             ps.setString(6, p.getDescription());
             ps.setInt(7, p.getRecipeID());
 
-            if(ps.executeUpdate()>0)
+            if (ps.executeUpdate() > 0) {
                 isAdded = true;
+            }
 
         } catch (SQLException ex) {
             System.out.println("Error: " + ex.getMessage());
@@ -56,14 +62,16 @@ public class ProductDAOImpl implements ProductDAO {
         return isAdded;
     }
 //****************read product by productId**********************
+
     @Override
     public Product read(int Id) {
         Product p = null;
         try {
             con = dbpm.getConnection();
 
-            ps = con.prepareStatement("SELECT * FROM PRODUCT WHERE PRODUCTID= ?");
+            ps = con.prepareStatement("SELECT * FROM PRODUCT WHERE PRODUCTID= ? AND ISACTIVE=?");
             ps.setInt(1, Id);
+            ps.setString(2, "Y");
             rs = ps.executeQuery();
 
             if (rs.next()) {
@@ -105,7 +113,8 @@ public class ProductDAOImpl implements ProductDAO {
         try {
             con = dbpm.getConnection();
 
-            ps = con.prepareStatement("SELECT * FROM PRODUCT");
+            ps = con.prepareStatement("SELECT * FROM PRODUCT WHERE ISACTIVE=?");
+            ps.setString(1, "Y");
             rs = ps.executeQuery();
 
             while (rs.next()) {
@@ -146,60 +155,14 @@ public class ProductDAOImpl implements ProductDAO {
     }
 
     @Override
-    public List<Product> read(Product p) {
-        List<Product> products = new ArrayList<>();
-
-        try {
-            con = dbpm.getConnection();
-
-            ps = con.prepareStatement("SELECT * FROM PRODUCT WHERE PRODUCTID= ?");
-            rs = ps.executeQuery();
-
-            while (rs.next()) {
-
-                String cat = rs.getString("CATEGORY");
-
-                if (cat.equalsIgnoreCase("cookies")) {
-                    p = new Product(rs.getInt("PRODUCTID"), rs.getString("NAME"), rs.getString("PICTURE"), rs.getDouble("PRICE"), Category.COOKIES, rs.getString("WARNING"), rs.getString("DESCRIPTION"), rs.getInt("RECIPEID"));
-                    products.add(p);
-                } else if (cat.equalsIgnoreCase("cakes")) {
-                    p = new Product(rs.getInt("PRODUCTID"), rs.getString("NAME"), rs.getString("PICTURE"), rs.getDouble("PRICE"), Category.CAKES, rs.getString("WARNING"), rs.getString("DESCRIPTION"), rs.getInt("RECIPEID"));
-                    products.add(p);
-                } else if (cat.equalsIgnoreCase("cupcakes")) {
-                    p = new Product(rs.getInt("PRODUCTID"), rs.getString("NAME"), rs.getString("PICTURE"), rs.getDouble("PRICE"), Category.CUPCAKES, rs.getString("WARNING"), rs.getString("DESCRIPTION"), rs.getInt("RECIPEID"));
-                    products.add(p);
-                } else if (cat.equalsIgnoreCase("fresh_bread")) {
-                    p = new Product(rs.getInt("PRODUCTID"), rs.getString("NAME"), rs.getString("PICTURE"), rs.getDouble("PRICE"), Category.FRESH_BREAD, rs.getString("WARNING"), rs.getString("DESCRIPTION"), rs.getInt("RECIPEID"));
-                    products.add(p);
-                } else if (cat.equalsIgnoreCase("pastries")) {
-                    p = new Product(rs.getInt("PRODUCTID"), rs.getString("NAME"), rs.getString("PICTURE"), rs.getDouble("PRICE"), Category.PASTRIES, rs.getString("WARNING"), rs.getString("DESCRIPTION"), rs.getInt("RECIPEID"));
-                    products.add(p);
-                } else if (cat.equalsIgnoreCase("pies")) {
-                    p = new Product(rs.getInt("PRODUCTID"), rs.getString("NAME"), rs.getString("PICTURE"), rs.getDouble("PRICE"), Category.PIES, rs.getString("WARNING"), rs.getString("DESCRIPTION"), rs.getInt("RECIPEID"));
-                    products.add(p);
-                } else if (cat.equalsIgnoreCase("brownies")) {
-                    p = new Product(rs.getInt("PRODUCTID"), rs.getString("NAME"), rs.getString("PICTURE"), rs.getDouble("PRICE"), Category.BROWNIES, rs.getString("WARNING"), rs.getString("DESCRIPTION"), rs.getInt("RECIPEID"));
-                    products.add(p);
-                }
-
-            }
-
-        } catch (SQLException ex) {
-        } finally {
-            closeStreams();
-        }
-
-        return products;
-    }
-
-    @Override
     public List<Product> read(Category c) {
         List<Product> products = new ArrayList<>();
 
         try {
             con = dbpm.getConnection();
-            ps = con.prepareStatement("SELECT * FROM PRODUCT WHERE CATEGORY=?");
+            ps = con.prepareStatement("SELECT * FROM PRODUCT WHERE CATEGORY=? AND ISACTIVE=?");
             ps.setString(1, c.toString().toLowerCase());
+            ps.setString(2, "Y");
             rs = ps.executeQuery();
 
             while (rs.next()) {
@@ -217,10 +180,11 @@ public class ProductDAOImpl implements ProductDAO {
 //***************update product in the database*******************************
 
     @Override
-    public void update(Product p) {
+    public boolean update(Product p) {
+        boolean isUpdated = false;
         try {
             con = dbpm.getConnection();
-            ps = con.prepareStatement("update Product set name=?,picture=?,price=?,category=?,warning-?,description=?,recipeId=? where productId=?");
+            ps = con.prepareStatement("update Product set name=?,picture=?,price=?,category=?,warning=?,description=?,recipeId=? where productId=?");
 
             ps.setString(1, p.getName());
             ps.setString(2, p.getPicture());
@@ -232,53 +196,71 @@ public class ProductDAOImpl implements ProductDAO {
             ps.setInt(8, p.getProductID());
 
             ps.executeUpdate();
+            isUpdated = true;
 
         } catch (SQLException ex) {
             System.out.println("Error: " + ex.getMessage());
         } finally {
             closeStreams();
+
         }
+        return isUpdated;
     }
 
     //**************delete product in the database**************************
     @Override
-    public void delete(Product p) {
+    public boolean delete(int productId) {
+
+        boolean isDeleted = false;
         try {
             con = dbpm.getConnection();
-            ps = con.prepareStatement("Delete from Product where productId=?");
-            ps.setInt(1, p.getProductID());
+            ps = con.prepareStatement("update Product set isActive=? where productId=?");
+            ps.setString(1, "N");
+            ps.setInt(2, productId);
             ps.executeUpdate();
-
+            isDeleted = true;
         } catch (SQLException ex) {
             System.out.println("Error: " + ex.getMessage());
         } finally {
             closeStreams();
         }
-    }
-    //    
-    //    @Override
-    //    public List<Product> read(Category choice) {
-    //        PreparedStatement statement;
-    //        List<Product> choices = null;
-    //        try {
-    //
-    //            ResultSet rs = statement.executeQuery();
-    //            while (rs.next()) {
-    //                choices.add(new Product(rs.getInt("ProductID"),
-    //                        rs.getString("name"),
-    //                        rs.getString("picture"),
-    //                        rs.getDouble("price"),
-    //                        (Category) rs.getObject("category"),
-    //                        rs.getString("warning"),
-    //                        rs.getString("description"),
-    //                        rs.getInt("recipe")));
-    //            }
-    //        } catch (SQLException ex) {
-    //            System.out.println("Error: " + ex.getMessage());
-    //        }
-    //        return choices;
-    //    }
 
+        return isDeleted;
+    }
+
+    @Override
+    public Recipe readRecipe(Product p) {
+        Recipe r = null;
+        try {
+            con = dbpm.getConnection();
+            ps = con.prepareStatement("SELECT * FROM RECIPE WHERE RECIPEID=?");
+            ps.setInt(1, p.getRecipeID());
+            rs = ps.executeQuery();
+
+            if (rs.next()) {
+                r = new Recipe();
+                r.setRecipeID(rs.getInt("recipeId"));
+                r.setRecipeName(rs.getString("recipeName"));
+                String ingreItem = rs.getString("ingredients");
+                String[] ingreItemsstring = ingreItem.split(",");
+                List<IngredientItem> ingreItemsStringList = new ArrayList();
+                for (String s : ingreItemsstring) {
+                    IngredientItem it = new IngredientItem();
+                    it.setIngredientItemId(Integer.parseInt(s));
+                    ingreItemsStringList.add(it);
+                }
+                r.setIngredients(ingreItemsStringList);
+                r.setSteps(rs.getString("Steps"));
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        } finally {
+            closeStreams();
+        }
+        return r;
+    }
+
+  
     // ***********************************Clossing the connection************************************
     private void closeStreams() {
         if (rs != null) {

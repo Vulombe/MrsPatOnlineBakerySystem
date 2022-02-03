@@ -12,11 +12,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import za.co.bakery.dbao.IngredientDAO;
-import za.co.bakery.dbao.ProductDAO;
-import za.co.bakery.dbao.ProductLineItemDAO;
 import za.co.bakery.domain.Ingredient;
-import za.co.bakery.domain.LineItem;
-import za.co.bakery.domain.LineItemCollection;
 import za.co.bakery.domain.Product;
 import za.co.bakery.manager.DBPoolManagerBasic;
 
@@ -24,34 +20,29 @@ import za.co.bakery.manager.DBPoolManagerBasic;
  *
  * @author Studio13
  */
-public class ProductLineItemDAOImpl implements ProductLineItemDAO {
+public class IngredientDAOImpl implements IngredientDAO {
 
     final private DBPoolManagerBasic dbpm;
     private Connection con = null;
     private PreparedStatement ps;
-    private PreparedStatement psIsLineItemValid;
-    private PreparedStatement psUpdateQty;
     private ResultSet rs;
-    private ProductDAO productDAO;
 // ************************************************************************
 
-    public ProductLineItemDAOImpl(DBPoolManagerBasic dbpm) {
+    public IngredientDAOImpl(DBPoolManagerBasic dbpm) {
         this.dbpm = dbpm;
-        this.productDAO = new ProductDAOImpl(dbpm);
     }
 
     //*****************add product to database*******************************
     @Override
-    public boolean addProductLineItem(LineItem li) {
+    public boolean add(Ingredient i) {
         boolean isAdded = false;
         try {
             con = dbpm.getConnection();
-            ps = con.prepareStatement("INSERT INTO PRODUCTLINEITEMS(lineItemId,productId,qty,isActive) VALUES(null,?,?,null)");
+            ps = con.prepareStatement("INSERT INTO INGREDIENT(ingredientId,ingredientName,nutrient,isActive) VALUES(null,?,?,null)");
 
             //  ps.setInt(1, p.getProductID());
-            Product p = li.getProduct();
-            ps.setInt(1, p.getProductID());
-            ps.setInt(2, li.getQty());
+            ps.setString(1, i.getName());
+            ps.setString(2, i.getNutrient());
 
             if (ps.executeUpdate() > 0) {
                 isAdded = true;
@@ -66,17 +57,18 @@ public class ProductLineItemDAOImpl implements ProductLineItemDAO {
     }
 
     @Override
-    public LineItem readProductLineItem(int lineItemId) {
-        LineItem l = null;
+    public Ingredient readIngridient(String name) {
+        Ingredient i = null;
         try {
             con = dbpm.getConnection();
 
-            ps = con.prepareStatement("SELECT * FROM PRODUCTLINEITEMS WHERE LINEITEMID= ?");
-            ps.setInt(1, lineItemId);
+            ps = con.prepareStatement("SELECT * FROM INGREDIENT WHERE INGREDIENTNAME= ?");
+            ps.setString(1, name);
             rs = ps.executeQuery();
 
             if (rs.next()) {
-                l = new LineItem(rs.getInt("lineItemId"), productDAO.read(rs.getInt("productId")), rs.getInt("qty"));
+
+                i = new Ingredient(rs.getString("ingredientName"), rs.getString("nutrient"), rs.getInt("ingredientId"));
 
             }
 
@@ -86,47 +78,23 @@ public class ProductLineItemDAOImpl implements ProductLineItemDAO {
             closeStreams();
         }
 
-        return l;
+        return i;
     }
 
     @Override
-    public LineItem readProductLineItem(LineItem l) {
+    public List<Ingredient> readAll() {
+        List<Ingredient> ingredients = new ArrayList<>();
 
         try {
             con = dbpm.getConnection();
 
-            ps = con.prepareStatement("SELECT * FROM PRODUCTLINEITEMS WHERE LINEITEMID= ?");
-            ps.setInt(1, l.getLineItemId());
-            rs = ps.executeQuery();
-
-            if (rs.next()) {
-                l = new LineItem(rs.getInt("lineItemId"), productDAO.read(rs.getInt("productId")), rs.getInt("qty"));
-
-            }
-
-        } catch (SQLException ex) {
-            System.out.println("Error: " + ex.getMessage());
-        } finally {
-            closeStreams();
-        }
-
-        return l;
-    }
-
-    @Override
-    public List<LineItem> readAll() {
-        List<LineItem> lineItems = new ArrayList<>();
-
-        try {
-            con = dbpm.getConnection();
-
-            ps = con.prepareStatement("SELECT * FROM PRODUCTLINEITEMS");
+            ps = con.prepareStatement("SELECT * FROM INGREDIENT");
             rs = ps.executeQuery();
 
             while (rs.next()) {
 
-                LineItem l = new LineItem(rs.getInt("lineItemId"), productDAO.read(rs.getInt("productId")), rs.getInt("qty"));
-                lineItems.add(l);
+                Ingredient i = new Ingredient(rs.getString("ingredientName"), rs.getString("nutrient"), rs.getInt("ingredientId"));
+                ingredients.add(i);
 
             }
 
@@ -135,47 +103,24 @@ public class ProductLineItemDAOImpl implements ProductLineItemDAO {
             closeStreams();
         }
 
-        return lineItems;
+        return ingredients;
     }
 
     @Override
-    public List<LineItem> readAllProductLineItem(Product p) {
-        List<LineItem> lineItems = new ArrayList<>();
-        LineItem l= null;
-        try {
-            con = dbpm.getConnection();
-
-            ps = con.prepareStatement("SELECT * FROM PRODUCTLINEITEMS WHERE PRODUCTID=?");
-            ps.setInt(1, p.getProductID());
-            rs = ps.executeQuery();
-
-            while (rs.next()) {
-               
-
-                l = new LineItem(rs.getInt("lineItemId"),productDAO.read(rs.getInt("productId")), rs.getInt("qty"));
-                lineItems.add(l);
-
-            }
-
-        } catch (SQLException ex) {
-        } finally {
-            closeStreams();
-        }
-
-        return lineItems;
+    public List<Product> readAllProductOfIngredient(Ingredient i) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public boolean update(LineItem l) {
+    public boolean update(Ingredient i) {
         boolean isUpdated = false;
         try {
             con = dbpm.getConnection();
-            ps = con.prepareStatement("UPDATE PRODUCTLINEITEMS SET PRODUCTID=?,QTY=? WHERE LINEITEMID=?");
+            ps = con.prepareStatement("update ingredient set IngredientName=?,nutrient=? where ingredientName=?");
 
-            ps.setInt(1, l.getProduct().getProductID());
-            ps.setInt(2, l.getQty());
-            ps.setInt(3, l.getLineItemId());
-
+            ps.setString(1, i.getName());
+            ps.setString(2, i.getNutrient());
+            ps.setString(3, i.getName());
             ps.executeUpdate();
             isUpdated = true;
 
@@ -189,13 +134,13 @@ public class ProductLineItemDAOImpl implements ProductLineItemDAO {
     }
 
     @Override
-    public boolean delete(LineItem l) {
+    public boolean delete(Ingredient i) {
         boolean isDeleted = false;
         try {
             con = dbpm.getConnection();
-            ps = con.prepareStatement("UPDATE PRODUCTLINEITEMS SET ISACTIVE=? WHERE LINEITEMID=?");
+            ps = con.prepareStatement("update ingredient set isActive=? where email=?");
             ps.setString(1, "N");
-            ps.setInt(2, l.getLineItemId());
+            ps.setString(2, i.getName());
             ps.executeUpdate();
             isDeleted = true;
         } catch (SQLException ex) {
@@ -207,18 +152,20 @@ public class ProductLineItemDAOImpl implements ProductLineItemDAO {
         return isDeleted;
     }
     
-    @Override
-    public LineItem readProductLineItem(Product p) {
-        LineItem l = null;
+    
+     @Override
+    public Ingredient readIngridientById(int Id) {
+       Ingredient i = null;
         try {
             con = dbpm.getConnection();
 
-            ps = con.prepareStatement("SELECT * FROM PRODUCTLINEITEMS WHERE PRODUCTID= ?");
-            ps.setInt(1,p.getProductID());
+            ps = con.prepareStatement("SELECT * FROM INGREDIENT WHERE INGREDIENTID= ?");
+            ps.setInt(1,Id);
             rs = ps.executeQuery();
 
             if (rs.next()) {
-                l = new LineItem(rs.getInt("lineItemId"), productDAO.read(rs.getInt("productId")), rs.getInt("qty"));
+
+                i = new Ingredient(rs.getString("ingredientName"), rs.getString("nutrient"), rs.getInt("ingredientId"));
 
             }
 
@@ -228,8 +175,10 @@ public class ProductLineItemDAOImpl implements ProductLineItemDAO {
             closeStreams();
         }
 
-        return l;
+        return i;
     }
+
+
 
 
     // ***********************************Clossing the connection************************************
@@ -261,5 +210,4 @@ public class ProductLineItemDAOImpl implements ProductLineItemDAO {
     }
     // ************************************************************************
 
-    
 }

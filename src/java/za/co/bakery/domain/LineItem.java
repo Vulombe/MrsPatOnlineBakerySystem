@@ -72,7 +72,7 @@ public class LineItem {
     }
     
     public double price(){
-        return this.getProduct().getPrice();
+        return this.getProduct().getPrice()*this.getQty();
     }
     
     

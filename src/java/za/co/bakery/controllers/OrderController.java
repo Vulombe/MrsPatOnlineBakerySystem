@@ -6,6 +6,7 @@
 package za.co.bakery.controllers;
 
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.Date;
 
 import javax.servlet.RequestDispatcher;
@@ -28,8 +29,13 @@ import za.co.bakery.service.OrderService;
 import za.co.bakery.service.OrderServiceImpl;
 import za.co.bakery.service.UserAddressService;
 import za.co.bakery.service.UserAddressServiceImpl;
+import za.co.bakery.service.UserService;
+import za.co.bakery.service.UserServiceImpl;
 
 public class OrderController extends HttpServlet {
+    
+    
+    
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -37,15 +43,17 @@ public class OrderController extends HttpServlet {
         DBPoolManagerBasic dbpm = (DBPoolManagerBasic) sc.getAttribute("dbconn");
         OrderService orderService = new OrderServiceImpl(dbpm);
         UserAddressService userAddressService = new UserAddressServiceImpl(dbpm);
+        UserService userService = new UserServiceImpl(dbpm);
         HttpSession session = request.getSession();
         String prs = request.getParameter("pro");
         RequestDispatcher view = null;
-        User user = (User) request.getAttribute("user");
+        User user = userService.read(request.getParameter("emailAddress"));
 
         LineItemCollection lineItemList = (LineItemCollection) request.getAttribute("cart-items");
         double totalPrice = lineItemList.total();
         UserAddress userAddress = userAddressService.readUserAddress(user);
-        Date ordrDate = new Date();
+        
+        LocalDate ordrDate = LocalDate.now();
 
         if (prs != null) {
             prs = prs.toLowerCase();
