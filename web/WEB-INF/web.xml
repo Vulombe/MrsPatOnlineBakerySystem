@@ -51,6 +51,14 @@
         <servlet-name>acontrol</servlet-name>
         <url-pattern>/acontrol</url-pattern>
     </servlet-mapping>
+    <servlet>
+        <servlet-name>ocontrol</servlet-name>
+        <servlet-class>za.co.bakery.controllers.OrderController</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ocontrol</servlet-name>
+        <url-pattern>/ocontrol</url-pattern>
+    </servlet-mapping>
     <session-config>
         <session-timeout>
             30

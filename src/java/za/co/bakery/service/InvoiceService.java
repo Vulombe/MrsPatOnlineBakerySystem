@@ -4,6 +4,7 @@
  * and open the template in the editor.
  */
 package za.co.bakery.service;
+import org.apache.pdfbox.pdmodel.PDDocument;
 import za.co.bakery.domain.Invoice;
 import za.co.bakery.domain.Order;
 /**
@@ -11,5 +12,6 @@ import za.co.bakery.domain.Order;
  * @author student12
  */
 public interface InvoiceService {
-    public Invoice getInvoice(Order order);
+    public PDDocument getInvoice(Order order);
+
 }
