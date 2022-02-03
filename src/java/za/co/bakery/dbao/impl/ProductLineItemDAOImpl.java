@@ -37,6 +37,7 @@ public class ProductLineItemDAOImpl implements ProductLineItemDAO {
 
     public ProductLineItemDAOImpl(DBPoolManagerBasic dbpm) {
         this.dbpm = dbpm;
+        this.productDAO = new ProductDAOImpl(dbpm);
     }
 
     //*****************add product to database*******************************
@@ -45,7 +46,7 @@ public class ProductLineItemDAOImpl implements ProductLineItemDAO {
         boolean isAdded = false;
         try {
             con = dbpm.getConnection();
-            ps = con.prepareStatement("INSERT INTO PRODUCTLINEITEM(lineItemId,productId,qty,isActive) VALUES(null,?,?,null)");
+            ps = con.prepareStatement("INSERT INTO PRODUCTLINEITEMS(lineItemId,productId,qty,isActive) VALUES(null,?,?,null)");
 
             //  ps.setInt(1, p.getProductID());
             Product p = li.getProduct();
@@ -70,12 +71,12 @@ public class ProductLineItemDAOImpl implements ProductLineItemDAO {
         try {
             con = dbpm.getConnection();
 
-            ps = con.prepareStatement("SELECT * FROM PRODUCTLINEITEM WHERE LINEITEMID= ?");
+            ps = con.prepareStatement("SELECT * FROM PRODUCTLINEITEMS WHERE LINEITEMID= ?");
             ps.setInt(1, lineItemId);
             rs = ps.executeQuery();
 
             if (rs.next()) {
-                l = new LineItem(rs.getInt("lineItemId"), productDAO.read(rs.getInt("product")), rs.getInt("qty"));
+                l = new LineItem(rs.getInt("lineItemId"), productDAO.read(rs.getInt("productId")), rs.getInt("qty"));
 
             }
 
@@ -94,12 +95,12 @@ public class ProductLineItemDAOImpl implements ProductLineItemDAO {
         try {
             con = dbpm.getConnection();
 
-            ps = con.prepareStatement("SELECT * FROM PRODUCTLINEITEM WHERE LINEITEMID= ?");
+            ps = con.prepareStatement("SELECT * FROM PRODUCTLINEITEMS WHERE LINEITEMID= ?");
             ps.setInt(1, l.getLineItemId());
             rs = ps.executeQuery();
 
             if (rs.next()) {
-                l = new LineItem(rs.getInt("lineItemId"), productDAO.read(rs.getInt("product")), rs.getInt("qty"));
+                l = new LineItem(rs.getInt("lineItemId"), productDAO.read(rs.getInt("productId")), rs.getInt("qty"));
 
             }
 
@@ -119,12 +120,12 @@ public class ProductLineItemDAOImpl implements ProductLineItemDAO {
         try {
             con = dbpm.getConnection();
 
-            ps = con.prepareStatement("SELECT * FROM PRODUCTLINEITEM");
+            ps = con.prepareStatement("SELECT * FROM PRODUCTLINEITEMS");
             rs = ps.executeQuery();
 
             while (rs.next()) {
 
-                LineItem l = new LineItem(rs.getInt("lineItemId"), productDAO.read(rs.getInt("product")), rs.getInt("qty"));
+                LineItem l = new LineItem(rs.getInt("lineItemId"), productDAO.read(rs.getInt("productId")), rs.getInt("qty"));
                 lineItems.add(l);
 
             }
@@ -140,17 +141,18 @@ public class ProductLineItemDAOImpl implements ProductLineItemDAO {
     @Override
     public List<LineItem> readAllProductLineItem(Product p) {
         List<LineItem> lineItems = new ArrayList<>();
-
+        LineItem l= null;
         try {
             con = dbpm.getConnection();
 
-            ps = con.prepareStatement("SELECT * FROM PRODUCTLINEITEM WHERE PRODUCTID=?");
+            ps = con.prepareStatement("SELECT * FROM PRODUCTLINEITEMS WHERE PRODUCTID=?");
             ps.setInt(1, p.getProductID());
             rs = ps.executeQuery();
 
             while (rs.next()) {
+               
 
-                LineItem l = new LineItem(rs.getInt("lineItemId"), productDAO.read(rs.getInt("product")), rs.getInt("qty"));
+                l = new LineItem(rs.getInt("lineItemId"),productDAO.read(rs.getInt("productId")), rs.getInt("qty"));
                 lineItems.add(l);
 
             }
@@ -168,7 +170,7 @@ public class ProductLineItemDAOImpl implements ProductLineItemDAO {
         boolean isUpdated = false;
         try {
             con = dbpm.getConnection();
-            ps = con.prepareStatement("UPDATE PRODUCTLINEITEM SET PRODUCTID=?,QTY=? WHERE LINEITEMID=?");
+            ps = con.prepareStatement("UPDATE PRODUCTLINEITEMS SET PRODUCTID=?,QTY=? WHERE LINEITEMID=?");
 
             ps.setInt(1, l.getProduct().getProductID());
             ps.setInt(2, l.getQty());
@@ -191,7 +193,7 @@ public class ProductLineItemDAOImpl implements ProductLineItemDAO {
         boolean isDeleted = false;
         try {
             con = dbpm.getConnection();
-            ps = con.prepareStatement("UPDATE PRODUCTLINEITEM SET ISACTIVE=? WHERE LINEITEMID=?");
+            ps = con.prepareStatement("UPDATE PRODUCTLINEITEMS SET ISACTIVE=? WHERE LINEITEMID=?");
             ps.setString(1, "N");
             ps.setInt(2, l.getLineItemId());
             ps.executeUpdate();
@@ -204,21 +206,21 @@ public class ProductLineItemDAOImpl implements ProductLineItemDAO {
 
         return isDeleted;
     }
-
+    
     @Override
     public LineItem readProductLineItem(Product p) {
         LineItem l = null;
         try {
             con = dbpm.getConnection();
 
-            ps = con.prepareStatement("SELECT * FROM PRODUCTLINEITEM WHERE PRODUCTID= ?");
+            ps = con.prepareStatement("SELECT * FROM PRODUCTLINEITEMS WHERE PRODUCTID= ?");
             ps.setInt(1,p.getProductID());
             rs = ps.executeQuery();
 
-//            if (rs.next()) {
-//                l = new LineItem(rs.getInt("lineItemId"), productDAO.read(rs.getInt("product")), rs.getInt("qty"));
-//
-//            }
+            if (rs.next()) {
+                l = new LineItem(rs.getInt("lineItemId"), productDAO.read(rs.getInt("productId")), rs.getInt("qty"));
+
+            }
 
         } catch (SQLException ex) {
             System.out.println("Error: " + ex.getMessage());
@@ -228,6 +230,8 @@ public class ProductLineItemDAOImpl implements ProductLineItemDAO {
 
         return l;
     }
+
+
     // ***********************************Clossing the connection************************************
     private void closeStreams() {
         if (rs != null) {
@@ -257,5 +261,5 @@ public class ProductLineItemDAOImpl implements ProductLineItemDAO {
     }
     // ************************************************************************
 
-
+    
 }

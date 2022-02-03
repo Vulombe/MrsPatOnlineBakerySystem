@@ -96,6 +96,21 @@ public class AdminController extends HttpServlet {
                     view = request.getRequestDispatcher("AdminAdd.jsp");
                     view.forward(request, response);
                     break;
+                case "iadd":
+                    request.setAttribute("admin", "iadd");
+                    view = request.getRequestDispatcher("AdminAdd.jsp");
+                    view.forward(request, response);
+                    break;
+                case "iedit":
+                    request.setAttribute("admin", "iedit");
+                    view = request.getRequestDispatcher("AdminAdd.jsp");
+                    view.forward(request, response);
+                    break;
+                case "idel":
+                    request.setAttribute("admin", "idelete");
+                    view = request.getRequestDispatcher("AdminAdd.jsp");
+                    view.forward(request, response);
+                    break;
             }
 
         } else {

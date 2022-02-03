@@ -1,21 +1,20 @@
 <%-- 
-    Document   : index
-    Created on : 25 Jan 2022, 12:22:36 PM
-    Author     : Studio13
+    Document   : Vproduct
+    Created on : Jan 28, 2022, 12:38:53 PM
+    Author     : student11
 --%>
+
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@page import="za.co.bakery.domain.Product"%>
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Welcome to Miss Pat's bakery</title>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <%Product products = (Product) request.getAttribute("prod");%>
+        <title>Item Information</title>
 
     </head>
-
-
     <header>
-
         <nav class="nav bd-grid">
             <div>
                 <a href="#" class="nav__logo">Mrs Pat's Bakery</a>
@@ -31,69 +30,78 @@
                     <li class="nav__item"><a href="http://localhost:8080/MrsPatOnlineBakerySystem/pcontrol?pro=pview&category=cupcakes" class="nav__link">Cupcakes</a></li>
                     <li class="nav__item"><a href="http://localhost:8080/MrsPatOnlineBakerySystem/pcontrol?pro=pview&category=pastries" class="nav__link">Pastries</a></li>
                     <li class="nav__item"><a href="http://localhost:8080/MrsPatOnlineBakerySystem/pcontrol?pro=pview&category=brownies" class="nav__link">Brownies</a></li>
-                    <li class="nav__item"><a href= "myaccount.jsp"  class="nav__link">My Account</a></li>
-                    <li class="nav__item"><a href= "logpg.jsp"  class="nav__link">Login</a></li>
-                    <li class="nav__item"><a href= "cart.jsp"  class="nav__link">Logout</a></li>
+                    <li class="nav__item"><a href="logpg.jsp" class="nav__link">Login</a></li>
                 </ul>
-
-
             </div>
+
 
         </nav>
-
     </header>
     <body>
+        <br>
+        <div class="view bd-grid2">
+
+            <h1 class="catName"><%=products.getName()%> </h1>
+
+            <div class="product" >
+
+                <div class="wrapper" style="align-content: left">
+
+                    <!-- items -->
+                    <div class="items">
+                        <!-- single item -->
+                        <ul class="nav__list2">
 
 
 
-        <div class="products">
-            <div class="container">
-                <div class="item item1">
-                    <a href="">
-                        <img class="demo" src="https://handletheheat.com/wp-content/uploads/2020/10/BAKERY-STYLE-CHOCOLATE-CHIP-COOKIES-9-637x637-1.jpg" style="height:100%"alt="Pie">
-                    </a>
+                            <li class=" productsInline"> 
+
+                                <div  class="item">
+                                    <h1 class=""></h1>
+
+                                    <% if (products != null) {%>
+                                    <li> <img src="<%=products.getPicture()%> "alt="item" style="width: 720px; height: 200px;" "/>
+                                        <br>
+                                         <p class="price">Price: R <em><%=products.getPrice()%> </em></p>
+                                        <br>
+                                        <a href="http://localhost:8080/MrsPatOnlineBakerySystem/pcontrol?pro=cadd&prodid=<%=products.getProductID()%>">
+                                   <button class="add-to-cart" type="button" >Add to cart</button></a>
+                                    </li>
+                                    <li>   <h2  class="name" ><%=products.getName()%> </h2> 
+                                       
+                                        <p> <b>Description:</b></p><p><%=products.getDescription()%></p><br>
+                                        <p><b> Warning:</b></p><p><%=products.getWarning()%></P></li>
+                                    <li>
+                                     
+                                    </li>
+                                      
+
+                                    <%} else {%>
+                                     <p>No Items Available</p>
+                                    <%}%>
 
 
+                                </div>
+                            </li>
+
+
+                            <!--/ single item -->
+                        </ul>
+
+                    </div>
+                    <!--/ items -->
                 </div>
-                <div class="item item2">
-                    <a href="http://localhost:8080/MrsPatOnlineBakerySystem/pcontrol?pro=pview&category=pies">
-                        <img class="demo" src="https://i.ytimg.com/vi/RoHWiA6pogg/maxresdefault.jpg" style="height:100%"alt="Pie">
-                    </a>
-                </div>
-                <div class="item item3">
-                    <a href="http://localhost:8080/MrsPatOnlineBakerySystem/pcontrol?pro=pview&category=cakes">
-                        <img class="demo" src="https://upload.wikimedia.org/wikipedia/commons/0/04/Pound_layer_cake.jpg" style="height:100%"alt="cupcakes">
-                    </a>
-                </div>
-                <div class="item item4">
-                    <a href="http://localhost:8080/MrsPatOnlineBakerySystem/pcontrol?pro=pview&category=brownies">
-                        <img class="demo" src="https://img.taste.com.au/F7vjDzvl/taste/2020/12/kitkat-brownies-168004-2.jpg" style="height:100%" onclick="currentSlide(4)" alt="cupcakes">
-                    </a>
-                </div>
-                <div class="item item5">
-                    <a href="http://localhost:8080/MrsPatOnlineBakerySystem/pcontrol?pro=pview&category=fresh_bread">
-                        <img class="demo" src="https://www.kingarthurbaking.com/sites/default/files/2020-02/the-easiest-loaf-of-bread-youll-ever-bake.jpg" style="height :100%" onclick="currentSlide(4)" alt="bread">
-                    </a>
+                <!--/ wrapper -->
 
-                </div>
-                <div class="item item6">
-                    <a href="http://localhost:8080/MrsPatOnlineBakerySystem/pcontrol?pro=pview&category=cupcakes">
-                        <img class="demo" src="https://www.twosisterscrafting.com/wp-content/uploads/2016/01/easter-cupcakes-1200-featured-735x735.jpg" style="height:100%" onclick="currentSlide(4)" alt="cupcakes">
-
-                    </a>
-                </div>
 
             </div>
 
+
         </div>
-
-        <script src="main.js"></script>
-        <script src="https://unpkg.com/ionicons@4.2.2/dist/ionicons.js"></script>
     </body>
-
     <style>
-
         /*===== GOOGLE FONTS =====*/
+
 
         /*===== VARIABLES CSS =====*/
         :root {
@@ -133,6 +141,7 @@
             --mb-6: 3rem;
         }
 
+
         /*===== z index =====*/
         :root {
             --z-back: -10;
@@ -142,7 +151,9 @@
         }
 
         /*===== BASE =====*/
-        *, ::before, ::after {
+        *,
+        ::before,
+        ::after {
             -webkit-box-sizing: border-box;
             box-sizing: border-box;
         }
@@ -159,7 +170,9 @@
             color: var(--second-color);
         }
 
-        h1, h2, p {
+        h1,
+        h2,
+        p {
             margin: 0;
         }
 
@@ -171,7 +184,13 @@
 
         a {
             text-decoration: none;
+            color: #fff;
+            font-size: 14px;
+            text-decoration: none;
+            margin: 15px 0;
+
         }
+
 
         img {
             max-width: 100%;
@@ -235,7 +254,7 @@
 
 
             height: var(--header-height);
-            width:100%;
+            width: 100%;
             display: -webkit-box;
             display: -ms-flexbox;
             display: flex;
@@ -262,7 +281,7 @@
                 background-color: var(--second-color);
                 -webkit-transition: .5s;
                 transition: .5s;
-                alignment-adjust:  right;
+                alignment-adjust: right;
 
             }
         }
@@ -292,7 +311,7 @@
 
         .nav__logo {
             color: var(--second-color);
-            alignment-adjust:  left;
+            alignment-adjust: left;
 
         }
 
@@ -395,135 +414,72 @@
             grid-template-columns: 50% 30%;
             list-style-type: square;
             /*
-             
-              
-              grid-column-gap:1em;
-              grid-row-gap:1em;
-              
-              grid-gap:0;*/
+         
+          
+          grid-column-gap:1em;
+          grid-row-gap:1em;
+          
+          grid-gap:0;*/
         }
 
-        /* ===== CONTACT =====*/
-        .contact__input {
-            width: 100%;
-            font-size: var(--normal-font-size);
-            font-weight: var(--font-semi);
-            padding: 1rem;
-            border-radius: .5rem;
-            border: 1.5px solid var(--second-color);
-            outline: none;
-            margin-bottom: var(--mb-4);
-        }
 
-        .contact__button {
-            display: block;
-            border: none;
-            outline: none;
-            font-size: var(--normal-font-size);
-            cursor: pointer;
-            margin-left: auto;
-        }
 
-        /* ===== FOOTER =====*/
-        .footer {
-            background-color: var(--second-color);
-            color: #fff;
-            text-align: center;
-            font-weight: var(--font-semi);
-            padding: 2rem 0;
-        }
 
-        .footer__title {
-            font-size: 2rem;
-            margin-bottom: var(--mb-4);
-        }
 
-        .footer__social {
-            margin-bottom: var(--mb-4);
-        }
-
-        .footer__icon {
-            font-size: 1.5rem;
-            color: #fff;
-            margin: 0 var(--mb-2);
-        }
 
         /* ===== MEDIA QUERIES=====*/
         @media screen and (min-width: 768px) {
             body {
                 margin: 0;
             }
+
             .section {
                 padding-top: 4rem;
                 padding-bottom: 3rem;
             }
+
             .section-title {
                 margin-bottom: var(--mb-6);
             }
+
             .section-title::after {
                 width: 80px;
                 top: 3rem;
             }
+
             .nav {
                 height: calc(var(--header-height) + 1rem);
             }
+
             .nav__list {
                 display: -webkit-box;
                 display: -ms-flexbox;
                 display: flex;
                 padding-top: 0;
             }
+
             .nav__item {
                 margin-left: var(--mb-6);
                 margin-bottom: 0;
             }
+
             .nav__toggle {
                 display: none;
             }
+
             .nav__link {
                 color: var(--second-color);
             }
+
             .home {
                 height: 100vh;
             }
+
             .home__data {
                 -ms-flex-item-align: end;
                 align-self: flex-end;
             }
-            .home__social {
-                padding-top: 0;
-                padding-bottom: 2.5rem;
-                -webkit-box-orient: horizontal;
-                -webkit-box-direction: normal;
-                -ms-flex-direction: row;
-                flex-direction: row;
-                -ms-flex-item-align: end;
-                align-self: flex-end;
-            }
-            .home__social-icon {
-                margin-bottom: 0;
-                margin-right: var(--mb-4);
-            }
-            .home__img {
-                width: 457px;
-                bottom: 15%;
-            }
-            .about__container, .skills__container {
-                grid-template-columns: repeat(2, 1fr);
-                -webkit-box-align: center;
-                -ms-flex-align: center;
-                align-items: center;
-                text-align: initial;
-            }
-            .about__img img {
-                width: 300px;
-            }
-            .work__container {
-                grid-template-columns: repeat(3, 1fr);
-                grid-template-rows: repeat(2, 1fr);
-                -webkit-column-gap: 2rem;
-                column-gap: 2rem;
-            }
+
         }
 
         @media screen and (min-width: 1024px) {
@@ -531,91 +487,122 @@
                 margin-left: auto;
                 margin-right: auto;
             }
+
             .home__img {
                 right: 10%;
             }
         }
 
-        /*--------------------------------------------------------------------------------*/
-        .container {
-            display: grid;
-            grid-template-columns: 300px 300px 300px;
-            grid-template-rows: 300px 300px;
-            grid-gap: 1rem;
+        .view {
+
+            background-color: white;
+
+        }
+
+        .bd-grid2 {
+            max-width: 90%;
+            display: block;
+            -ms-grid-columns: 100%;
+            grid-template-columns:100%;
+            grid-column-gap: 2rem;
+            width: calc(100% - 2rem);
+            margin-left: var(--mb-2);
+            margin-right: var(--mb-2);
+            height: 800px;
+        }
+
+        .bd-grid2 {
+            margin-left: auto;
+            margin-right: auto;
+            alignment-adjust: left;
 
         }
 
 
+        h1.catName {
+            text-align: center;
+        }
+    </style>
+    <style class="product">
+        .wrapper {
+            padding-left: 20px;
+            padding-right: 20px;
+            margin: 2px auto;
+            padding: 20px;     
 
-        /* OTHER STYLES */
 
-        .products {
 
-            height: 50%;
-            width: 90%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding-top: 5%
+
+
         }
 
+        .clear {
+            clear: both;
+        }
+
+        .items {
+
+
+
+        }
 
         .item {
-            background-color: #1EAAFC;
-            background-image: linear-gradient(130deg, #6C52D9 0%, #1EAAFC 85%, #3EDFD7 100%);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
+            background-color: #fff;
+            float: left;
+            margin: 0 10px 10px 0;
+            width: 205px;
+            padding: 10px;
+            height: 190px;
+            position:left;
+            display: grid;
+
+        }
+
+        .item img {
+            display: block;
+            margin: auto;
+
+        }
+
+        .name {
+            font-size: 16px;
+            display: block;
+            border-bottom: 1px solid #ccc;
+            margin: 0 0 10px 0;
+            padding: 0 0 5px 0;
+        }
+
+        button {
+            display: inline-block;
+            background-color: var(--first-color);
             color: #fff;
-            border-radius: 4px;
-            border: 6px solid white;
+            padding: .75rem 2.5rem;
+            font-weight: var(--font-semi);
+            border-radius: .5rem;
+            cursor: pointer;
         }
+        .productsInline{
+            display:grid;     
 
-        /*-------------------------------------------*/
-        @property {
-            syntax: '<number>';
-            initial-value: 0;
-            inherits: false;
         }
+        .nav__list2 {
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: fixed;
+            padding-top: 0;
+            display: grid;
+            /*grid-template-columns: repeat(auto-fit, minmax(200px, 2fr));*/
+            grid-template-columns: auto auto auto auto;
+            grid-gap: 5rem;
 
 
-        .demo {
-            --k: 0;
-            --j: calc(1 - var(--k));
-            --list: transparent calc(50% - 4vmin), red 0  calc(50% + 4vmin), transparent 0;
-            place-self: center;
-            -o-object-fit: cover;
-            object-fit: cover;
-            width: 90vmin;
-            height: 90vmin;
-            -webkit-filter: grayScale(var(--j));
-            filter: grayScale(var(--j));
-            --mask: 
-                radial-gradient(closest-side, red calc(50% - 1px), transparent 50%), 
-                radial-gradient(closest-side, 
-                transparent calc(50% - 25% + var(--k)*2*25% - 1px), 
-                red calc(50% - 25% + var(--k)*2*25%) calc(var(--k)*100% + var(--j)*50% - 1px), 
-                transparent calc(var(--k)*100% + var(--j)*50%)), 
-                linear-gradient(var(--list)), 
-                linear-gradient(90deg, var(--list)), 
-                linear-gradient(45deg, var(--list)), 
-                linear-gradient(-45deg, var(--list));
-            -webkit-mask: var(--mask);
-            mask: var(--mask);
-            -webkit-mask-composite: add, intersect, add, add;
-            mask-composite: add, intersect, add, add;
-            transition: --k .2s ease-out;
+
+
+
         }
-
-        img:hover {
-            --k: 1 ;
-        }
-        .pname:hover{
-            --k: 1 ;
-            padding:10%;
-        }
-        /*# sourceMappingURL=styles.css.map */
-
-        /*----------------------------------------------------*/
 
 
     </style>
+
+    </
 </html>
