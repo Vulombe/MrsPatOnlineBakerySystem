@@ -16,9 +16,16 @@ import za.co.bakery.domain.Recipe;
 public interface RecipeDAO {
 
     public boolean add(Recipe r);
+
     public Recipe read(String name);
+
     public Product read(Recipe r);
+
     public List<Recipe> readAll();
-    public boolean update(Product p);
-    public boolean delete(Product p);
+
+    public List<Product> readProductOfRecipe(Recipe r);
+
+    public boolean update(Recipe r);
+
+    public boolean delete(Recipe r);
 }

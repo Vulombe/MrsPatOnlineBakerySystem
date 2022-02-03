@@ -17,12 +17,17 @@ public interface ProductService {
     public boolean productAdd(String name, String picture, double price, Category category, String warning, String description, int recipeID);
     public List<Product> getProducts(String category);
     public Product getProduct(String productID);
-    public Ingredient getIngredient(int ingredientID);
-    public boolean productDelete(int productID);
-    public boolean productUpdate(int productID, String field, String update);
-    public boolean recipeUpdate(int ID, String steps, List<IngredientItem> ingredients, String recipeName);
+    public boolean productDelete(String productID);
+    public boolean productUpdate(String productID, String field, String update);
+    public boolean recipeUpdate(String ID, String steps, List<IngredientItem> ingredients, String recipeName);
     public boolean addRecipe(String steps, String recipeName, List<IngredientItem> ingredients);
+    public boolean delRecipe(String name);
     public int addToCart(String productID, String qty, LineItemCollection cart);
     public int editCart(String productID, String qty, LineItemCollection cart);
-    public int getCartSize(LineItemCollection cart);
+    public int getCartSize(LineItemCollection cart); 
+    public Ingredient getIngredient(String ingredientID);
+    public boolean addIngredient(String name, String nutrient);
+    public boolean editIngredient(String name, String nutrient, String ingredientID);
+    public boolean delIngredient(String ingredientID);
+    
 }

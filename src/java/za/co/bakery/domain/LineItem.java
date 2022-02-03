@@ -9,9 +9,18 @@ public class LineItem {
     private int qty;
     private int ingredientId;
     private int productID;
+    private int lineItemId;
 
     public int getProductID() {
         return productID;
+    }
+
+    public int getLineItemId() {
+        return lineItemId;
+    }
+
+    public void setLineItemId(int lineItemID) {
+        this.lineItemId = lineItemID;
     }
 
     public void setProductID(int productID) {
@@ -30,6 +39,12 @@ public class LineItem {
     public LineItem(int ingredientID, int qty){
         this.ingredientId = ingredientID;
         this.qty = qty;
+    }
+    
+    public LineItem(int lineItemID, Product p, int Qty){
+        this.product = p;
+        this.qty = Qty;
+        this.lineItemId = lineItemID;
     }
 
     public int getIngredientId() {
@@ -54,6 +69,10 @@ public class LineItem {
 
     public void setQty(int qty) {
         this.qty = qty;
+    }
+    
+    public double price(){
+        return this.getProduct().getPrice()*this.getQty();
     }
     
     

@@ -32,6 +32,10 @@ public class IngredientItem{
         this.qty = qty;
         
     }
+    
+    public IngredientItem(){
+        
+    }
 
     @Override
     public String toString() {

@@ -43,6 +43,14 @@
         <servlet-name>pcontrol</servlet-name>
         <url-pattern>/pcontrol</url-pattern>
     </servlet-mapping>
+    <servlet>
+        <servlet-name>acontrol</servlet-name>
+        <servlet-class>za.co.bakery.controllers.AdminController</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>acontrol</servlet-name>
+        <url-pattern>/acontrol</url-pattern>
+    </servlet-mapping>
     <session-config>
         <session-timeout>
             30

@@ -34,6 +34,17 @@ public class User
         this.password = password;
         this.userRole = userRole;
     }
+    public User(String title, String firstName, String lastName, String emailAddress, String contactNumber, String password) {
+        this(0,title,firstName, lastName, emailAddress,contactNumber, password, Role.CLIENT);
+    }
+    
+     public User(String title, String firstName, String lastName, String emailAddress, String contactNumber, String password, Role userRole) {
+        this(0,title,firstName, lastName, emailAddress,contactNumber, password, Role.CLIENT);
+    }
+
+    public User(String emailAddress) {
+        this.emailAddress = emailAddress;
+    }
      
     public User() {
     }
