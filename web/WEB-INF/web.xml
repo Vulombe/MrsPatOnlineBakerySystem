@@ -43,13 +43,21 @@
         <servlet-name>pcontrol</servlet-name>
         <url-pattern>/pcontrol</url-pattern>
     </servlet-mapping>
-     <servlet>
+    <servlet>
         <servlet-name>ucontrol</servlet-name>
         <servlet-class>za.co.bakery.controllers.UserController</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>ucontrol</servlet-name>
         <url-pattern>/ucontrol</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>ocontrol</servlet-name>
+        <servlet-class>za.co.bakery.controllers.OrderController</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ocontrol</servlet-name>
+        <url-pattern>/ocontrol</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

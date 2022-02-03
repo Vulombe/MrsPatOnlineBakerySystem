@@ -77,7 +77,7 @@ public class UserController extends HttpServlet {
                         request.getParameter("contactNumber"),
                         request.getParameter("loginPassword"));
                 if (updated) {
-                    view = request.getRequestDispatcher("TestingPage.jsp");
+                    view = request.getRequestDispatcher("index.jsp");
                 } else {
                     request.setAttribute("errormsg", "Unable to update user. Try again!");
                     view = request.getRequestDispatcher("error.jsp");
@@ -89,7 +89,7 @@ public class UserController extends HttpServlet {
             if (prs.equals("delete")) {
                 if (userService.delete(request.getParameter("loginEmail"))) {
                     request.setAttribute("msg", "User Was Deleted");
-                    view = request.getRequestDispatcher("TestingPage.jsp");
+                    view = request.getRequestDispatcher("index.jsp");
                 } else {
                     request.setAttribute("errormsg", "Unable to delete user");
                     view = request.getRequestDispatcher("error.jsp");

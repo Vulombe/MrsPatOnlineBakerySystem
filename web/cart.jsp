@@ -39,7 +39,9 @@
                     <li class="nav__item"><a href="http://localhost:8080/MrsPatOnlineBakerySystem/pcontrol?pro=pview&category=brownies" class="nav__link">Brownies</a></li>
                     <li class="nav__item"><a href= "myaccount.jsp"  class="nav__link">My Account</a></li>
                     <li class="nav__item"><a href= "logpg.jsp"  class="nav__link">Login</a></li>
-                    <li class="nav__item"><a href= "cart.jsp"  class="nav__link">Logout</a></li>
+                    <li class="nav__item"><a href= http://localhost:8080/MrsPatOnlineBakerySystem/cart.jsp  class="nav__link">
+                            <img src="https://img.icons8.com/external-flatart-icons-outline-flatarticons/64/000000/external-cart-supermarket-flatart-icons-outline-flatarticons.png" style="width: 30px; height: 30pxpx;"/>
+                        </a></li>
                 </ul>
             </div>
         </nav>
@@ -93,8 +95,8 @@
                 </div>
                 <% //subTotal+=li.productPrice()
 
-                    }
-                }%>
+                        }
+                    }%>
                 <div class="totals">
                     <!-- <div class="totals-item">
                        <label>Subtotal</label>
@@ -112,14 +114,21 @@
                         <label>Grand Total</label>
                         <div class="totals-value" id="cart-total"><%=lineItemCol.total()%></div>
                     </div>
-                </div>
-                <a href="">
-                    <button class="checkout">Checkout</button>
-                </a>
+
+                    <div>
+                        <%if (request.getSession().getAttribute("user") != null) {%>
+                        <a href="http://localhost:8080/MrsPatOnlineBakerySystem/ocontrol?pro=ocreate">
+                            <button class="checkout">Checkout</button>
+                        </a>
+                        <%} else {%>
+                        <p><i>Please Login to complete your order</i></p>
+                        <%}%>
+                    </div>
+
+
+                </div> 
             </div>
-
-
-        </div> 
+        </div>
     </body>
 </html>
 <style>
@@ -534,7 +543,7 @@
 </style>
 <style>
 
-    
+
     /* Global "table" column settings */
     .product-image {
         float: left;

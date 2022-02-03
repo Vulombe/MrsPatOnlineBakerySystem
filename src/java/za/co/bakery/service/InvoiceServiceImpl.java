@@ -165,7 +165,8 @@ public class InvoiceServiceImpl implements InvoiceService {
             cs.endText();
 
             cs.close();
-            invoicePDF.save(new File("C:\\MrsPatOnlineBakerySystem\\project documents\\Invoice.pdf"));
+            invoicePDF.save(new File("C:\\MrsPatOnlineBakerySystem\\project documents\\" + order.getUser().getLastName().substring(0, 3)+
+                                    invoiceTimeformart +"Invoice.pdf"));
             invoicePDF.close();
         } catch (IOException ex) {
             Logger.getLogger(OrderServiceImpl.class.getName()).log(Level.SEVERE, null, ex);

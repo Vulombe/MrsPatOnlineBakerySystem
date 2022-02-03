@@ -33,9 +33,6 @@ import za.co.bakery.service.UserService;
 import za.co.bakery.service.UserServiceImpl;
 
 public class OrderController extends HttpServlet {
-    
-    
-    
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -47,21 +44,22 @@ public class OrderController extends HttpServlet {
         HttpSession session = request.getSession();
         String prs = request.getParameter("pro");
         RequestDispatcher view = null;
-        User user = userService.read(request.getParameter("emailAddress"));
+        User user = userService.read("marys@gmail.com");
 
-        LineItemCollection lineItemList = (LineItemCollection) request.getAttribute("cart-items");
-        double totalPrice = lineItemList.total();
+        LineItemCollection lineItemList = null;
+                
+        double totalPrice = 12.00;
         UserAddress userAddress = userAddressService.readUserAddress(user);
-        
+
         LocalDate ordrDate = LocalDate.now();
 
         if (prs != null) {
             prs = prs.toLowerCase();
         }
         switch (prs) {
-
+            
             case "ocreate":
-
+                lineItemList = (LineItemCollection) request.getSession().getAttribute("cart");
                 boolean orderAddedd = orderService.add(user, lineItemList, userAddress, totalPrice, ordrDate);
                 if (orderAddedd) {
                     session.setAttribute("orderAdded", orderAddedd);
@@ -90,10 +88,9 @@ public class OrderController extends HttpServlet {
                 view.forward(request, response);
                 break;
             case "viewInvoice":
-                 
+
 //            case "oupdate":
 //                request.setAttribute("oupdate", orderService.update((User)session.getAttribute("user"),(LineItemCollection) session.getAttribute("cart"), (UserAddress)request.getAttribute("useraddressvalid"), totalPrice, ordrDate));
-
         }
     }
 

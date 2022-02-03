@@ -30,6 +30,9 @@ public class OrderDAOImpl implements OrderDAO {
 
     public OrderDAOImpl(DBPoolManagerBasic dbpm) {
         this.dbpm = dbpm;
+        this.userAddressDAO= new UserAddressDAOImpl(dbpm);
+        this .userDOA= new UserDOAImpl(dbpm);
+        this.productLineItemDAO= new ProductLineItemDAOImpl(dbpm);
     }
 
     public OrderDAOImpl() {
@@ -41,12 +44,13 @@ public class OrderDAOImpl implements OrderDAO {
         boolean isAdded = false;
         try {
             con = dbpm.getConnection();
-            ps = con.prepareStatement("INSERT INTO ORDER(orderId,userEmail,productsLineItemId,addressId,totalPrice,isActive) VALUES(null,?,?,?,?,?,null)");
+            ps = con.prepareStatement("INSERT INTO ORDER(orderId,userEmail,productsLineItemId,addressId,totalPrice,orderDate,isActive) VALUES(null,?,?,?,?,null,null)");
 
             //  ps.setInt(1, p.getProductID());
             ps.setString(1, o.getUser().getEmailAddress());
             LineItemCollection productItems = o.getLineItem();
             String proItems = "";
+            
             for (LineItem li : productItems.getCart()) {
                 proItems += li.getLineItemId() + ",";
             }
