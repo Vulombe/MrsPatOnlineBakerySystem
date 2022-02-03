@@ -34,6 +34,7 @@ public class IngredientLineItemDAOImpl implements IngredientLineItemDAO {
 
     public IngredientLineItemDAOImpl(DBPoolManagerBasic dbpm) {
         this.dbpm = dbpm;
+        this.ingredientDAO= new IngredientDAOImpl(dbpm);
     }
 
     //*****************add product to database*******************************
