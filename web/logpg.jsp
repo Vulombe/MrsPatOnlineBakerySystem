@@ -5,7 +5,7 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<!DOCTYPE html>
+<%@page import="za.co.bakery.domain.User"%>
 
 <!DOCTYPE html>
 <html>

@@ -44,6 +44,29 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public boolean productAdd(String name, String picture, double price, Category category, String warning, String description, int recipeID) {
+        if (name.isEmpty()) {
+            name = "N/A";
+        }
+        if (picture.isEmpty()) {
+            picture = "https://i1.sndcdn.com/avatars-BZjdypYRINkEoQBe-s2icjg-t500x500.jpg";
+        }
+
+        if (price < 1.0) {
+            price = 1.0;
+        }
+
+        if (warning.isEmpty()) {
+            warning = "radio-active";
+        }
+
+        if (description.isEmpty()) {
+            description = "Mostly sugar flour and eggs";
+        }
+
+        if (recipeID < 1) {
+            recipeID = 1;
+        }
+
         Product product = new Product(name, picture, price, category, warning, description, recipeID);
         return productDAO.add(product);
     }
@@ -57,15 +80,29 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Product getProduct(String productID) {
-        int pId = Integer.parseInt(productID);
+
+        int pId = 0;
+        try {
+            pId = Integer.parseInt(productID);
+        } catch (NumberFormatException nfe) {
+            return null;
+        }
 
         return productDAO.read(pId);
     }
 
-//    @Override
-//    public Ingredient getIngredient(int ingredientID) {
-//        return ingredientDAO.readIngridientById(ingredientID);
-//    }
+    @Override
+    public Ingredient getIngredient(String ingredientID) {
+        int ID = 0;
+        try {
+            ID = Integer.parseInt(ingredientID);
+        } catch (NumberFormatException nfe) {
+            return null;
+        }
+
+        return ingredientDAO.readIngridientById(ID);
+    }
+
     @Override
     public boolean addRecipe(String steps, String recipeName, List<IngredientItem> ingredients) {
         Recipe r = new Recipe(steps, ingredients, recipeName);
@@ -101,11 +138,18 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public boolean productDelete(int productID) {
-        return productDAO.delete(productID);
+    public boolean productDelete(String productID) {
+        int prodId = 0;
+        try {
+            prodId = Integer.parseInt(productID);
+        } catch (NumberFormatException nfe) {
+            return false;
+        }
+
+        return productDAO.delete(prodId);
     }
 
- @Override
+    @Override
     public int editCart(String productID, String qty, LineItemCollection cart) {
         int quantity = 0;
         try {
@@ -122,7 +166,7 @@ public class ProductServiceImpl implements ProductService {
         for (LineItem li : cart.getCart()) {
             if (li.getProduct().getProductID() == prodId) {
                 li.setQty(li.getQty() - quantity);
-                if(li.getQty()<1){
+                if (li.getQty() < 1) {
                     cart.getCart().remove(li);
                 }
                 break;
@@ -130,10 +174,6 @@ public class ProductServiceImpl implements ProductService {
         }
         return cart.getCart().size();
     }
-
-
-
-
 
     @Override
     public int hashCode() {
@@ -162,9 +202,23 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public boolean productUpdate(int productID, String field, String update) {
+    public boolean productUpdate(String productID, String field, String update) {
+        int prodId = 0;
+        try {
+            prodId = Integer.parseInt(productID);
+        } catch (NumberFormatException nfe) {
+            return false;
+        }
 
-        Product p = productDAO.read(productID);
+        Product p = productDAO.read(prodId);
+
+        if (field.isEmpty()) {
+            field = "name";
+        }
+        if (update.isEmpty()) {
+            update = "Oops";
+        }
+
         String f = field.toLowerCase();
 
         switch (f) {
@@ -196,17 +250,79 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public boolean recipeUpdate(int ID, String steps,
-            List<IngredientItem> ingredients, String recipeName
-    ) {
-        Recipe r = new Recipe(ID, steps, ingredients, recipeName);
-//        return recipeDAO.update(r);
-        return true;
+    public boolean recipeUpdate(String ID, String steps, List<IngredientItem> ingredients, String recipeName) {
+
+        int prodId = 0;
+        try {
+            prodId = Integer.parseInt(ID);
+        } catch (NumberFormatException nfe) {
+            return false;
+        }
+        Recipe r = new Recipe(prodId, steps, ingredients, recipeName);
+        return recipeDAO.update(r);
+
     }
 
     @Override
     public int getCartSize(LineItemCollection cart) {
         return cart.size();
+    }
+
+    @Override
+    public boolean delRecipe(String name) {
+        Recipe r = recipeDAO.read(name);
+
+        return recipeDAO.delete(r);
+    }
+
+    @Override
+    public boolean addIngredient(String name, String nutrient) {
+
+        if (name.isEmpty()) {
+            name = "flour";
+        }
+
+        if (nutrient.isEmpty()) {
+            nutrient = "15g of gluten per kg";
+        }
+        Ingredient i = new Ingredient(name, nutrient);
+
+        return ingredientDAO.add(i);
+    }
+
+    @Override
+    public boolean editIngredient(String name, String nutrient, String ingredientID) {
+
+        int quantity = 0;
+        try {
+            quantity = Integer.parseInt(ingredientID);
+        } catch (NumberFormatException nfe) {
+            return false;
+        }
+        if (name.isEmpty()) {
+            name = "flour";
+        }
+
+        if (nutrient.isEmpty()) {
+            nutrient = "15g of gluten per kg";
+        }
+
+        Ingredient i = new Ingredient(name, nutrient, quantity);
+
+        return ingredientDAO.update(i);
+    }
+
+    @Override
+    public boolean delIngredient(String ingredientID) {
+        int prodId = 0;
+        try {
+            prodId = Integer.parseInt(ingredientID);
+        } catch (NumberFormatException nfe) {
+            return false;
+        }
+        Ingredient i = ingredientDAO.readIngridientById(prodId);
+        
+        return ingredientDAO.delete(i);
     }
 
 }

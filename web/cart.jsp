@@ -9,6 +9,7 @@
 <%@page import="za.co.bakery.domain.LineItemCollection"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="za.co.bakery.domain.Product"%>
+<%@page import="za.co.bakery.domain.User"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="en">
@@ -20,9 +21,12 @@
         <title>Shopping Cart</title>
     </head>
 
-    <header>
-
+  
+       <header>
+        
         <nav class="nav bd-grid">
+            
+            <%User u= (User) request.getSession().getAttribute("user");%>
             <div>
                 <a href="#" class="nav__logo">Mrs Pat's Bakery</a>
             </div>
@@ -36,14 +40,27 @@
                     <li class="nav__item"><a href="http://localhost:8080/MrsPatOnlineBakerySystem/pcontrol?pro=pview&category=fresh_bread" class="nav__link">Bread</a></li>
                     <li class="nav__item"><a href="http://localhost:8080/MrsPatOnlineBakerySystem/pcontrol?pro=pview&category=cupcakes" class="nav__link">Cupcakes</a></li>
                     <li class="nav__item"><a href="http://localhost:8080/MrsPatOnlineBakerySystem/pcontrol?pro=pview&category=pastries" class="nav__link">Pastries</a></li>
-                    <li class="nav__item"><a href="http://localhost:8080/MrsPatOnlineBakerySystem/pcontrol?pro=pview&category=brownies" class="nav__link">Brownies</a></li>
-                    <li class="nav__item"><a href= "myaccount.jsp"  class="nav__link">My Account</a></li>
-                    <li class="nav__item"><a href= "logpg.jsp"  class="nav__link">Login</a></li>
-                    <li class="nav__item"><a href= "cart.jsp"  class="nav__link">Logout</a></li>
+                    <li class="nav__item"><a href="http://localhost:8080/MrsPatOnlineBakerySystem/pcontrol?pro=pview&category=brownies" class="nav__link">Brownies</a></li>       
+                     <%if (u != null) {%>
+                    <li class="nav__item"><h2><%u. getLastName();%><h2></li>
+                    <li class="nav__item"><a href= "http://localhost:8080/MrsPatOnlineBakerySystem/ucontrol?pro=logout"  class="nav__link">Logout</a></li>
+                    <%
+                        }else{
+                    %>
+                      <li class="nav__item"><a href= "logpg.jsp"  class="nav__link">Login</a></li>
+                     
+                      <%}%>
+                        <%if (request.getSession().getAttribute("cart") != null) {%>
+                    <li class="nav__item"><a href= http://localhost:8080/MrsPatOnlineBakerySystem/cart.jsp  class="nav__link">
+                     
+                            <img src="https://img.icons8.com/external-flatart-icons-outline-flatarticons/64/000000/external-cart-supermarket-flatart-icons-outline-flatarticons.png" style="width: 30px; height: 30pxpx;"/>
+                        </a></li>
+                           <%}%>
                 </ul>
             </div>
-        </nav>
 
+
+        </nav>
 
     </header>
     <body>
@@ -89,12 +106,12 @@
                             </button>
                         </a>
                     </div>
-                    <div class="product-line-price"><%=li.productPrice()%></div>
+                    <div class="product-line-price"><%=li.price()%></div>
                 </div>
                 <% //subTotal+=li.productPrice()
 
-                    }
-                }%>
+                        }
+                    }%>
                 <div class="totals">
                     <!-- <div class="totals-item">
                        <label>Subtotal</label>
@@ -112,14 +129,21 @@
                         <label>Grand Total</label>
                         <div class="totals-value" id="cart-total"><%=lineItemCol.total()%></div>
                     </div>
-                </div>
-                <a href="">
-                    <button class="checkout">Checkout</button>
-                </a>
+
+                    <div>
+                        <%if (request.getSession().getAttribute("user") != null) {%>
+                              <a href="http://localhost:8080/MrsPatOnlineBakerySystem/ocontrol?pro=ocreate">
+                            <button class="checkout">Checkout</button>
+                        </a>
+                        <%} else {%>
+                        <p><i>Please Login to complete your order</i></p>
+                        <%}%>
+                    </div>
+
+
+                </div> 
             </div>
-
-
-        </div> 
+        </div>
     </body>
 </html>
 <style>

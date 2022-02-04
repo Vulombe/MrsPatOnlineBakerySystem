@@ -206,6 +206,31 @@ public class ProductLineItemDAOImpl implements ProductLineItemDAO {
 
         return isDeleted;
     }
+    
+    @Override
+    public LineItem readProductLineItem(Product p) {
+        LineItem l = null;
+        try {
+            con = dbpm.getConnection();
+
+            ps = con.prepareStatement("SELECT * FROM PRODUCTLINEITEMS WHERE PRODUCTID= ?");
+            ps.setInt(1,p.getProductID());
+            rs = ps.executeQuery();
+
+            if (rs.next()) {
+                l = new LineItem(rs.getInt("lineItemId"), productDAO.read(rs.getInt("productId")), rs.getInt("qty"));
+
+            }
+
+        } catch (SQLException ex) {
+            System.out.println("Error: " + ex.getMessage());
+        } finally {
+            closeStreams();
+        }
+
+        return l;
+    }
+
 
     // ***********************************Clossing the connection************************************
     private void closeStreams() {
@@ -236,28 +261,5 @@ public class ProductLineItemDAOImpl implements ProductLineItemDAO {
     }
     // ************************************************************************
 
-    @Override
-    public LineItem readProductLineItem(Product p) {
-        LineItem l = null;
-        try {
-            con = dbpm.getConnection();
-
-            ps = con.prepareStatement("SELECT * FROM PRODUCTLINEITEMS WHERE PRODUCTID= ?");
-            ps.setInt(1,p.getProductID());
-            rs = ps.executeQuery();
-
-            if (rs.next()) {
-                l = new LineItem(rs.getInt("lineItemId"), productDAO.read(rs.getInt("productId")), rs.getInt("qty"));
-
-            }
-
-        } catch (SQLException ex) {
-            System.out.println("Error: " + ex.getMessage());
-        } finally {
-            closeStreams();
-        }
-
-        return l;
-    }
-
+    
 }

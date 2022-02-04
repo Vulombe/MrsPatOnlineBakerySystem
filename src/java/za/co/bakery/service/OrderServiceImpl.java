@@ -1,10 +1,10 @@
 package za.co.bakery.service;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 import za.co.bakery.dbao.OrderDAO;
 import za.co.bakery.dbao.impl.OrderDAOImpl;
-import za.co.bakery.domain.LineItem;
+import za.co.bakery.domain.LineItemCollection;
 import za.co.bakery.domain.Order;
 import za.co.bakery.domain.User;
 import za.co.bakery.domain.UserAddress;
@@ -16,24 +16,27 @@ public class OrderServiceImpl implements OrderService {
 
     public OrderServiceImpl(DBPoolManagerBasic dbpm) {
         this.orderdao = new OrderDAOImpl(dbpm);
+
+    }
+
+    public OrderServiceImpl() {
     }
 
     @Override
-    public boolean add(User user, List<LineItem> lineItem, UserAddress userAddress, double totalPrice, Date ordrDate) {
+    public boolean add(User user, LineItemCollection cart, UserAddress userAddress, double totalPrice, LocalDate ordrDate) {
         Order order = null;
 
-        boolean errorCheck = orderErrorCheck(order, user, lineItem, userAddress, totalPrice, ordrDate);
-        if(errorCheck){
-        order = new Order(user, lineItem, userAddress, totalPrice, ordrDate);
-        return orderdao.add(order);
-        }else
-        {
+        boolean errorCheck = orderErrorCheck(order, user, cart, userAddress, totalPrice, ordrDate);
+        if (errorCheck) {
+            order = new Order(user, cart, userAddress, totalPrice, ordrDate);
+            return orderdao.add(order);
+        } else {
             return false;
         }
     }
 
     @Override
-    public boolean orderErrorCheck(Order order, User user, List<LineItem> lineItem, UserAddress userAddress, double totalPrice, Date ordrDate) {
+    public boolean orderErrorCheck(Order order, User user, LineItemCollection cart, UserAddress userAddress, double totalPrice, LocalDate ordrDate) {
         if (user.getEmailAddress() == null || user.getEmailAddress().isEmpty()) {
             return false;
         }
@@ -44,7 +47,7 @@ public class OrderServiceImpl implements OrderService {
         if (ordrDate == null) {
             return false;
         }
-        if (lineItem == null || lineItem.isEmpty()) {
+        if (cart == null || cart.getCart().isEmpty()) {
             return false;
         }
         if (userAddress.getAddressId() < 0) {
@@ -94,7 +97,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public boolean update(Order order, User user, List<LineItem> lineItem, UserAddress userAddress, double totalPrice, Date ordrDate) {
+    public boolean update(User user, LineItemCollection cart, UserAddress userAddress, double totalPrice, LocalDate ordrDate) {
         if (user.getEmailAddress() == null || user.getEmailAddress().isEmpty()) {
             return false;
         }
@@ -104,14 +107,16 @@ public class OrderServiceImpl implements OrderService {
         if (ordrDate == null) {
             return false;
         }
-        if (lineItem == null || lineItem.isEmpty()) {
+        if (cart == null || cart.getCart().isEmpty()) {
             return false;
         }
         if (userAddress.getAddressId() < 0) {
             return false;
         }
 
-        return orderdao.update(order);
+        Order o = new Order(user, cart, userAddress, totalPrice, ordrDate);
+
+        return orderdao.update(o);
     }
 
     @Override
@@ -121,5 +126,8 @@ public class OrderServiceImpl implements OrderService {
         }
         return orderdao.delete(order);
     }
+
+    
+
 
 }

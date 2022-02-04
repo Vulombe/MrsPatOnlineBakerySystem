@@ -5,18 +5,173 @@
  */
 package za.co.bakery.service;
 
-import za.co.bakery.domain.Invoice;
+import java.io.File;
+import java.io.IOException;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.pdmodel.PDPage;
+import org.apache.pdfbox.pdmodel.PDPageContentStream;
+import org.apache.pdfbox.pdmodel.font.PDFont;
+import org.apache.pdfbox.pdmodel.font.PDType1Font;
+import za.co.bakery.domain.LineItem;
 import za.co.bakery.domain.Order;
 
 /**
  *
  * @author student12
  */
-public class InvoiceServiceImpl implements  InvoiceService{
+public class InvoiceServiceImpl implements InvoiceService {
 
     @Override
-    public Invoice getInvoice(Order order) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public PDDocument getInvoice(Order order) {
+        if (order.getOrderID() <= 0) {
+            return null;
+        }
+
+        PDDocument invoicePDF = new PDDocument();
+        LocalTime invoiceTime = LocalTime.now();
+        DateTimeFormatter invoiceTimeFormat = DateTimeFormatter.ofPattern("HH:mm:ss");
+        String invoiceTimeformart = invoiceTime.format(invoiceTimeFormat);
+        try {
+            //Create Blank Page
+            PDPage invoicePage = new PDPage();
+            //Add the blank page
+            invoicePDF.addPage(invoicePage);
+            invoicePage = invoicePDF.getPage(0);
+            PDPageContentStream cs = new PDPageContentStream(invoicePDF, invoicePage);
+
+            cs.beginText();
+            cs.setFont(PDType1Font.TIMES_ROMAN, 20);
+            cs.newLineAtOffset(255, 760);
+            cs.showText("INVOICE");
+            cs.endText();
+
+            cs.beginText();
+            cs.setFont(PDType1Font.TIMES_ROMAN, 8);
+            cs.setLeading(9f);
+            cs.newLineAtOffset(500, 740);
+            cs.showText("Date: " + LocalDate.now());
+            cs.newLine();
+            cs.showText("Time: " + invoiceTimeformart);
+            cs.newLine();
+            cs.endText();
+
+            cs.beginText();
+            cs.setFont(PDType1Font.TIMES_ROMAN, 7);
+            cs.setLeading(10f);
+            cs.newLineAtOffset(30, 710);
+            cs.showText("From: Mrs Pat Bekery System");
+            cs.newLine();
+            cs.showText("Email: MrsPatBekery@bakery.co.za");
+            cs.newLine();
+            cs.showText("Address: 322 15th Rd, Randjespark, Midrand, 1685");
+            cs.newLine();
+            cs.endText();
+
+            cs.beginText();
+            cs.setFont(PDType1Font.TIMES_ROMAN, 7);
+            cs.setLeading(10f);
+            cs.newLineAtOffset(400, 710);
+            cs.showText("To: " + order.getUser().getFirstName() + " " + order.getUser().getLastName());
+            cs.newLine();
+            cs.showText("Email: " + order.getUser().getEmailAddress());
+            cs.newLine();
+            cs.showText("Address: " + order.getUserAddress().getHouseNumber() + ","
+                    + order.getUserAddress().getStreetName() + ","
+                    + order.getUserAddress().getState() + ","
+                    + order.getUserAddress().getCity() + ","
+                    + order.getUserAddress().getZipCode());
+            cs.newLine();
+            cs.endText();
+
+            cs.beginText();
+            cs.setFont(PDType1Font.TIMES_ROMAN, 10);
+            cs.newLineAtOffset(50, 635);
+            cs.showText("*****************************************************************************************************");
+            cs.endText();
+
+            cs.beginText();
+            cs.setFont(PDType1Font.TIMES_ROMAN, 10);
+            cs.newLineAtOffset(140, 625);
+            cs.showText("PRODUCT NAME");
+            cs.endText();
+
+            cs.beginText();
+            cs.setFont(PDType1Font.TIMES_ROMAN, 10);
+            cs.newLineAtOffset(260, 625);
+            cs.showText("QUANTITY");
+            cs.endText();
+
+            cs.beginText();
+            cs.setFont(PDType1Font.TIMES_ROMAN, 10);
+            cs.newLineAtOffset(360, 625);
+            cs.showText("UNIT PRICE");
+            cs.endText();
+
+            cs.beginText();
+            cs.setFont(PDType1Font.TIMES_ROMAN, 10);
+            cs.setLeading(12f);
+            cs.newLineAtOffset(140, 610);
+            for (LineItem lineItem : order.getLineItem().getCart()) {
+                cs.showText(lineItem.getProduct().getName());
+                cs.newLine();
+            }
+            cs.endText();
+
+            cs.beginText();
+            cs.setFont(PDType1Font.TIMES_ROMAN, 10);
+            cs.setLeading(12f);
+            cs.newLineAtOffset(260, 610);
+            for (LineItem lineItem : order.getLineItem().getCart()) {
+                cs.showText(lineItem.getQty() + "");
+                cs.newLine();
+            }
+            cs.endText();
+
+            cs.beginText();
+            cs.setFont(PDType1Font.TIMES_ROMAN, 10);
+            cs.setLeading(12f);
+            cs.newLineAtOffset(360, 610);
+            for (LineItem lineItem : order.getLineItem().getCart()) {
+                cs.showText("R" + lineItem.getProduct().getPrice());
+                cs.newLine();
+            }
+            cs.endText();
+
+            cs.beginText();
+            cs.setFont(PDType1Font.TIMES_ROMAN, 10);
+            cs.newLineAtOffset(50, 450);
+            cs.showText("*****************************************************************************************************");
+            cs.endText();
+
+            cs.beginText();
+            cs.setLeading(13);
+            cs.newLineAtOffset(390, 440);
+            cs.showText("Tax: R" + order.getLineItem().tax());
+            cs.newLine();
+            cs.showText("Shipping Price: R" + order.getLineItem().shipping());
+            cs.newLine();
+            cs.showText("Total Price: R" + order.getLineItem().total());
+            cs.endText();
+
+            cs.beginText();
+            cs.setFont(PDType1Font.TIMES_ROMAN, 10);
+            cs.newLineAtOffset(50, 400);
+            cs.showText("*****************************************************************************************************");
+            cs.endText();
+
+            cs.close();
+            invoicePDF.save(new File("C:\\MrsPatOnlineBakerySystem\\project documents\\" + order.getUser().getLastName().substring(0, 3)+
+                                    invoiceTimeformart +"Invoice.pdf"));
+            invoicePDF.close();
+        } catch (IOException ex) {
+            Logger.getLogger(OrderServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return invoicePDF;
     }
-    
+
 }

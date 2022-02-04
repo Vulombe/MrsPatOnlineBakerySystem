@@ -1,5 +1,6 @@
 package za.co.bakery.domain;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -7,10 +8,10 @@ public class Order {
 
     private int orderID;
     private User user;
-    private List<LineItem> lineItem;
+    private LineItemCollection lineItem;
     private UserAddress userAddress;
     private double totalPrice;
-    private Date ordrDate;
+    private LocalDate ordrDate ;
 
     public int getOrderID() {
         return orderID;
@@ -19,7 +20,7 @@ public class Order {
     public Order() {
     }
 
-    public Order(User user, List<LineItem> lineItem, UserAddress userAddress, double totalPrice, Date ordrDate) {
+    public Order(User user, LineItemCollection lineItem, UserAddress userAddress, double totalPrice, LocalDate ordrDate) {
         this.user = user;
         this.lineItem = lineItem;
         this.userAddress = userAddress;
@@ -35,11 +36,11 @@ public class Order {
         this.userAddress = userAddress;
     }
 
-    public Date getOrdrDate() {
+    public LocalDate getOrdrDate() {
         return ordrDate;
     }
 
-    public void setOrdrDate(Date ordrDate) {
+    public void setOrdrDate(LocalDate ordrDate) {
         this.ordrDate = ordrDate;
     }
 
@@ -57,11 +58,11 @@ public class Order {
         this.user = user;
     }
 
-    public List<LineItem> getLineItem() {
+    public LineItemCollection getLineItem() {
         return lineItem;
     }
 
-    public void setLineItem(List<LineItem> lineItem) {
+    public void setLineItem(LineItemCollection lineItem) {
         this.lineItem = lineItem;
     }
 
@@ -71,6 +72,11 @@ public class Order {
 
     public void setTotalPrice(double totalPrice) {
         this.totalPrice = totalPrice;
+    }
+
+    @Override
+    public String toString() {
+        return "Order{" + "orderID=" + orderID + ", user=" + user + ", lineItem=" + lineItem + ", userAddress=" + userAddress + ", totalPrice=" + totalPrice + ", ordrDate=" + ordrDate + '}';
     }
 
 }
