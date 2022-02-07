@@ -13,7 +13,6 @@ import java.util.ArrayList;
 import java.util.List;
 import za.co.bakery.dbao.RecipeDAO;
 import za.co.bakery.domain.Category;
-import za.co.bakery.domain.Ingredient;
 import za.co.bakery.domain.IngredientItem;
 import za.co.bakery.domain.Product;
 import za.co.bakery.domain.Recipe;

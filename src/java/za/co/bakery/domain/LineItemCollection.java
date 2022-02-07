@@ -8,10 +8,7 @@ import za.co.bakery.dbao.impl.ProductLineItemDAOImpl;
 
 import za.co.bakery.manager.DBPoolManagerBasic;
 
-/**
- *
- * @author Stuart Littles
- */
+
 public class LineItemCollection {
 
     private List<LineItem> cart = null;

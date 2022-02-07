@@ -1,6 +1,6 @@
 package za.co.bakery.service;
 
-import java.util.Collections;
+
 import java.util.List;
 import java.util.Objects;
 import za.co.bakery.dbao.IngredientDAO;
@@ -12,11 +12,11 @@ import za.co.bakery.dbao.impl.IngredientDAOImpl;
 import za.co.bakery.dbao.impl.ProductDAOImpl;
 import za.co.bakery.dbao.impl.ProductLineItemDAOImpl;
 import za.co.bakery.dbao.impl.RecipeDAOImpl;
-import za.co.bakery.dbao.impl.UserDOAImpl;
+
 import za.co.bakery.domain.Category;
 import za.co.bakery.domain.Ingredient;
 import za.co.bakery.domain.Product;
-import za.co.bakery.domain.User;
+
 import za.co.bakery.domain.LineItemCollection;
 import za.co.bakery.domain.IngredientItem;
 import za.co.bakery.domain.LineItem;

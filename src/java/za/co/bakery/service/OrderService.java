@@ -2,11 +2,9 @@
 package za.co.bakery.service;
 
 import java.time.LocalDate;
-import java.util.Date;
+
 import java.util.List;
-import org.apache.pdfbox.pdmodel.PDDocument;
-import za.co.bakery.domain.Invoice;
-import za.co.bakery.domain.LineItem;
+
 import za.co.bakery.domain.LineItemCollection;
 import za.co.bakery.domain.Order;
 import za.co.bakery.domain.User;

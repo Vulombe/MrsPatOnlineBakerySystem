@@ -1,13 +1,9 @@
 
 package za.co.bakery.domain;
 
-import java.util.ArrayList;
+
 import java.util.List;
 
-/**
- *
- * @author StuartLittle
- */
 
 public class Recipe {
 

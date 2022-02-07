@@ -7,7 +7,7 @@ package za.co.bakery.dbao;
 
 import java.util.List;
 import za.co.bakery.domain.LineItem;
-import za.co.bakery.domain.LineItemCollection;
+
 import za.co.bakery.domain.Product;
 
 /**

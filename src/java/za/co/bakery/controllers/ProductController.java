@@ -17,12 +17,11 @@ import za.co.bakery.domain.LineItemCollection;
 import za.co.bakery.domain.Category;
 import za.co.bakery.domain.IngredientItem;
 import za.co.bakery.domain.Product;
-import za.co.bakery.domain.User;
+
 import za.co.bakery.manager.DBPoolManagerBasic;
 import za.co.bakery.service.ProductService;
 import za.co.bakery.service.ProductServiceImpl;
-import za.co.bakery.service.UserService;
-import za.co.bakery.service.UserServiceImpl;
+
 
 /**
  *

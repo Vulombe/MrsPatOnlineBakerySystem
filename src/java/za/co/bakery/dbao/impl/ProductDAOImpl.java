@@ -6,15 +6,15 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import org.eclipse.jdt.internal.compiler.ast.FalseLiteral;
+
 import za.co.bakery.dbao.ProductDAO;
-import za.co.bakery.dbao.RecipeDAO;
+
 import za.co.bakery.domain.Category;
-import za.co.bakery.domain.Ingredient;
+
 import za.co.bakery.domain.IngredientItem;
 import za.co.bakery.domain.Product;
 import za.co.bakery.domain.Recipe;
-import za.co.bakery.domain.User;
+
 import za.co.bakery.manager.DBPoolManagerBasic;
 
 /**

@@ -7,7 +7,7 @@ package za.co.bakery.controllers;
 
 import java.io.IOException;
 import java.time.LocalDate;
-import java.util.Date;
+
 import java.util.List;
 
 import javax.servlet.RequestDispatcher;
@@ -17,8 +17,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import org.apache.pdfbox.pdmodel.PDDocument;
-import za.co.bakery.domain.Invoice;
+
 import za.co.bakery.domain.LineItem;
 
 import za.co.bakery.domain.LineItemCollection;

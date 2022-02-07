@@ -11,12 +11,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import za.co.bakery.dbao.IngredientDAO;
+
 import za.co.bakery.dbao.ProductDAO;
 import za.co.bakery.dbao.ProductLineItemDAO;
-import za.co.bakery.domain.Ingredient;
+
 import za.co.bakery.domain.LineItem;
-import za.co.bakery.domain.LineItemCollection;
+
 import za.co.bakery.domain.Product;
 import za.co.bakery.manager.DBPoolManagerBasic;
 

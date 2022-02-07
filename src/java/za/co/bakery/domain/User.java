@@ -3,10 +3,7 @@ package za.co.bakery.domain;
 
 import java.util.Objects;
 
-/**
- *
- * @author Stuart Littles
- */
+
 public class User 
 {
     private int ID;

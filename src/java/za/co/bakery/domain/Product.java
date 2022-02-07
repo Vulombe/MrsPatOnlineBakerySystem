@@ -1,9 +1,6 @@
 package za.co.bakery.domain;
 
-/**
- *
- * @author StuartLittles
- */
+
 public class Product {
     private int productID;
     private String name;

@@ -2,7 +2,7 @@ package za.co.bakery.dbao;
 
 import java.util.List;
 import za.co.bakery.domain.Category;
-import za.co.bakery.domain.Ingredient;
+
 import za.co.bakery.domain.Product;
 import za.co.bakery.domain.Recipe;
 

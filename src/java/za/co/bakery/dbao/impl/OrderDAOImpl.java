@@ -11,8 +11,6 @@ import za.co.bakery.dbao.OrderDAO;
 import za.co.bakery.dbao.ProductLineItemDAO;
 import za.co.bakery.dbao.UserAddressDAO;
 import za.co.bakery.dbao.UserDOA;
-import za.co.bakery.domain.IngredientItem;
-import za.co.bakery.domain.LineItem;
 import za.co.bakery.domain.LineItemCollection;
 import za.co.bakery.domain.Order;
 import za.co.bakery.domain.User;
