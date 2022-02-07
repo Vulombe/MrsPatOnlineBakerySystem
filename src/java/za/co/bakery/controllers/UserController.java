@@ -121,7 +121,10 @@ public class UserController extends HttpServlet {
                         user);
                 if (userAddress) {
                     request.setAttribute("useraddressvalid", userAddress);
-                    view = request.getRequestDispatcher("TestingPage.jsp");
+                    UserAddress userAdress = userAddressService.readUserAddress(user);
+                    request.setAttribute("userAddress", userAddress);
+                    request.setAttribute("userAdress", userAdress);
+                    view = request.getRequestDispatcher("index.jsp");
 
                 } else {
                     request.setAttribute("errormsg", "Invalid information");
@@ -145,7 +148,7 @@ public class UserController extends HttpServlet {
                             request.getParameter("zipCode"),
                             user);
                     request.setAttribute("addressupdated", addressUpdated);
-                    view = request.getRequestDispatcher("TestingPage.jsp");
+                    view = request.getRequestDispatcher("index.jsp");
                 }
             }
             if (prs.equals("daddress")) {
@@ -153,7 +156,7 @@ public class UserController extends HttpServlet {
                 UserAddress ua = userAddressService.readUserAddress(user);
                 if (userAddressService.delete(ua)) {
                     request.setAttribute("msg", "User Address Was Deleted");
-                    view = request.getRequestDispatcher("TestingPage.jsp");
+                    view = request.getRequestDispatcher("index.jsp");
                 } else {
                     request.setAttribute("errormsg", "Unable to delete user address");
                     view = request.getRequestDispatcher("error.jsp");

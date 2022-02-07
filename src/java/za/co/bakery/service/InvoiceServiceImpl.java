@@ -7,9 +7,15 @@ package za.co.bakery.service;
 
 import java.io.File;
 import java.io.IOException;
+
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.apache.pdfbox.pdmodel.PDDocument;
@@ -18,6 +24,7 @@ import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.font.PDFont;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
 import za.co.bakery.domain.LineItem;
+import za.co.bakery.domain.LineItemCollection;
 import za.co.bakery.domain.Order;
 
 /**
@@ -27,22 +34,29 @@ import za.co.bakery.domain.Order;
 public class InvoiceServiceImpl implements InvoiceService {
 
     @Override
-    public PDDocument getInvoice(Order order) {
-        if (order.getOrderID() <= 0) {
-            return null;
-        }
+    public void getInvoice(Order order, List<LineItem> cartitems) {
 
         PDDocument invoicePDF = new PDDocument();
         LocalTime invoiceTime = LocalTime.now();
         DateTimeFormatter invoiceTimeFormat = DateTimeFormatter.ofPattern("HH:mm:ss");
         String invoiceTimeformart = invoiceTime.format(invoiceTimeFormat);
+
         try {
+
             //Create Blank Page
             PDPage invoicePage = new PDPage();
             //Add the blank page
             invoicePDF.addPage(invoicePage);
             invoicePage = invoicePDF.getPage(0);
             PDPageContentStream cs = new PDPageContentStream(invoicePDF, invoicePage);
+
+            if (order.getOrderID() <= 0) {
+                cs.beginText();
+                cs.setFont(PDType1Font.TIMES_ROMAN, 20);
+                cs.newLineAtOffset(255, 760);
+                cs.showText("Invalid order information");
+                cs.endText();
+            }
 
             cs.beginText();
             cs.setFont(PDType1Font.TIMES_ROMAN, 20);
@@ -116,8 +130,8 @@ public class InvoiceServiceImpl implements InvoiceService {
             cs.setFont(PDType1Font.TIMES_ROMAN, 10);
             cs.setLeading(12f);
             cs.newLineAtOffset(140, 610);
-            for (LineItem lineItem : order.getLineItem().getCart()) {
-                cs.showText(lineItem.getProduct().getName());
+            for (LineItem lineItems : cartitems) {
+                cs.showText(lineItems.getProduct().getName());
                 cs.newLine();
             }
             cs.endText();
@@ -126,8 +140,8 @@ public class InvoiceServiceImpl implements InvoiceService {
             cs.setFont(PDType1Font.TIMES_ROMAN, 10);
             cs.setLeading(12f);
             cs.newLineAtOffset(260, 610);
-            for (LineItem lineItem : order.getLineItem().getCart()) {
-                cs.showText(lineItem.getQty() + "");
+            for (LineItem lineItems : cartitems) {
+                cs.showText(lineItems.getQty() + "");
                 cs.newLine();
             }
             cs.endText();
@@ -136,8 +150,8 @@ public class InvoiceServiceImpl implements InvoiceService {
             cs.setFont(PDType1Font.TIMES_ROMAN, 10);
             cs.setLeading(12f);
             cs.newLineAtOffset(360, 610);
-            for (LineItem lineItem : order.getLineItem().getCart()) {
-                cs.showText("R" + lineItem.getProduct().getPrice());
+            for (LineItem lineItems : cartitems) {
+                cs.showText("R" + lineItems.getProduct().getPrice());
                 cs.newLine();
             }
             cs.endText();
@@ -165,13 +179,17 @@ public class InvoiceServiceImpl implements InvoiceService {
             cs.endText();
 
             cs.close();
-            invoicePDF.save(new File("C:\\MrsPatOnlineBakerySystem\\project documents\\" + order.getUser().getLastName().substring(0, 3)+
-                                    invoiceTimeformart +"Invoice.pdf"));
+            LocalDate date = LocalDate.now();
+            String name = order.getUser().getLastName() + "-"+order.getOrderID() + "-" + date;
+            Path path = Paths.get("C:\\MrsPatOnlineBakerySystem\\project documents\\" + name);
+            Files.createDirectories(path);
+            String p1 = path.toString();
+            invoicePDF.save(p1 + "\\Invoive.pdf");
             invoicePDF.close();
         } catch (IOException ex) {
             Logger.getLogger(OrderServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return invoicePDF;
+
     }
 
 }

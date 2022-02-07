@@ -1,29 +1,14 @@
 package za.co.bakery.service;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import org.apache.pdfbox.pdmodel.PDDocument;
-import org.apache.pdfbox.pdmodel.font.PDFont;
-import org.apache.pdfbox.pdmodel.PDPageContentStream;
-import org.apache.pdfbox.pdmodel.font.PDType1Font;
 import za.co.bakery.dbao.OrderDAO;
 import za.co.bakery.dbao.impl.OrderDAOImpl;
-import za.co.bakery.domain.LineItem;
 import za.co.bakery.domain.LineItemCollection;
 import za.co.bakery.domain.Order;
 import za.co.bakery.domain.User;
 import za.co.bakery.domain.UserAddress;
 import za.co.bakery.manager.DBPoolManagerBasic;
-import org.apache.pdfbox.pdmodel.PDPage;
-
-import za.co.bakery.domain.LineItemPractise;
 
 public class OrderServiceImpl implements OrderService {
 
@@ -141,8 +126,5 @@ public class OrderServiceImpl implements OrderService {
         }
         return orderdao.delete(order);
     }
-
-    
-
 
 }

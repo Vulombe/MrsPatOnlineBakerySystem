@@ -43,6 +43,10 @@ public class LineItemCollection {
 
     }
 
+    public void setCart(List<LineItem> cart) {
+        this.cart = cart;
+    }
+
     public void editCartQty(Product p, int qty) {
         this.getCart().get(this.getCart().indexOf(p)).setQty(qty);
 
@@ -108,4 +112,10 @@ public class LineItemCollection {
         
         return grandTotal;
     }
+
+    @Override
+    public String toString() {
+        return "LineItemCollection{" + "cart=" + cart + ", productLineItemDAO=" + productLineItemDAO + '}';
+    }
+    
 }
