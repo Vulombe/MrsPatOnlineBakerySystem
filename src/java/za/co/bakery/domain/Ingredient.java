@@ -22,6 +22,9 @@ public class Ingredient {
         this.nutrient = nutrient;
     }
     public Ingredient(String name, String nutrient, int ingredientID) {
+      this.name = name;
+        this.nutrient = nutrient;
+        this.ingredientID=ingredientID;
 
     }
 
