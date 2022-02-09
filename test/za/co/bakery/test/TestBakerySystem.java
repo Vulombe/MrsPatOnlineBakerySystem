@@ -9,6 +9,7 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import org.apache.commons.lang.RandomStringUtils;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
@@ -23,12 +24,18 @@ import za.co.bakery.service.OrderServiceImpl;
 public class TestBakerySystem 
 {
    
-//    
-//    public static void main(String[] args)
-//    {
-//        //new TestBakerySystem().getInvoice();
-//    }
-//    
+    
+    public static void main(String[] args)
+    {
+        //new TestBakerySystem().getInvoice();
+          int length = 10;
+    boolean useLetters = true;
+    boolean useNumbers = true;
+    String generatedString = RandomStringUtils.random(4, useLetters, useNumbers);
+
+    System.out.println(generatedString);
+    }
+    
         public PDDocument getInvoice() {
 
         PDDocument invoicePDF = new PDDocument();

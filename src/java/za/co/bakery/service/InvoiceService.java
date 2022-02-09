@@ -1,11 +1,11 @@
 
 package za.co.bakery.service;
-import java.util.List;
-import za.co.bakery.domain.LineItem;
+
+import org.apache.pdfbox.pdmodel.PDDocument;
 import za.co.bakery.domain.Order;
 
 public interface InvoiceService {
     
-    public void getInvoice(Order order,List<LineItem> lineItem);
+    public PDDocument getInvoice(Order order);
 
 }

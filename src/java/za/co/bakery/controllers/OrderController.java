@@ -1,14 +1,7 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package za.co.bakery.controllers;
 
 import java.io.IOException;
 import java.time.LocalDate;
-
-import java.util.List;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
@@ -17,8 +10,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-
-import za.co.bakery.domain.LineItem;
 
 import za.co.bakery.domain.LineItemCollection;
 import za.co.bakery.domain.Order;
@@ -81,7 +72,7 @@ public class OrderController extends HttpServlet {
                 break;
             case "oread":
                 if ((boolean) session.getAttribute("orderAdded")) {
-                    
+
                     request.setAttribute("order", orderService.readOrder(user));
                     view = request.getRequestDispatcher("index.jsp");
                 } else {
@@ -96,10 +87,10 @@ public class OrderController extends HttpServlet {
                 view.forward(request, response);
                 break;
             case "invoice":
-                Order order = orderService.readOrder(2);
-                List<LineItem> lineItem = cartService.readCart(order.getOrderID());
-                if (order != null || lineItem!=null) {
-                    invoiceService.getInvoice(order,lineItem);
+                Order order = orderService.readOrder(15);
+                if (order != null) {
+                    invoiceService.getInvoice(order);
+                    view = request.getRequestDispatcher("index.jsp");
                 } else {
                     request.setAttribute("errormsg", "Invalid Order information");
                     view = request.getRequestDispatcher("error.jsp");

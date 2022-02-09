@@ -25,6 +25,7 @@ public class UserController extends HttpServlet {
         RequestDispatcher view = null;
 
         if (prs != null) {
+            
             prs = prs.toLowerCase();
             ServletContext sc = request.getServletContext();
             DBPoolManagerBasic dbpm = (DBPoolManagerBasic) sc.getAttribute("dbconn");
@@ -111,76 +112,80 @@ public class UserController extends HttpServlet {
             }
             //---------------------
             if (prs.equals("aaddress")) {
-                User user = userService.read(request.getParameter("emailAddress"));
-                boolean userAddress = userAddressService.add(
-                        Integer.parseInt(request.getParameter("houseNumber")),
-                        request.getParameter("streetAddress"),
-                        request.getParameter("city"),
-                        request.getParameter("state"),
-                        request.getParameter("zipCode"),
-                        user);
-                if (userAddress) {
-                    request.setAttribute("useraddressvalid", userAddress);
-                    UserAddress userAdress = userAddressService.readUserAddress(user);
-                    request.setAttribute("userAddress", userAddress);
-                    request.setAttribute("userAdress", userAdress);
-                    view = request.getRequestDispatcher("index.jsp");
-
-                } else {
-                    request.setAttribute("errormsg", "Invalid information");
-                    view = request.getRequestDispatcher("error.jsp");
-                }
-
-                view.forward(request, response);
-            }
-            //---------------------
-            if (prs.equals("uaddress")) {
-                boolean addressUpdated = false;
-                User user = userService.read(request.getParameter("emailAddress"));
-
-                if (user != null) {
-
-                    addressUpdated = userAddressService.readtoUpdate(
+                User user = (User)request.getSession().getAttribute("user");
+                UserAddress ua = userAddressService.readUserAddress(user);
+                if (ua == null) 
+                {
+                    boolean userAddress = userAddressService.add(
                             Integer.parseInt(request.getParameter("houseNumber")),
                             request.getParameter("streetAddress"),
                             request.getParameter("city"),
                             request.getParameter("state"),
                             request.getParameter("zipCode"),
                             user);
-                    request.setAttribute("addressupdated", addressUpdated);
-                    view = request.getRequestDispatcher("index.jsp");
+                    if (userAddress) {
+                        request.setAttribute("useraddressvalid", userAddress);
+                        ua = userAddressService.readUserAddress(user);
+                        request.setAttribute("userAddress", ua);
+                        view = request.getRequestDispatcher("addressAdd.jsp");
+
+                    }
+                } 
+
+                    view.forward(request, response);
                 }
-            }
-            if (prs.equals("daddress")) {
-                User user = userService.read(request.getParameter("emailAddress"));
-                UserAddress ua = userAddressService.readUserAddress(user);
-                if (userAddressService.delete(ua)) {
-                    request.setAttribute("msg", "User Address Was Deleted");
-                    view = request.getRequestDispatcher("index.jsp");
-                } else {
-                    request.setAttribute("errormsg", "Unable to delete user address");
-                    view = request.getRequestDispatcher("error.jsp");
+                //---------------------
+                if (prs.equals("uaddress")) {
+                    boolean addressUpdated = false;
+                    User user = userService.read(request.getParameter("emailAddress"));
+
+                    if (user != null) {
+
+                        addressUpdated = userAddressService.readtoUpdate(
+                                Integer.parseInt(request.getParameter("houseNumber")),
+                                request.getParameter("streetAddress"),
+                                request.getParameter("city"),
+                                request.getParameter("state"),
+                                request.getParameter("zipCode"),
+                                user);
+                        request.setAttribute("addressupdated", addressUpdated);
+                        view = request.getRequestDispatcher("index.jsp");
+                    }
                 }
-                view.forward(request, response);
+                if (prs.equals("daddress")) {
+                    User user = userService.read(request.getParameter("emailAddress"));
+                    UserAddress ua = userAddressService.readUserAddress(user);
+                    if (userAddressService.delete(ua)) {
+                        request.setAttribute("msg", "User Address Was Deleted");
+                        view = request.getRequestDispatcher("index.jsp");
+                    } else {
+                        request.setAttribute("errormsg", "Unable to delete user address");
+                        view = request.getRequestDispatcher("error.jsp");
+                    }
+                    view.forward(request, response);
+                }
             }
         }
-    }
 
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+        @Override
+        protected void doGet
+        (HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
-    }
+            processRequest(request, response);
+        }
 
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+        @Override
+        protected void doPost
+        (HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
-    }
+            processRequest(request, response);
+        }
 
-    @Override
-    public String getServletInfo() {
+        @Override
+        public String getServletInfo
+        
+            () {
         return "Short description";
-    }
+        }
 
-}
+    }
