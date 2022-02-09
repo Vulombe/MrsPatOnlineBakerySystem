@@ -7,15 +7,15 @@ package za.co.bakery.dbao;
 
 import java.util.List;
 import za.co.bakery.domain.LineItem;
-import za.co.bakery.domain.LineItemCollection;
+
 import za.co.bakery.domain.Order;
-import za.co.bakery.domain.Product;
+
 
 /**
  *
  * @author Studio13
  */
-public interface cartDAO {
+public interface CartDAO {
 
     public boolean addcartLine(Order o);
 

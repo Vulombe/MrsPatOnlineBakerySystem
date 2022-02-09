@@ -13,16 +13,10 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import za.co.bakery.domain.LineItemCollection;
-import za.co.bakery.domain.Category;
-import za.co.bakery.domain.IngredientItem;
-import za.co.bakery.domain.Product;
-import za.co.bakery.domain.User;
+import za.co.bakery.domain.Recipe;
 import za.co.bakery.manager.DBPoolManagerBasic;
 import za.co.bakery.service.ProductService;
 import za.co.bakery.service.ProductServiceImpl;
-import za.co.bakery.service.UserService;
-import za.co.bakery.service.UserServiceImpl;
 
 /**
  *
@@ -30,15 +24,6 @@ import za.co.bakery.service.UserServiceImpl;
  */
 public class AdminController extends HttpServlet {
 
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String prs = request.getParameter("pro");
@@ -47,76 +32,66 @@ public class AdminController extends HttpServlet {
         if (prs != null) {
             DBPoolManagerBasic dbpm = (DBPoolManagerBasic) sc.getAttribute("dbconn");
             ProductService productService = new ProductServiceImpl(dbpm);
-            UserService userService = new UserServiceImpl(dbpm);
-
             prs = prs.toLowerCase();
             switch (prs) {
                 case "padd":
+                    List<Recipe> rec=productService.getRecipes();
+                    request.setAttribute("recipes", rec);
                     request.setAttribute("admin", "padd");
-                    view = request.getRequestDispatcher("AdminAdd.jsp");
-                    view.forward(request, response);
                     break;
                 case "pedt":
                     request.setAttribute("admin", "pedit");
-                    view = request.getRequestDispatcher("AdminAdd.jsp");
-                    view.forward(request, response);
+                    request.setAttribute("prolist",productService.getAllProducts() );
                     break;
                 case "pdel":
                     request.setAttribute("admin", "pdelete");
-                    view = request.getRequestDispatcher("AdminAdd.jsp");
-                    view.forward(request, response);
                     break;
                 case "radd":
+                    request.setAttribute("ingredientList", productService.getIngredients());
                     request.setAttribute("admin", "radd");
-                    view = request.getRequestDispatcher("AdminAdd.jsp");
-                    view.forward(request, response);
                     break;
                 case "redit":
                     request.setAttribute("admin", "redit");
-                    view = request.getRequestDispatcher("AdminAdd.jsp");
-                    view.forward(request, response);
                     break;
                 case "rdel":
+
                     request.setAttribute("admin", "rdel");
-                    view = request.getRequestDispatcher("AdminAdd.jsp");
-                    view.forward(request, response);
                     break;
                 case "aadd":
                     request.setAttribute("admin", "aadd");
-                    view = request.getRequestDispatcher("AdminAdd.jsp");
-                    view.forward(request, response);
                     break;
                 case "aedit":
                     request.setAttribute("admin", "aupdate");
-                    view = request.getRequestDispatcher("AdminAdd.jsp");
-                    view.forward(request, response);
                     break;
                 case "adel":
                     request.setAttribute("admin", "adelete");
-                    view = request.getRequestDispatcher("AdminAdd.jsp");
-                    view.forward(request, response);
                     break;
                 case "iadd":
                     request.setAttribute("admin", "iadd");
-                    view = request.getRequestDispatcher("AdminAdd.jsp");
-                    view.forward(request, response);
                     break;
                 case "iedit":
                     request.setAttribute("admin", "iedit");
-                    view = request.getRequestDispatcher("AdminAdd.jsp");
-                    view.forward(request, response);
                     break;
                 case "idel":
                     request.setAttribute("admin", "idelete");
-                    view = request.getRequestDispatcher("AdminAdd.jsp");
+                    break;
+                case "ilist":
+                    request.setAttribute("ingredientList", productService.getIngredients());
+                    break;
+                case "plist":
+                    request.setAttribute("products", productService.getProducts(request.getParameter("category")));
+                    view = request.getRequestDispatcher("productDel.jsp");
                     view.forward(request, response);
                     break;
+                case "rlist":
+                    request.setAttribute("recipes", productService.getRecipes());
+                    break;
             }
-
+            view = request.getRequestDispatcher("adminAdd.jsp");
         } else {
             view = request.getRequestDispatcher("error.jsp");
-            view.forward(request, response);
         }
+        view.forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

@@ -12,18 +12,16 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import za.co.bakery.dbao.ProductDAO;
-import za.co.bakery.dbao.cartDAO;
 import za.co.bakery.domain.LineItem;
-import za.co.bakery.domain.LineItemCollection;
 import za.co.bakery.domain.Order;
-import za.co.bakery.domain.Product;
 import za.co.bakery.manager.DBPoolManagerBasic;
+import za.co.bakery.dbao.CartDAO;
 
 /**
  *
  * @author Studio13
  */
-public class CartDAOImpl implements cartDAO {
+public class CartDAOImpl implements CartDAO {
 
     final private DBPoolManagerBasic dbpm;
     private Connection con = null;
@@ -105,12 +103,13 @@ public class CartDAOImpl implements cartDAO {
 
             while (rs.next()) {
 
-                l = new LineItem(rs.getInt("lineItemId"), productDAO.read(rs.getInt("productId")), rs.getInt("qty"));
+                l = new LineItem(rs.getInt("cartLineItemsId"), productDAO.read(rs.getInt("productId")), rs.getInt("qty"));
                 lineItems.add(l);
 
             }
 
         } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
         } finally {
             closeStreams();
         }

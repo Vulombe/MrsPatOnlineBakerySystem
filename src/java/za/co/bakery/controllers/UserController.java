@@ -108,44 +108,75 @@ public class UserController extends HttpServlet {
                 view.forward(request, response);
             }
             //---------------------
+
             if (prs.equals("aadd")) {
-                User user = userService.read(request.getParameter("emailAddress"));
-                boolean userAddress = userAddressService.add(
-                        Integer.parseInt(request.getParameter("houseNumber")),
-                        request.getParameter("streetAddress"),
-                        request.getParameter("city"),
-                        request.getParameter("state"),
-                        request.getParameter("zipCode"),
-                        user);
-                if (userAddress) {
-                    request.setAttribute("useraddressvalid", userAddress);
-                    request.setAttribute("userAddress", userAddressService.readUserAddress(user));
-                    view = request.getRequestDispatcher("TestingPage.jsp");
 
-                } else {
-                    request.setAttribute("errormsg", "Invalid information");
-                    view = request.getRequestDispatcher("error.jsp");
-                }
+                User user = (User) request.getSession().getAttribute("user");
 
-                view.forward(request, response);
-            }
-            //---------------------
-            if (prs.equals("aupdate")) {
-                boolean addressUpdated = false;
-                User user = userService.read(request.getParameter("emailAddress"));
+                if (userAddressService.checkAddress(user)) {
+                    UserAddress userAddress = userAddressService.readUserAddress(user);
 
-                if (user != null) {
-
-                    addressUpdated = userAddressService.readtoUpdate(
+                    boolean readAddress = userAddressService.readtoUpdate(
                             Integer.parseInt(request.getParameter("houseNumber")),
                             request.getParameter("streetAddress"),
                             request.getParameter("city"),
                             request.getParameter("state"),
                             request.getParameter("zipCode"),
                             user);
-                    request.setAttribute("addressupdated", addressUpdated);
-                    view = request.getRequestDispatcher("TestingPage.jsp");
+                    request.setAttribute("userAddress", userAddress);
+                    request.setAttribute("user", user);
+                    view = request.getRequestDispatcher("payment.jsp");
+
+                } else {
+                    boolean userAddress = userAddressService.add(
+                            Integer.parseInt(request.getParameter("houseNumber")),
+                            request.getParameter("streetAddress"),
+                            request.getParameter("city"),
+                            request.getParameter("state"),
+                            request.getParameter("zipCode"),
+                            user);
+                    request.setAttribute("useraddressvalid", userAddress);
+                    request.setAttribute("userAddress", userAddressService.readUserAddress(user));
+                    view = request.getRequestDispatcher("payment.jsp");
                 }
+
+                view.forward(request, response);
+            }
+            //---------------------
+            if (prs.equals("radd")) {
+                boolean readAddress = false;
+                User user = (User) request.getSession().getAttribute("user");
+
+                if (user != null) {
+                    if (userAddressService.checkAddress(user) && request.getParameter("editC") == null) {
+
+                        UserAddress ua = userAddressService.readUserAddress(user);
+
+                        request.setAttribute("readAddress", ua);
+                        request.setAttribute("user", user);
+                        view = request.getRequestDispatcher("currentAddress.jsp");
+                    } else if (userAddressService.checkAddress(user) == false) {
+                        request.setAttribute("user", user);
+                        view = request.getRequestDispatcher("addressAdd.jsp");
+                    } else if (userAddressService.checkAddress(user) && request.getParameter("editC").equals("edit")) {
+                        request.setAttribute("user", user);
+                        view = request.getRequestDispatcher("addressAdd.jsp");
+
+                    }
+
+                }
+                view.forward(request, response);
+            }
+
+            if (prs.equals("gopayment")) {
+                 User user = (User) request.getSession().getAttribute("user");
+                   UserAddress ua = userAddressService.readUserAddress(user);
+
+                  request.setAttribute("readAddress", ua);
+                        request.setAttribute("user", user);
+                view = request.getRequestDispatcher("payment.jsp");
+                view.forward(request, response);
+
             }
         }
     }

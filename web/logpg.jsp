@@ -71,7 +71,7 @@
             </div>
         </div>
     </div>
-    <button class="btnback" id="back" onclick="goBack()">BACK</button>
+    <button class="btnback" id="back" onclick="history.back()">BACK</button>
  <!--<script src="main.js"></script>-->   
     <script src="https://unpkg.com/ionicons@4.2.2/dist/ionicons.js"></script>
 </body>

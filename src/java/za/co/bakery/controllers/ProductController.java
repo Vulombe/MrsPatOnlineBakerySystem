@@ -66,10 +66,10 @@ public class ProductController extends HttpServlet {
 
                     boolean res = productService.productAdd(request.getParameter("name"),
                             request.getParameter("picture"),
-                            Double.parseDouble(request.getParameter("price")),
+                            request.getParameter("price"),
                             Category.valueOf(request.getParameter("category").toUpperCase()),
                             request.getParameter("warning"), request.getParameter("description"),
-                            Integer.parseInt(request.getParameter("recipeID")));
+                            request.getParameter("recipeID"));
                     request.setAttribute("isAdded", res);
 
                     if ((boolean) request.getAttribute("isAdded")) {
@@ -78,7 +78,7 @@ public class ProductController extends HttpServlet {
                         request.setAttribute("msg", "Product was not added");
                     }
 
-                    view = request.getRequestDispatcher("TestingPage.jsp");
+                    view = request.getRequestDispatcher("admin.jsp");
                     break;
                 case "pdelete":
 
@@ -91,7 +91,7 @@ public class ProductController extends HttpServlet {
                         request.setAttribute("msg", "Product was not deleted");
                     }
 
-                    view = request.getRequestDispatcher("TestingPage.jsp");
+                    view = request.getRequestDispatcher("admin.jsp");
                     break;
                 case "pedit":
                     request.setAttribute("isUpdated", productService.productUpdate(request.getParameter("prodid"),
@@ -102,10 +102,10 @@ public class ProductController extends HttpServlet {
                     } else {
                         request.setAttribute("msg", "Product was not updated");
                     }
-                    view = request.getRequestDispatcher("TestingPage.jsp");
+                    view = request.getRequestDispatcher("adminAdd.jsp");
                     break;
                 case "pupdate":
-                    request.setAttribute("pupdate", productService.productUpdate(request.getParameter("productID"),
+                    request.setAttribute("pupdate", productService.productUpdate(request.getParameter("prodid"),
                             request.getParameter("field"),
                             request.getParameter("change")));
 
@@ -115,7 +115,7 @@ public class ProductController extends HttpServlet {
                         request.setAttribute("msg", "Product was not updated");
                     }
 
-                    view = request.getRequestDispatcher("TestingPage.jsp");
+                    view = request.getRequestDispatcher("adminAdd.jsp");
                     break;
                 case "cadd":
                     if (request.getSession().getAttribute("cart") != null) {
@@ -165,7 +165,7 @@ public class ProductController extends HttpServlet {
                     } else {
                         request.setAttribute("msg", "Recipe was not added");
                     }
-                    view = request.getRequestDispatcher("TestingPage.jsp");
+                    view = request.getRequestDispatcher("adminAdd.jsp");
                     break;
                 case "redit":
                     request.setAttribute("update", productService.recipeUpdate(request.getParameter("recipeID"),
@@ -178,7 +178,7 @@ public class ProductController extends HttpServlet {
                         request.setAttribute("msg", "Recipe was not updated");
                     }
 
-                    view = request.getRequestDispatcher("TestingPage.jsp");
+                    view = request.getRequestDispatcher("adminAdd.jsp");
                     break;
                 case "rdel":
                     request.setAttribute("isDeleted", productService.delRecipe(request.getParameter("recipeName")));
@@ -189,23 +189,23 @@ public class ProductController extends HttpServlet {
                         request.setAttribute("msg", "Recipe was not deleted");
                     }
 
-                    view = request.getRequestDispatcher("TestingPage.jsp");
+                    view = request.getRequestDispatcher("adimAdd.jsp");
                     break;
                 case "iview":
-                    request.setAttribute("ingredient", productService.getIngredient(request.getParameter("ingredientID")));
-                    view = request.getRequestDispatcher("TestingPage.jsp");
+                    request.setAttribute("ingredient", productService.getIngredient(request.getParameter("ingredientid")));
+                    view = request.getRequestDispatcher("adminAdd.jsp");
                     break;
                 case "iadd":
                     request.setAttribute("iIsAdded", productService.addIngredient(request.getParameter("ingredientName"), request.getParameter("ingredientNutrient")));
-                    view = request.getRequestDispatcher("TestingPage.jsp");
+                    view = request.getRequestDispatcher("adminAdd.jsp");
                     break;
                 case "iedit":
                     request.setAttribute("iUpdated", productService.addIngredient(request.getParameter("ingredientName"), request.getParameter("ingredientNutrient")));
-                    view = request.getRequestDispatcher("TestingPage.jsp");
+                    view = request.getRequestDispatcher("adminAdd.jsp");
                     break;
                 case "idel":
-                    request.setAttribute("iDelete", productService.delIngredient(request.getParameter("ingredientID")));
-                    view = request.getRequestDispatcher("TestingPage.jsp");
+                    request.setAttribute("iDelete", productService.delIngredient(request.getParameter("ingredientid")));
+                    view = request.getRequestDispatcher("adminAdd.jsp");
                     break;
             }
 

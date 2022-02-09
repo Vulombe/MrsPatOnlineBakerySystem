@@ -27,7 +27,7 @@ public class PaymentServiceImpl implements PaymentService{
     @Override
     public boolean makePayment(String cardNumber, String cvvNumber, String paymentType) {
         String type = paymentType.toUpperCase();
-
+        
         
         if(!type.isEmpty()){
             payment = new Payment(PaymentType.valueOf(type));
@@ -39,12 +39,12 @@ public class PaymentServiceImpl implements PaymentService{
                     return false; 
                 }
                 return payment.makePayment();
-        } else {
-                return payment.makePayment();
-            }
+        }
     }else{
                 return false;
             }
 
+    
+    return false;
 }
 }

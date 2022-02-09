@@ -27,6 +27,7 @@ public class OrderServiceImpl implements OrderService {
         Order order = null;
 
         boolean errorCheck = orderErrorCheck(order, user, cart, userAddress, totalPrice, ordrDate);
+       
         if (errorCheck) {
             order = new Order(user, cart, userAddress, totalPrice, ordrDate);
             return orderdao.add(order);
@@ -81,6 +82,12 @@ public class OrderServiceImpl implements OrderService {
         }
         return orderdao.readOrder(user);
     }
+     @Override
+    public Order readLastOrder() {
+       
+        return orderdao.lastOrder();
+    }
+
 
     @Override
     public List<Order> listOrder() {

@@ -112,4 +112,10 @@ public class LineItemCollection {
         
         return grandTotal;
     }
+
+    @Override
+    public String toString() {
+        return "LineItemCollection{" + "cart=" + cart + ", productLineItemDAO=" + productLineItemDAO + '}';
+    }
+    
 }

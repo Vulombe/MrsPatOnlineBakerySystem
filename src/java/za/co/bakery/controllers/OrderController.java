@@ -1,13 +1,7 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package za.co.bakery.controllers;
 
 import java.io.IOException;
 import java.time.LocalDate;
-import java.util.Date;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
@@ -16,8 +10,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import org.apache.pdfbox.pdmodel.PDDocument;
-import za.co.bakery.domain.Invoice;
 
 import za.co.bakery.domain.LineItemCollection;
 import za.co.bakery.domain.Order;
@@ -25,6 +17,8 @@ import za.co.bakery.domain.Order;
 import za.co.bakery.domain.User;
 import za.co.bakery.domain.UserAddress;
 import za.co.bakery.manager.DBPoolManagerBasic;
+import za.co.bakery.service.InvoiceService;
+import za.co.bakery.service.InvoiceServiceImpl;
 import za.co.bakery.service.OrderService;
 import za.co.bakery.service.OrderServiceImpl;
 import za.co.bakery.service.UserAddressService;
@@ -41,13 +35,14 @@ public class OrderController extends HttpServlet {
         OrderService orderService = new OrderServiceImpl(dbpm);
         UserAddressService userAddressService = new UserAddressServiceImpl(dbpm);
         UserService userService = new UserServiceImpl(dbpm);
+        InvoiceService invoiceService = new InvoiceServiceImpl();
         HttpSession session = request.getSession();
         String prs = request.getParameter("pro");
         RequestDispatcher view = null;
         User user = userService.read("marys@gmail.com");
 
         LineItemCollection lineItemList = null;
-                
+
         double totalPrice = 12.00;
         UserAddress userAddress = userAddressService.readUserAddress(user);
 
@@ -56,15 +51,18 @@ public class OrderController extends HttpServlet {
         if (prs != null) {
             prs = prs.toLowerCase();
         }
+        
+        
+        if((boolean)request.getSession().getAttribute("payment"))
         switch (prs) {
-            
+
             case "ocreate":
                 lineItemList = (LineItemCollection) request.getSession().getAttribute("cart");
                 boolean orderAddedd = orderService.add(user, lineItemList, userAddress, totalPrice, ordrDate);
                 if (orderAddedd) {
-                    session.setAttribute("orderAdded", orderAddedd);
+
                     session.setAttribute("msg", orderAddedd);
-                    view = request.getRequestDispatcher("TestingPage.jsp");
+                    view = request.getRequestDispatcher("index.jsp");
                 } else {
                     request.setAttribute("errormsg", "Invalid Order information");
                     session.setAttribute("orderAdded", orderAddedd);
@@ -74,8 +72,9 @@ public class OrderController extends HttpServlet {
                 break;
             case "oread":
                 if ((boolean) session.getAttribute("orderAdded")) {
+
                     request.setAttribute("order", orderService.readOrder(user));
-                    view = request.getRequestDispatcher("TestingPage.jsp");
+                    view = request.getRequestDispatcher("index.jsp");
                 } else {
                     request.setAttribute("errormsg", "Invalid Order information");
                     view = request.getRequestDispatcher("error.jsp");
@@ -84,13 +83,19 @@ public class OrderController extends HttpServlet {
                 break;
             case "olist":
                 request.setAttribute("orderList", orderService.listOrder(user));
-                view = request.getRequestDispatcher("TestingPage.jsp");
+                view = request.getRequestDispatcher("index.jsp");
                 view.forward(request, response);
                 break;
-            case "viewInvoice":
-
-//            case "oupdate":
-//                request.setAttribute("oupdate", orderService.update((User)session.getAttribute("user"),(LineItemCollection) session.getAttribute("cart"), (UserAddress)request.getAttribute("useraddressvalid"), totalPrice, ordrDate));
+            case "invoice":
+                Order order = orderService.readOrder(2);
+                if (order != null) {
+                    invoiceService.getInvoice(order);
+                    view = request.getRequestDispatcher("index.jsp");
+                } else {
+                    request.setAttribute("errormsg", "Invalid Order information");
+                    view = request.getRequestDispatcher("error.jsp");
+                }
+                view.forward(request, response);
         }
     }
 

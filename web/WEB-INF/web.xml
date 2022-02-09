@@ -60,6 +60,14 @@
         <servlet-name>ocontrol</servlet-name>
         <url-pattern>/ocontrol</url-pattern>
     </servlet-mapping>
+        <servlet>
+        <servlet-name>pacontrol</servlet-name>
+        <servlet-class>za.co.bakery.controllers.PaymentController</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>pacontrol</servlet-name>
+        <url-pattern>/pacontrol</url-pattern>
+    </servlet-mapping>
     <session-config>
         <session-timeout>
             30

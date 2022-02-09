@@ -29,6 +29,16 @@ public class UserAddressServiceImpl implements UserAddressService {
         }
 
     }
+    @Override
+    public boolean checkAddress(User u)
+    {
+        
+        if(u!=null)
+        {
+        return userAddressDAO.checkAddress(u);
+        }
+   return  false;
+    }
 
     @Override
     public boolean checkAddressErrors(int houseNumber, String streetAddress, String city, String state, String zipCode, User user) {

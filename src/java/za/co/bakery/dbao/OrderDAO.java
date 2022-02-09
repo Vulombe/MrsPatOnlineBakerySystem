@@ -18,6 +18,8 @@ public interface OrderDAO {
     public List<Order> listOrder();
 
     public List<Order> listOrder(User u);
+    
+    public Order lastOrder();
 
     public boolean update(Order o);
 

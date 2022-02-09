@@ -12,6 +12,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import za.co.bakery.dbao.IngredientDAO;
+import za.co.bakery.dbao.IngredientLineItemDAO;
 import za.co.bakery.domain.Ingredient;
 import za.co.bakery.domain.Product;
 import za.co.bakery.manager.DBPoolManagerBasic;
@@ -26,10 +27,12 @@ public class IngredientDAOImpl implements IngredientDAO {
     private Connection con = null;
     private PreparedStatement ps;
     private ResultSet rs;
+   
 // ************************************************************************
 
     public IngredientDAOImpl(DBPoolManagerBasic dbpm) {
         this.dbpm = dbpm;
+
     }
 
     //*****************add product to database*******************************

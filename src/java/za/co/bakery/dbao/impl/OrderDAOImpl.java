@@ -11,7 +11,7 @@ import za.co.bakery.dbao.OrderDAO;
 import za.co.bakery.dbao.ProductLineItemDAO;
 import za.co.bakery.dbao.UserAddressDAO;
 import za.co.bakery.dbao.UserDOA;
-import za.co.bakery.dbao.cartDAO;
+import za.co.bakery.dbao.CartDAO;
 import za.co.bakery.domain.IngredientItem;
 import za.co.bakery.domain.LineItem;
 import za.co.bakery.domain.LineItemCollection;
@@ -30,7 +30,7 @@ public class OrderDAOImpl implements OrderDAO {
     private UserDOA userDOA;
     private ProductLineItemDAO productLineItemDAO;
     private UserAddressDAO userAddressDAO;
-    private cartDAO cartDA;
+    private CartDAO cartDA;
 // ************************************************************************
 
     public OrderDAOImpl(DBPoolManagerBasic dbpm) {
@@ -108,7 +108,9 @@ public class OrderDAOImpl implements OrderDAO {
                 LineItemCollection productItemList = new LineItemCollection();
                 productItemList.setCart(cartDA.readCart(o.getOrderID()));
                 o.setLineItem(productItemList);
-
+                String[] dateString = rs.getString("orderDate").split("-");
+                LocalDate date = LocalDate.of(Integer.parseInt(dateString[0]), Integer.parseInt(dateString[1]), Integer.parseInt(dateString[2]));
+                o.setOrdrDate(date);
                 o.setUserAddress(userAddressDAO.readUserAddress(u));
                 o.setTotalPrice(rs.getDouble("totalPrice"));
             }
@@ -138,6 +140,9 @@ public class OrderDAOImpl implements OrderDAO {
                 LineItemCollection productItemList = new LineItemCollection();
                 productItemList.setCart(cartDA.readCart(o.getOrderID()));
                 o.setLineItem(productItemList);
+                String[] dateString = rs.getString("orderDate").split("-");
+                LocalDate date = LocalDate.of(Integer.parseInt(dateString[0]), Integer.parseInt(dateString[1]), Integer.parseInt(dateString[2]));
+                o.setOrdrDate(date);
 
                 o.setUserAddress(userAddressDAO.readUserAddress(u));
                 o.setTotalPrice(rs.getDouble("totalPrice"));
@@ -163,11 +168,12 @@ public class OrderDAOImpl implements OrderDAO {
                 o = new Order();
                 o.setOrderID(rs.getInt("orderId"));
                 o.setUser(u);
-                String productsItemIds = rs.getString("productLineItemId");
                 LineItemCollection productItemList = new LineItemCollection();
                 productItemList.setCart(cartDA.readCart(o.getOrderID()));
                 o.setLineItem(productItemList);
-
+                String[] dateString = rs.getString("orderDate").split("-");
+                LocalDate date = LocalDate.of(Integer.parseInt(dateString[0]), Integer.parseInt(dateString[1]), Integer.parseInt(dateString[2]));
+                o.setOrdrDate(date);
                 o.setUserAddress(userAddressDAO.readUserAddress(u));
                 o.setTotalPrice(rs.getDouble("totalPrice"));
             }
@@ -198,7 +204,9 @@ public class OrderDAOImpl implements OrderDAO {
                 LineItemCollection productItemList = new LineItemCollection();
                 productItemList.setCart(cartDA.readCart(o.getOrderID()));
                 o.setLineItem(productItemList);
-
+                String[] dateString = rs.getString("orderDate").split("-");
+                LocalDate date = LocalDate.of(Integer.parseInt(dateString[0]), Integer.parseInt(dateString[1]), Integer.parseInt(dateString[2]));
+                o.setOrdrDate(date);
                 o.setUserAddress(userAddressDAO.readUserAddress(u));
                 o.setTotalPrice(rs.getDouble("totalPrice"));
                 orders.add(o);
@@ -227,11 +235,12 @@ public class OrderDAOImpl implements OrderDAO {
                 Order o = new Order();
                 o.setOrderID(rs.getInt("orderId"));
                 o.setUser(u);
-                String productsItemIds = rs.getString("productLineItemId");
                 LineItemCollection productItemList = new LineItemCollection();
                 productItemList.setCart(cartDA.readCart(o.getOrderID()));
                 o.setLineItem(productItemList);
-
+                String[] dateString = rs.getString("orderDate").split("-");
+                LocalDate date = LocalDate.of(Integer.parseInt(dateString[0]), Integer.parseInt(dateString[1]), Integer.parseInt(dateString[2]));
+                o.setOrdrDate(date);
                 o.setUserAddress(userAddressDAO.readUserAddress(u));
                 o.setTotalPrice(rs.getDouble("totalPrice"));
                 orders.add(o);
@@ -243,6 +252,37 @@ public class OrderDAOImpl implements OrderDAO {
         }
 
         return orders;
+    }
+
+    @Override
+    public Order lastOrder() {
+
+        Order o = null;
+        try {
+            con = dbpm.getConnection();
+            ps = con.prepareStatement("SELECT * FROM Orders ORDER BY orderId DESC LIMIT 1");
+            rs = ps.executeQuery();
+
+            if (rs.next()) {
+                o = new Order();
+                o.setOrderID(rs.getInt("orderId"));
+                User u = userDOA.read(rs.getString("userEmail"));
+                o.setUser(u);
+                LineItemCollection productItemList = new LineItemCollection();
+                productItemList.setCart(cartDA.readCart(o.getOrderID()));
+                o.setLineItem(productItemList);
+                String[] dateString = rs.getString("orderDate").split("-");
+                LocalDate date = LocalDate.of(Integer.parseInt(dateString[0]), Integer.parseInt(dateString[1]), Integer.parseInt(dateString[2]));
+                o.setOrdrDate(date);
+                o.setUserAddress(userAddressDAO.readUserAddress(u));
+                o.setTotalPrice(rs.getDouble("totalPrice"));
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        } finally {
+            closeStreams();
+        }
+        return o;
     }
 
     @Override
@@ -301,4 +341,5 @@ public class OrderDAOImpl implements OrderDAO {
         con = null;
     }
     // ************************************************************************
+
 }

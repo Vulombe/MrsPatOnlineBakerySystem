@@ -132,7 +132,7 @@
 
                     <div>
                         <%if (request.getSession().getAttribute("user") != null) {%>
-                              <a href="http://localhost:8080/MrsPatOnlineBakerySystem/ocontrol?pro=ocreate">
+                              <a href="http://localhost:8080/MrsPatOnlineBakerySystem/ucontrol?pro=radd">
                             <button class="checkout">Checkout</button>
                         </a>
                         <%} else {%>

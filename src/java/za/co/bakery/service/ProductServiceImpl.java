@@ -4,11 +4,13 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import za.co.bakery.dbao.IngredientDAO;
+import za.co.bakery.dbao.IngredientLineItemDAO;
 import za.co.bakery.dbao.ProductDAO;
 import za.co.bakery.dbao.ProductLineItemDAO;
 import za.co.bakery.dbao.RecipeDAO;
 import za.co.bakery.dbao.UserDOA;
 import za.co.bakery.dbao.impl.IngredientDAOImpl;
+import za.co.bakery.dbao.impl.IngredientLineItemDAOImpl;
 import za.co.bakery.dbao.impl.ProductDAOImpl;
 import za.co.bakery.dbao.impl.ProductLineItemDAOImpl;
 import za.co.bakery.dbao.impl.RecipeDAOImpl;
@@ -34,25 +36,32 @@ public class ProductServiceImpl implements ProductService {
     private RecipeDAO recipeDAO;
     private IngredientDAO ingredientDAO;
     private ProductLineItemDAO productLineItemDAO;
+    private IngredientLineItemDAO ingreditentLineItemDAO;
 
     public ProductServiceImpl(DBPoolManagerBasic dbpm) {
         this.productDAO = new ProductDAOImpl(dbpm);
         this.productLineItemDAO = new ProductLineItemDAOImpl(dbpm);
         this.recipeDAO = new RecipeDAOImpl(dbpm);
         this.ingredientDAO = new IngredientDAOImpl(dbpm);
+        ingreditentLineItemDAO = new IngredientLineItemDAOImpl(dbpm);
     }
 
     @Override
-    public boolean productAdd(String name, String picture, double price, Category category, String warning, String description, int recipeID) {
+    public boolean productAdd(String name, String picture, String price, Category category, String warning, String description, String recipeID) {
         if (name.isEmpty()) {
             name = "N/A";
         }
         if (picture.isEmpty()) {
             picture = "https://i1.sndcdn.com/avatars-BZjdypYRINkEoQBe-s2icjg-t500x500.jpg";
         }
+        double p = 0;
+        try {
+            p = Double.parseDouble(price);
+        } catch (NumberFormatException nfe) {
 
-        if (price < 1.0) {
-            price = 1.0;
+        }
+        if (p < 1.0) {
+            p = 1.0;
         }
 
         if (warning.isEmpty()) {
@@ -62,12 +71,17 @@ public class ProductServiceImpl implements ProductService {
         if (description.isEmpty()) {
             description = "Mostly sugar flour and eggs";
         }
+        int recId = 0;
+        try {
+            recId = Integer.parseInt(recipeID);
+        } catch (NumberFormatException nfe) {
 
-        if (recipeID < 1) {
-            recipeID = 1;
+        }
+        if (recId < 1) {
+            recId = 1;
         }
 
-        Product product = new Product(name, picture, price, category, warning, description, recipeID);
+        Product product = new Product(name, picture, p, category, warning, description, recId);
         return productDAO.add(product);
     }
 
@@ -220,7 +234,7 @@ public class ProductServiceImpl implements ProductService {
         }
 
         String f = field.toLowerCase();
-
+        double price = 0.0;
         switch (f) {
             case "name":
                 p.setName(update);
@@ -229,8 +243,13 @@ public class ProductServiceImpl implements ProductService {
                 p.setPicture(update);
                 break;
             case "price":
-                p.setPrice(Double.parseDouble(update));
-                break;
+                try {
+                price = Double.parseDouble(update);
+            } catch (NumberFormatException nfe) {
+                return false;
+            }
+            p.setPrice(price);
+            break;
             case "category":
                 String r = update.toUpperCase();
                 p.setCategory(Category.valueOf(r));
@@ -321,8 +340,23 @@ public class ProductServiceImpl implements ProductService {
             return false;
         }
         Ingredient i = ingredientDAO.readIngridientById(prodId);
-        
+
         return ingredientDAO.delete(i);
+    }
+
+    @Override
+    public List<Ingredient> getIngredients() {
+        return ingredientDAO.readAll();
+    }
+
+    @Override
+    public List<Recipe> getRecipes() {
+        return recipeDAO.readAll();
+    }
+
+    @Override
+    public List<Product> getAllProducts() {
+        return productDAO.read();
     }
 
 }

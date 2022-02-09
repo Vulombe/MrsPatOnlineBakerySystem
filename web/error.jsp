@@ -15,7 +15,7 @@
         <h1>Error</h1>
          <link rel="stylesheet" type="text/css" href="style.css">
          <img src="https://www.freeiconspng.com/uploads/error-icon-32.png">
-         <button id="back" onclick="goBack()">BACK</button>
+         <button id="back" onclick="history.back()">BACK</button>
      <script src="cart.js"></script>
     </body>
 </html>
