@@ -42,7 +42,7 @@
                     </div>
                     <label class="field">
                         <span class="field__label" for="address">House Number</span>
-                        <input class="field__input" type="text" id="address" name="houseNumber" />
+                        <input class="field__input" type="text" pattern="[0-9]" id="address" name="houseNumber" />
                     </label>
                     <label class="field">
                         <span class="field__label" for="address">Street</span>

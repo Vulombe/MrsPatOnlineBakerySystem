@@ -104,7 +104,7 @@ public class UserController extends HttpServlet {
             //---------------------
             if (prs.equals("logout")) {
                 session.removeAttribute("user");
-                view = request.getRequestDispatcher("TestingPage.jsp");
+                view = request.getRequestDispatcher("index.jsp");
                 view.forward(request, response);
             }
             //---------------------

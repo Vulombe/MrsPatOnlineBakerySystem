@@ -9,6 +9,8 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -65,7 +67,7 @@ public class PaymentController extends HttpServlet {
             DBPoolManagerBasic dbpm = (DBPoolManagerBasic) sc.getAttribute("dbconn");
             PaymentService paymentService = new PaymentServiceImpl(dbpm);
             OrderService orderService = new OrderServiceImpl(dbpm);
-            InvoiceService invoice=new InvoiceServiceImpl();
+            InvoiceService invoice = new InvoiceServiceImpl();
             UserAddressService userAddressService = new UserAddressServiceImpl(dbpm);
 
             prs = prs.toLowerCase();
@@ -75,9 +77,9 @@ public class PaymentController extends HttpServlet {
                     String Cvv = request.getParameter("cvvNumber");
                     String paymentType = request.getParameter("paymentType");
 
-                  //  request.setAttribute("paid", paymentService.makePayment(cardNumber, Cvv, paymentType));
+                    //  request.setAttribute("paid", paymentService.makePayment(cardNumber, Cvv, paymentType));
                     //boolean paid=paymentService.makePayment(cardNumber, Cvv, paymentType);
-                     boolean paid=true;
+                    boolean paid = true;
                     if (paid) {
                         //orderService.add((User)request.getSession().getAttribute("user"),cart, (UserAddress)request.getSession().getAttribute("userAddress"), cart.grandTotal(), date);
 
@@ -87,18 +89,25 @@ public class PaymentController extends HttpServlet {
                         UserAddress userAddress = userAddressService.readUserAddress(user);
                         boolean orderAddedd = orderService.add(user, lineItemList, userAddress, totalPrice, ordrDate);
                         if (orderAddedd) {
-                            Order o=orderService.readLastOrder();
-                            PDDocument invo=invoice.getInvoice(o);
-                            view = request.getRequestDispatcher("index.jsp");
+
+                            Order o = orderService.readLastOrder(user);
+
+                            if (o != null) {
+                                String invoicePath = invoice.getInvoice(o);
+                                InvoiceService service = new InvoiceServiceImpl();
+                                service.sendInvoiceEmail(invoicePath, "manqobamilk@gmail.com", "0769192723", o.getUser().getEmailAddress());
+                                view = request.getRequestDispatcher("cornfimOrder.jsp");
+                            }
+
                         } else {
                             request.setAttribute("errormsg", "Invalid Order information");
                             session.setAttribute("orderAdded", orderAddedd);
                             view = request.getRequestDispatcher("error.jsp");
                         }
-                        view.forward(request, response);
+                        //view.forward(request, response);
 
                     }
-                    view = request.getRequestDispatcher("Testing.jsp");
+                    //view = request.getRequestDispatcher("Testing.jsp");
                     break;
 
             }

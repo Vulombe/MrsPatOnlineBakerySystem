@@ -25,7 +25,7 @@ public interface OrderService {
 
     public List<Order> listOrder(User u);
 
-    public Order readLastOrder();
+    public Order readLastOrder(User user);
 
     public boolean update(User user, LineItemCollection cart, UserAddress userAddress, double totalPrice, LocalDate ordrDate);
 

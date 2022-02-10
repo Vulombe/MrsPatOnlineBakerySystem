@@ -17,6 +17,7 @@ import za.co.bakery.domain.Order;
 import za.co.bakery.domain.User;
 import za.co.bakery.domain.UserAddress;
 import za.co.bakery.manager.DBPoolManagerBasic;
+
 import za.co.bakery.service.InvoiceService;
 import za.co.bakery.service.InvoiceServiceImpl;
 import za.co.bakery.service.OrderService;
@@ -35,6 +36,7 @@ public class OrderController extends HttpServlet {
         OrderService orderService = new OrderServiceImpl(dbpm);
         UserAddressService userAddressService = new UserAddressServiceImpl(dbpm);
         UserService userService = new UserServiceImpl(dbpm);
+
         InvoiceService invoiceService = new InvoiceServiceImpl();
         HttpSession session = request.getSession();
         String prs = request.getParameter("pro");
@@ -51,9 +53,6 @@ public class OrderController extends HttpServlet {
         if (prs != null) {
             prs = prs.toLowerCase();
         }
-        
-        
-        if((boolean)request.getSession().getAttribute("payment"))
         switch (prs) {
 
             case "ocreate":
@@ -87,15 +86,23 @@ public class OrderController extends HttpServlet {
                 view.forward(request, response);
                 break;
             case "invoice":
-                Order order = orderService.readOrder(2);
+                Order order = orderService.readOrder(1);
                 if (order != null) {
-                    invoiceService.getInvoice(order);
+                    String invoicePath = invoiceService.getInvoice(order);
+                    InvoiceService service = new InvoiceServiceImpl();
+
+                    service.sendInvoiceEmail(invoicePath, "manqobamilk@gmail.com", "0769192723", "vmakhubele@gmail.com");
                     view = request.getRequestDispatcher("index.jsp");
                 } else {
                     request.setAttribute("errormsg", "Invalid Order information");
                     view = request.getRequestDispatcher("error.jsp");
                 }
                 view.forward(request, response);
+                break;
+            case "sendemail":
+                InvoiceService service = new InvoiceServiceImpl();
+                String invoicePDF = "";
+                service.sendInvoiceEmail(invoicePDF, "manqobamilk@gmail.com", "0769192723", "vmakhubele@gmail.com");
         }
     }
 

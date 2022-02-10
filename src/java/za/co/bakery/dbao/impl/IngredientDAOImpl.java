@@ -65,8 +65,9 @@ public class IngredientDAOImpl implements IngredientDAO {
         try {
             con = dbpm.getConnection();
 
-            ps = con.prepareStatement("SELECT * FROM INGREDIENT WHERE INGREDIENTNAME= ?");
+            ps = con.prepareStatement("SELECT * FROM INGREDIENT WHERE INGREDIENTNAME= ? AND ISACTIVE=?");
             ps.setString(1, name);
+            ps.setString(2, "Y");
             rs = ps.executeQuery();
 
             if (rs.next()) {
@@ -91,7 +92,8 @@ public class IngredientDAOImpl implements IngredientDAO {
         try {
             con = dbpm.getConnection();
 
-            ps = con.prepareStatement("SELECT * FROM INGREDIENT");
+            ps = con.prepareStatement("SELECT * FROM INGREDIENT WHERE  ISACTIVE=?");
+            ps.setString(1, "Y");
             rs = ps.executeQuery();
 
             while (rs.next()) {

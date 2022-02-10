@@ -255,18 +255,18 @@ public class OrderDAOImpl implements OrderDAO {
     }
 
     @Override
-    public Order lastOrder() {
+    public Order lastOrder( User u) {
 
         Order o = null;
         try {
             con = dbpm.getConnection();
-            ps = con.prepareStatement("SELECT * FROM Orders ORDER BY orderId DESC LIMIT 1");
+            ps = con.prepareStatement("SELECT * FROM orders WHERE USEREMAIL=? AND ORDERID=(SELECT MAX(ORDERID) FROM orders);");
+            ps.setString(1, u.getEmailAddress());
             rs = ps.executeQuery();
 
             if (rs.next()) {
                 o = new Order();
                 o.setOrderID(rs.getInt("orderId"));
-                User u = userDOA.read(rs.getString("userEmail"));
                 o.setUser(u);
                 LineItemCollection productItemList = new LineItemCollection();
                 productItemList.setCart(cartDA.readCart(o.getOrderID()));

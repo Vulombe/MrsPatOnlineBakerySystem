@@ -83,9 +83,9 @@ public class OrderServiceImpl implements OrderService {
         return orderdao.readOrder(user);
     }
      @Override
-    public Order readLastOrder() {
+    public Order readLastOrder( User user) {
        
-        return orderdao.lastOrder();
+        return orderdao.lastOrder(user);
     }
 
 

@@ -46,7 +46,7 @@
                         </div>
                         <label class="field">
                             <span class="field__label" for="address">House Number</span>
-                            <p class="field__input" type="text" id="address" name="houseNumber" ><%=ua.getHouseNumber()%></p>
+                            <p class="field__input" type="text" pattern="[0-9]" id="address" name="houseNumber" ><%=ua.getHouseNumber()%></p>
                         </label>
                         <label class="field">
                             <span class="field__label" for="address">Street</span>
