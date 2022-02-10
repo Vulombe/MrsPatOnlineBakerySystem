@@ -10,14 +10,22 @@ import za.co.bakery.domain.User;
 public interface UserDOA {
 
     public int create(User u);
+
     public User read(User u);
+
     public User read();
+
     public User read(String email);
-    public boolean update(User u);
-    public boolean delete(String email);
-    public boolean isNewUser(User u);
-    boolean isUserValid(String email, String password);
+
     public List<User> readUsers();
+
+    public boolean update(User u);
+
+    public boolean delete(String email);
+
+    public boolean isNewUser(User u);
+
+    boolean isUserValid(String email, String password);
 
     //lots of user related methods
 }

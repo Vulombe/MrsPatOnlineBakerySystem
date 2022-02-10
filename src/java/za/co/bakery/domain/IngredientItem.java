@@ -1,6 +1,10 @@
 
 package za.co.bakery.domain;
 
+/**
+ *
+ * @author StuartLittles
+ */
 
 public class IngredientItem{
 

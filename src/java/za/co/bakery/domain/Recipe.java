@@ -1,9 +1,13 @@
 
 package za.co.bakery.domain;
 
-
+import java.util.ArrayList;
 import java.util.List;
 
+/**
+ *
+ * @author StuartLittle
+ */
 
 public class Recipe {
 
@@ -18,16 +22,13 @@ public class Recipe {
         this.ingredients = ingredients;
         this.recipeName = recipeName;
     }
-    
-    public Recipe(){
-        
+
+    public Recipe() {
+     
     }
-    
-    public Recipe(int ID, String steps, List<IngredientItem> ingredients, String recipeName){
-        this.recipeID = ID;
-        this.steps = steps;
-        this.ingredients = ingredients;
-        this.recipeName = recipeName;
+
+    public Recipe(int ID, String steps, List<IngredientItem> ingredients, String recipeName) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
     public String getRecipeName() {

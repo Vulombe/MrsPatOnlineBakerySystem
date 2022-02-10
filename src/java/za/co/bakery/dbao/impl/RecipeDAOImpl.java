@@ -11,8 +11,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import za.co.bakery.dbao.IngredientLineItemDAO;
 import za.co.bakery.dbao.RecipeDAO;
 import za.co.bakery.domain.Category;
+import za.co.bakery.domain.Ingredient;
 import za.co.bakery.domain.IngredientItem;
 import za.co.bakery.domain.Product;
 import za.co.bakery.domain.Recipe;
@@ -28,10 +30,12 @@ public class RecipeDAOImpl implements RecipeDAO {
     private Connection con = null;
     private PreparedStatement ps;
     private ResultSet rs;
+     private IngredientLineItemDAO ingredientLineItemDAO;
 // ************************************************************************
 
     public RecipeDAOImpl(DBPoolManagerBasic dbpm) {
         this.dbpm = dbpm;
+       ingredientLineItemDAO= new IngredientLineItemDAOImpl(dbpm);
     }
 
     //*****************add product to database*******************************
@@ -158,8 +162,9 @@ public class RecipeDAOImpl implements RecipeDAO {
                 String[] ingreItemsstring = ingreItem.split(",");
                 List<IngredientItem> ingreItemsStringList = new ArrayList();
                 for (String s : ingreItemsstring) {
-                    IngredientItem it = new IngredientItem();
-                    it.setIngredientItemId(Integer.parseInt(s));
+                    IngredientItem it = ingredientLineItemDAO.readIngridientItem(Integer.parseInt(s));
+                    int id=it.getIngredientItemId();
+                    it.setIngredientItemId(id);
                     ingreItemsStringList.add(it);
                 }
                 r.setIngredients(ingreItemsStringList);

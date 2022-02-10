@@ -1,6 +1,9 @@
 package za.co.bakery.domain;
 
-
+/**
+ *
+ * @author Stuart Littles
+ */
 public class LineItem {
     private Product product;
     private int qty;
@@ -77,6 +80,6 @@ public class LineItem {
         return "LineItem{" + "product=" + product + ", qty=" + qty + ", ingredientId=" + ingredientId + ", productID=" + productID + ", lineItemId=" + lineItemId + '}';
     }
     
-   
+    
     
 }

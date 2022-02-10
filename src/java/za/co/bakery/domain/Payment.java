@@ -1,7 +1,7 @@
-
 package za.co.bakery.domain;
 
 public class Payment {
+
     private PaymentType paymentType;
 
     public Payment(PaymentType paymentType) {
@@ -16,9 +16,14 @@ public class Payment {
         this.paymentType = paymentType;
     }
 
-    @Override
-    public String toString() {
-        return "Payment{" + "paymentType=" + paymentType + '}';
+    public Payment(PaymentType paymentType, Invoice invoice) {
+        this.paymentType = paymentType;
     }
-    
+
+    public boolean makePayment() {
+        Double total = 259.33;
+        
+        boolean random=Math.random() * total > (total / 2);
+        return random ;
+    }
 }

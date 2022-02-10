@@ -20,6 +20,7 @@ public interface UserAddressDAO {
      public User readAddress(UserAddress ua);
     public List<UserAddress> readAll();
     public List<User> readAllProductOfIngredient(UserAddress ua);
+    public boolean  checkAddress(User u);
     public boolean update(UserAddress ua);
     public boolean delete(UserAddress ua);
 }

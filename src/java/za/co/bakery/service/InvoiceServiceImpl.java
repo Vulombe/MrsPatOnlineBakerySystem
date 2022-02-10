@@ -276,14 +276,14 @@ public class InvoiceServiceImpl implements InvoiceService {
     }
 
     @Override
-    public void sendInvoiceEmail(String invoicePDF, final String emailSender, final String password, final String emailTo) {
+    public void sendInvoiceEmail(String invoicePDF, final String emailSender, final String password, String emailTo) {
         Properties properties = new Properties();
         properties.put("mail.smtp.auth", "true");
         properties.put("mail.smtp.starttls.enable", "true");
         properties.put("mail.smtp.host", "smtp.gmail.com");
         properties.put("mail.smtp.port", "587");
         properties.put("mail.smtp.startls.enable", "true");
-       
+        String host = "relay.jangosmtp.net";
         Session session = Session.getDefaultInstance(properties, new Authenticator() {
             protected PasswordAuthentication getPasswordAuthentication() {
                 return new PasswordAuthentication(emailSender, password);

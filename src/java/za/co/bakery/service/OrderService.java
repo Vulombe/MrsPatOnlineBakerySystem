@@ -1,17 +1,19 @@
-
 package za.co.bakery.service;
 
 import java.time.LocalDate;
-
+import java.util.Date;
 import java.util.List;
-
+import org.apache.pdfbox.pdmodel.PDDocument;
+import za.co.bakery.domain.Invoice;
+import za.co.bakery.domain.LineItem;
 import za.co.bakery.domain.LineItemCollection;
 import za.co.bakery.domain.Order;
 import za.co.bakery.domain.User;
 import za.co.bakery.domain.UserAddress;
 
 public interface OrderService {
-    public boolean add(User user, LineItemCollection cart , UserAddress userAddress, double totalPrice, LocalDate ordrDate);
+
+    public boolean add(User user, LineItemCollection cart, UserAddress userAddress, double totalPrice, LocalDate ordrDate);
 
     public Order readOrder(Order o);
 
@@ -23,9 +25,13 @@ public interface OrderService {
 
     public List<Order> listOrder(User u);
 
+    public Order readLastOrder(User user);
+
     public boolean update(User user, LineItemCollection cart, UserAddress userAddress, double totalPrice, LocalDate ordrDate);
-    public boolean orderErrorCheck(Order order,User user, LineItemCollection cart, UserAddress userAddress, double totalPrice, LocalDate ordrDate);
+
+    public boolean orderErrorCheck(Order order, User user, LineItemCollection cart, UserAddress userAddress, double totalPrice, LocalDate ordrDate);
+
     public boolean delete(Order o);
     //public PDDocument getInvoice(Order order);
-   // public PDDocument getInvoice();
+    // public PDDocument getInvoice();
 }

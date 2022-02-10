@@ -40,7 +40,7 @@ public class UserAddressDAOImpl implements UserAddressDAO {
         boolean isAdded = false;
         try {
             con = dbpm.getConnection();
-            ps = con.prepareStatement("INSERT INTO ADDRESS(addressId,houseNumber,street,city,state,code,custEmail,isValid) VALUES(NULL,?,?,?,?,?,?,?)");
+            ps = con.prepareStatement("INSERT INTO ADDRESS(addressId,houseNumber,street,city,state, code,custEmail,isValid) VALUES(null,?,?,?,?,?,?,'Y')");
             //  ps.setInt(1, p.getProductID());
             ps.setInt(1, ua.getHouseNumber());
             ps.setString(2, ua.getStreetName());
@@ -48,7 +48,6 @@ public class UserAddressDAOImpl implements UserAddressDAO {
             ps.setString(4, ua.getState());
             ps.setString(5, ua.getZipCode());
             ps.setString(6, ua.getUser().getEmailAddress());
-            ps.setString(7,"Y");
             isAdded = ps.executeUpdate() > 0;
         } catch (SQLException ex) {
             System.out.println("Error: " + ex.getMessage());
@@ -60,6 +59,7 @@ public class UserAddressDAOImpl implements UserAddressDAO {
 
     @Override
     public UserAddress readUserAddress(User u) {
+
         UserAddress ua = null;
         try {
             con = dbpm.getConnection();
@@ -68,7 +68,7 @@ public class UserAddressDAOImpl implements UserAddressDAO {
             rs = ps.executeQuery();
 
             if (rs.next()) {
-                ua = new UserAddress(rs.getInt("addressId"),rs.getInt("houseNumber"),rs.getString("street"),rs.getString("city"),rs.getString("state"),rs.getString("code"),u);
+                ua = new UserAddress(rs.getInt("addressId"), rs.getInt("houseNumber"), rs.getString("street"), rs.getString("city"), rs.getString("state"), rs.getString("code"), u);
 //                ua.setAddressId(rs.getInt("addressId"));
 //                ua.setHouseNumber(rs.getInt("houseNumber"));
 //                ua.setStreetName(rs.getString("street"));
@@ -215,7 +215,32 @@ public class UserAddressDAOImpl implements UserAddressDAO {
             closeStreams();
 
         }
-       return isUpdated;
+        return isUpdated;
+    }
+
+    @Override
+    public boolean checkAddress(User u) {
+        UserAddress ua = null;
+
+        boolean exists = false;
+
+        try {
+            con = dbpm.getConnection();
+            ps = con.prepareStatement("SELECT * FROM ADDRESS WHERE CUSTEMAIL=?");
+            ps.setString(1, u.getEmailAddress());
+            rs = ps.executeQuery();
+            if (rs.next()) {
+              exists=true;
+            }
+
+        } catch (SQLException ex) {
+            System.out.println("Error: " + ex.getMessage());
+        } finally {
+            closeStreams();
+
+        }
+
+        return exists;
     }
 
     @Override

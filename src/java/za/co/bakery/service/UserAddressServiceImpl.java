@@ -3,6 +3,7 @@ package za.co.bakery.service;
 import java.util.List;
 import za.co.bakery.dbao.UserAddressDAO;
 import za.co.bakery.dbao.impl.UserAddressDAOImpl;
+import za.co.bakery.dbao.impl.UserDOAImpl;
 import za.co.bakery.domain.User;
 import za.co.bakery.domain.UserAddress;
 import za.co.bakery.manager.DBPoolManagerBasic;
@@ -27,6 +28,16 @@ public class UserAddressServiceImpl implements UserAddressService {
             return false;
         }
 
+    }
+    @Override
+    public boolean checkAddress(User u)
+    {
+        
+        if(u!=null)
+        {
+        return userAddressDAO.checkAddress(u);
+        }
+   return  false;
     }
 
     @Override

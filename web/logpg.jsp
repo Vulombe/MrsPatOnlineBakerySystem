@@ -5,7 +5,7 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<!DOCTYPE html>
+<%@page import="za.co.bakery.domain.User"%>
 
 <!DOCTYPE html>
 <html>
@@ -71,7 +71,7 @@
             </div>
         </div>
     </div>
-    <button class="btnback" id="back" onclick="goBack()">BACK</button>
+    <button class="btnback" id="back" onclick="history.back()">BACK</button>
  <!--<script src="main.js"></script>-->   
     <script src="https://unpkg.com/ionicons@4.2.2/dist/ionicons.js"></script>
 </body>
@@ -88,7 +88,7 @@ and open the template in the editor.
     Created on : Jan 14, 2022, 11:47:43 AM
     Author     : student11
 */
-
+@import url('https://fonts.googleapis.com/css?family=Montserrat:400,800');
 head{
     background-image: url("https://img.icons8.com/ios-filled/50/000000/circled-left.png");
     

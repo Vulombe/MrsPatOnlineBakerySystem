@@ -8,7 +8,10 @@ import za.co.bakery.dbao.impl.ProductLineItemDAOImpl;
 
 import za.co.bakery.manager.DBPoolManagerBasic;
 
-
+/**
+ *
+ * @author Stuart Littles
+ */
 public class LineItemCollection {
 
     private List<LineItem> cart = null;
@@ -17,6 +20,10 @@ public class LineItemCollection {
      public LineItemCollection(DBPoolManagerBasic dbpm) {
         this.productLineItemDAO = new ProductLineItemDAOImpl(dbpm);
         cart = new ArrayList<LineItem>();
+    }
+
+    public void setCart(List<LineItem> cart) {
+        this.cart = cart;
     }
 
     public LineItemCollection() {
@@ -38,10 +45,6 @@ public class LineItemCollection {
         e.setQty(qty);
         this.getCart().add(e);
 
-    }
-
-    public void setCart(List<LineItem> cart) {
-        this.cart = cart;
     }
 
     public void editCartQty(Product p, int qty) {
@@ -101,7 +104,7 @@ public class LineItemCollection {
     }
     
     public double grandTotal(){
-        double grandTotal = 0.00;
+        double grandTotal = 0.0;
         
         if(this.getCart() != null){
             grandTotal = this.total() + this.shipping() + this.tax();

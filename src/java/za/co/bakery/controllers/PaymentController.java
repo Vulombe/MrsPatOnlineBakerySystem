@@ -95,7 +95,7 @@ public class PaymentController extends HttpServlet {
                             if (o != null) {
                                 String invoicePath = invoice.getInvoice(o);
                                 InvoiceService service = new InvoiceServiceImpl();
-                                service.sendInvoiceEmail(invoicePath, "manqobamilk@gmail.com", "0769192723", o.getUser().getEmailAddress());
+                                service.sendInvoiceEmail(invoicePath, "vmakhubele@gmail.com", "%vul53241991", o.getUser().getEmailAddress());
                                 view = request.getRequestDispatcher("cornfimOrder.jsp");
                             }
 

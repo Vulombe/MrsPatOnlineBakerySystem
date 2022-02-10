@@ -25,7 +25,6 @@ public class UserController extends HttpServlet {
         RequestDispatcher view = null;
 
         if (prs != null) {
-            
             prs = prs.toLowerCase();
             ServletContext sc = request.getServletContext();
             DBPoolManagerBasic dbpm = (DBPoolManagerBasic) sc.getAttribute("dbconn");
@@ -78,7 +77,7 @@ public class UserController extends HttpServlet {
                         request.getParameter("contactNumber"),
                         request.getParameter("loginPassword"));
                 if (updated) {
-                    view = request.getRequestDispatcher("index.jsp");
+                    view = request.getRequestDispatcher("TestingPage.jsp");
                 } else {
                     request.setAttribute("errormsg", "Unable to update user. Try again!");
                     view = request.getRequestDispatcher("error.jsp");
@@ -90,7 +89,7 @@ public class UserController extends HttpServlet {
             if (prs.equals("delete")) {
                 if (userService.delete(request.getParameter("loginEmail"))) {
                     request.setAttribute("msg", "User Was Deleted");
-                    view = request.getRequestDispatcher("index.jsp");
+                    view = request.getRequestDispatcher("TestingPage.jsp");
                 } else {
                     request.setAttribute("errormsg", "Unable to delete user");
                     view = request.getRequestDispatcher("error.jsp");
@@ -100,22 +99,35 @@ public class UserController extends HttpServlet {
 
             //---------------------
             if (prs.equals("viewusers")) {
-                request.setAttribute("userList", userService.getUsers());
-                view = request.getRequestDispatcher("TestingPage.jsp");
-                view.forward(request, response);
+
             }
             //---------------------
             if (prs.equals("logout")) {
                 session.removeAttribute("user");
-                view = request.getRequestDispatcher("TestingPage.jsp");
+                view = request.getRequestDispatcher("index.jsp");
                 view.forward(request, response);
             }
             //---------------------
-            if (prs.equals("aaddress")) {
-                User user = (User)request.getSession().getAttribute("user");
-                UserAddress ua = userAddressService.readUserAddress(user);
-                if (ua == null) 
-                {
+
+            if (prs.equals("aadd")) {
+
+                User user = (User) request.getSession().getAttribute("user");
+
+                if (userAddressService.checkAddress(user)) {
+                    UserAddress userAddress = userAddressService.readUserAddress(user);
+
+                    boolean readAddress = userAddressService.readtoUpdate(
+                            Integer.parseInt(request.getParameter("houseNumber")),
+                            request.getParameter("streetAddress"),
+                            request.getParameter("city"),
+                            request.getParameter("state"),
+                            request.getParameter("zipCode"),
+                            user);
+                    request.setAttribute("userAddress", userAddress);
+                    request.setAttribute("user", user);
+                    view = request.getRequestDispatcher("payment.jsp");
+
+                } else {
                     boolean userAddress = userAddressService.add(
                             Integer.parseInt(request.getParameter("houseNumber")),
                             request.getParameter("streetAddress"),
@@ -123,69 +135,67 @@ public class UserController extends HttpServlet {
                             request.getParameter("state"),
                             request.getParameter("zipCode"),
                             user);
-                    if (userAddress) {
-                        request.setAttribute("useraddressvalid", userAddress);
-                        ua = userAddressService.readUserAddress(user);
-                        request.setAttribute("userAddress", ua);
+                    request.setAttribute("useraddressvalid", userAddress);
+                    request.setAttribute("userAddress", userAddressService.readUserAddress(user));
+                    view = request.getRequestDispatcher("payment.jsp");
+                }
+
+                view.forward(request, response);
+            }
+            //---------------------
+            if (prs.equals("radd")) {
+                boolean readAddress = false;
+                User user = (User) request.getSession().getAttribute("user");
+
+                if (user != null) {
+                    if (userAddressService.checkAddress(user) && request.getParameter("editC") == null) {
+
+                        UserAddress ua = userAddressService.readUserAddress(user);
+
+                        request.setAttribute("readAddress", ua);
+                        request.setAttribute("user", user);
+                        view = request.getRequestDispatcher("currentAddress.jsp");
+                    } else if (userAddressService.checkAddress(user) == false) {
+                        request.setAttribute("user", user);
+                        view = request.getRequestDispatcher("addressAdd.jsp");
+                    } else if (userAddressService.checkAddress(user) && request.getParameter("editC").equals("edit")) {
+                        request.setAttribute("user", user);
                         view = request.getRequestDispatcher("addressAdd.jsp");
 
                     }
-                } 
 
-                    view.forward(request, response);
                 }
-                //---------------------
-                if (prs.equals("uaddress")) {
-                    boolean addressUpdated = false;
-                    User user = userService.read(request.getParameter("emailAddress"));
+                view.forward(request, response);
+            }
 
-                    if (user != null) {
+            if (prs.equals("gopayment")) {
+                 User user = (User) request.getSession().getAttribute("user");
+                   UserAddress ua = userAddressService.readUserAddress(user);
 
-                        addressUpdated = userAddressService.readtoUpdate(
-                                Integer.parseInt(request.getParameter("houseNumber")),
-                                request.getParameter("streetAddress"),
-                                request.getParameter("city"),
-                                request.getParameter("state"),
-                                request.getParameter("zipCode"),
-                                user);
-                        request.setAttribute("addressupdated", addressUpdated);
-                        view = request.getRequestDispatcher("index.jsp");
-                    }
-                }
-                if (prs.equals("daddress")) {
-                    User user = userService.read(request.getParameter("emailAddress"));
-                    UserAddress ua = userAddressService.readUserAddress(user);
-                    if (userAddressService.delete(ua)) {
-                        request.setAttribute("msg", "User Address Was Deleted");
-                        view = request.getRequestDispatcher("index.jsp");
-                    } else {
-                        request.setAttribute("errormsg", "Unable to delete user address");
-                        view = request.getRequestDispatcher("error.jsp");
-                    }
-                    view.forward(request, response);
-                }
+                  request.setAttribute("readAddress", ua);
+                        request.setAttribute("user", user);
+                view = request.getRequestDispatcher("payment.jsp");
+                view.forward(request, response);
+
             }
         }
-
-        @Override
-        protected void doGet
-        (HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-            processRequest(request, response);
-        }
-
-        @Override
-        protected void doPost
-        (HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-            processRequest(request, response);
-        }
-
-        @Override
-        public String getServletInfo
-        
-            () {
-        return "Short description";
-        }
-
     }
+
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        processRequest(request, response);
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        processRequest(request, response);
+    }
+
+    @Override
+    public String getServletInfo() {
+        return "Short description";
+    }
+
+}

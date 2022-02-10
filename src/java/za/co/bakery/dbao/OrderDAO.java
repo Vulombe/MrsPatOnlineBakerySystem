@@ -1,7 +1,7 @@
 package za.co.bakery.dbao;
 
 import java.util.List;
-
+import za.co.bakery.domain.Ingredient;
 import za.co.bakery.domain.Order;
 import za.co.bakery.domain.User;
 
@@ -18,6 +18,8 @@ public interface OrderDAO {
     public List<Order> listOrder();
 
     public List<Order> listOrder(User u);
+    
+    public Order lastOrder(User u);
 
     public boolean update(Order o);
 

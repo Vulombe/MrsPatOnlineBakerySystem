@@ -100,10 +100,7 @@ public class OrderController extends HttpServlet {
                 }
                 view.forward(request, response);
                 break;
-            case "sendemail":
-                InvoiceService service = new InvoiceServiceImpl();
-                String invoicePDF = "";
-                service.sendInvoiceEmail(invoicePDF, "manqobamilk@gmail.com", "0769192723", "vmakhubele@gmail.com");
+       
         }
     }
 
