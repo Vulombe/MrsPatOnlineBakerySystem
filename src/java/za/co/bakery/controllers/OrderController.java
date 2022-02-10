@@ -87,15 +87,23 @@ public class OrderController extends HttpServlet {
                 view.forward(request, response);
                 break;
             case "invoice":
-                Order order = orderService.readOrder(15);
+                Order order = orderService.readOrder(1);
                 if (order != null) {
-                    invoiceService.getInvoice(order);
+                    String invoicePath = invoiceService.getInvoice(order);
+                    InvoiceService service = new InvoiceServiceImpl();
+
+                    service.sendInvoiceEmail(invoicePath, "vmakhubele@gmail.com","%vul53241991", "dave.makhubele@gmail.com");
                     view = request.getRequestDispatcher("index.jsp");
                 } else {
                     request.setAttribute("errormsg", "Invalid Order information");
                     view = request.getRequestDispatcher("error.jsp");
                 }
                 view.forward(request, response);
+                break;
+            case "sendemail":
+                InvoiceService service = new InvoiceServiceImpl();
+                String invoicePDF = "";
+                service.sendInvoiceEmail(invoicePDF, "manqobamilk@gmail.com", "0769192723", "vmakhubele@gmail.com");
         }
     }
 

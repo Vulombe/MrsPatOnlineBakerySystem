@@ -101,7 +101,7 @@ public class LineItemCollection {
     }
     
     public double grandTotal(){
-        double grandTotal = 0.0;
+        double grandTotal = 0.00;
         
         if(this.getCart() != null){
             grandTotal = this.total() + this.shipping() + this.tax();

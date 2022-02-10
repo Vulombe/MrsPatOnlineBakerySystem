@@ -13,14 +13,30 @@ import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Properties;
 import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.activation.DataHandler;
+import javax.activation.DataSource;
+import javax.activation.FileDataSource;
+import javax.mail.Authenticator;
+import javax.mail.BodyPart;
+import javax.mail.Message;
+import javax.mail.Multipart;
+import javax.mail.PasswordAuthentication;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeBodyPart;
+import javax.mail.internet.MimeMessage;
+import javax.mail.internet.MimeMultipart;
 import org.apache.commons.lang.RandomStringUtils;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
@@ -37,8 +53,8 @@ import za.co.bakery.domain.Order;
 public class InvoiceServiceImpl implements InvoiceService {
 
     @Override
-    public PDDocument getInvoice(Order order) {
-
+    public String getInvoice(Order order) {
+        String invoicePath = null;
         PDDocument invoicePDF = new PDDocument();
         LocalTime invoiceTime = LocalTime.now();
         LocalDate invoiceDate = LocalDate.now();
@@ -186,12 +202,14 @@ public class InvoiceServiceImpl implements InvoiceService {
                 }
                 cs.endText();
 
+                DecimalFormat df = new DecimalFormat("00.00");
+
                 cs.beginText();
                 cs.setFont(PDType1Font.TIMES_ROMAN, 10);
                 cs.setLeading(12f);
                 cs.newLineAtOffset(360, 590);
                 for (LineItem lineItems : order.getLineItem().getCart()) {
-                    cs.showText("R" + lineItems.getProduct().getPrice()+"0");
+                    cs.showText("R" + df.format(lineItems.getProduct().getPrice()));
                     cs.newLine();
                 }
                 cs.endText();
@@ -202,13 +220,13 @@ public class InvoiceServiceImpl implements InvoiceService {
                 cs.newLineAtOffset(430, 590);
                 for (LineItem lineItems : order.getLineItem().getCart()) {
                     total = lineItems.getProduct().getPrice() * lineItems.getQty();
-                    cs.showText("R" + total+"0");
+                    cs.showText("R" + df.format(total));
                     cs.newLine();
                 }
                 cs.endText();
 
                 cs.beginText();
-                int yAxis = 590 - (20 * size);
+
                 cs.setFont(PDType1Font.TIMES_ROMAN, 10);
                 cs.newLineAtOffset(9, 135);
                 cs.showText("*********************************************************************************************************************");
@@ -216,41 +234,91 @@ public class InvoiceServiceImpl implements InvoiceService {
 
                 cs.beginText();
                 cs.setFont(PDType1Font.TIMES_ROMAN, 10);
-                int yAxis2 = (yAxis - (20 * size));
+
                 cs.newLineAtOffset(390, 120);
-                cs.showText("Tax: R" + order.getLineItem().tax()+"0");
+                cs.showText("Total Price: R" + df.format(order.getLineItem().total()));
                 cs.newLine();
-                cs.showText("Shipping Price: R" + order.getLineItem().shipping()+"0");
+                cs.showText("Tax: R" +  df.format(order.getLineItem().tax()));
                 cs.newLine();
-                cs.showText("Total Price: R" + order.getLineItem().total()+"0");
+                cs.showText("Shipping Price: R" +  df.format(order.getLineItem().shipping()));
+                cs.newLine();
+                cs.showText("Grand Total: R" + df.format(order.getLineItem().grandTotal())) ;
                 cs.endText();
+
                 cs.beginText();
                 cs.setFont(PDType1Font.TIMES_ROMAN, 10);
-                cs.newLineAtOffset(9, 80);
+                cs.newLineAtOffset(9, 70);
                 cs.showText("*********************************************************************************************************************");
                 cs.endText();
 
                 cs.close();
 
                 LocalDateTime date = LocalDateTime.now();
-                
+
                 String day = date.getDayOfWeek().toString().substring(0, 3).toLowerCase();
-                String time = date.getHour()+"_" + date.getMinute();
+                String time = date.getHour() + "_" + date.getMinute();
 
                 boolean useLetters = true;
                 boolean useNumbers = false;
                 String generatedString = RandomStringUtils.random(4, useLetters, useNumbers).toLowerCase();
-                String name = day + "_" + generatedString+ "_"+ order.getUser().getLastName().toLowerCase()+ "_"+time;
-                Path path = Paths.get("C:\\MrsPatOnlineBakerySystem\\project documents\\" +name);
+                String name = day + "_" + generatedString + "_" + order.getUser().getLastName().toLowerCase() + "_" + time;
+                Path path = Paths.get("C:\\MrsPatOnlineBakerySystem\\project documents\\" + name);
                 Files.createDirectories(path);
                 String p1 = path.toString();
                 invoicePDF.save(p1 + "\\Invoive.pdf");
                 invoicePDF.close();
+                invoicePath = path.toString() + "\\Invoive.pdf";
             }
         } catch (IOException ex) {
             Logger.getLogger(OrderServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return invoicePDF;
+        return invoicePath;
+    }
+
+    @Override
+    public void sendInvoiceEmail(String invoicePDF, final String emailSender, final String password, final String emailTo) {
+        Properties properties = new Properties();
+        properties.put("mail.smtp.auth", "true");
+        properties.put("mail.smtp.starttls.enable", "true");
+        properties.put("mail.smtp.host", "smtp.gmail.com");
+        properties.put("mail.smtp.port", "587");
+        properties.put("mail.smtp.startls.enable", "true");
+       
+        Session session = Session.getDefaultInstance(properties, new Authenticator() {
+            protected PasswordAuthentication getPasswordAuthentication() {
+                return new PasswordAuthentication(emailSender, password);
+            }
+        });
+        try {
+            Message message = new MimeMessage(session);
+
+            message.setFrom(new InternetAddress(emailSender));
+
+            message.setRecipients(Message.RecipientType.TO,
+                    InternetAddress.parse(emailTo));
+
+            message.setSubject("Invoice");
+
+            BodyPart messageBodyPart = new MimeBodyPart();
+
+            messageBodyPart.setText("Good day Sir or Madam"
+                    + "\n Please receive the Attached invoice with your order information");
+            Multipart multipart = new MimeMultipart();
+            multipart.addBodyPart(messageBodyPart);
+
+            messageBodyPart = new MimeBodyPart();
+            String filename = invoicePDF;
+            DataSource source = new FileDataSource(filename);
+            messageBodyPart.setDataHandler(new DataHandler(source));
+            messageBodyPart.setFileName(filename);
+            multipart.addBodyPart(messageBodyPart);
+            message.setContent(multipart);
+            Transport.send(message);
+            System.out.println("Sent message successfully....");
+        } catch (Exception ex) {
+            System.out.println("Error: " + ex.getMessage());
+
+        }
     }
 
 }
