@@ -270,6 +270,7 @@ public class UserDOAImpl implements UserDOA {
                 u.setPassword(rs.getString("password"));
                 u.setID(rs.getInt("Id"));
                 u.setTitle("title");
+                u.setEmailAddress(rs.getString("email"));
                 u.setFirstName(rs.getString("firstName"));
                 u.setLastName(rs.getString("lastName"));
                 u.setContactNumber(rs.getString("contactNumber"));

@@ -240,7 +240,7 @@
             <br></br>
             <input type="text" size="50"name="ingredientNutrient" placeholder="Enter ingredient nutrient"  required=""style=" height: 40px;">
             <br></br>
-              <button>Submit</button> 
+            <button>Submit</button> 
 
         </form>
     </div> 
@@ -254,22 +254,24 @@
     <div class="box">
         <form action="http://localhost:8080/MrsPatOnlineBakerySystem/pcontrol?pro=idel" ><!-- delete ingredient-->
             <input type="hidden" name="pro" value="idel">
-           
-            <select nam="name="ingredientid" id="ingredientid">
-                <option>Select the Ingredient</option>
-                 <% List<Ingredient> in = (ArrayList<Ingredient>) request.getAttribute("ingredientid");
-                        if (request.getAttribute("ingredientid") != null)
-                            for (Ingredient ing : in) {%>
-                    <option><%=ing.getIngredientID()%></option> 
-                    <% } %>
-                    
-            </select>
-             
+
+            <label class="a">Select the Ingredient</label>
             <br>
-             <input class="button" type="submit"value="submit" name="delete"> 
+ <select name="ingredientid" id="ingredientid">          
+                <% List<Ingredient> in = (ArrayList<Ingredient>) request.getAttribute("ingredientList");
+                    if (request.getAttribute("ingredientList") != null)
+                        for (Ingredient ing : in) {%>
+                <option value="<%=ing.getIngredientID()%>"> <%=ing.getName()%></option> 
+                <% } %>
+ </select>
+            <br></br>
+<input class="button" type="submit"value="submit" name="submit">
 
         </form> 
     </div>
+           
+           
+            
     <!-------------------------------------------END DELETE INGREDIENT-------------------------------------------------------------------------------------------->
     <%               } else if (value.equalsIgnoreCase("iedit")) {
 
@@ -279,106 +281,45 @@
     <div class="box">
         <form action="http://localhost:8080/MrsPatOnlineBakerySystem/pcontrol?pro=iedit" id="formiup">
             <input type="hidden" name="pro" value="iedit">
-           <input type="text" size="50" name="ingredientName" placeholder="Enter name of product"  required=""style=" height: 40px;">
+            <h1 class="a">Update Ingredient</h1>
+            <br>
+            <br>
+               <label class="a">Ingredient name and nutrient</label>
+               
+ <select nam="name="ingredientList" id="ingredientList">          
+                <% List<Ingredient> in = (ArrayList<Ingredient>) request.getAttribute("ingredientList");
+                    if (request.getAttribute("ingredientList") != null)
+                        for (Ingredient ing : in) {%>
+                        <option><%=ing.getName()%>  <%=ing.getNutrient()%> <%=ing.getIngredientID()%></option> 
+                <% }%>
+ </select>
+            <br>
+            <br>
+            <input type="text" size="50" name="ingredientName" placeholder=" Enter ingredient name"  required=""style=" height: 40px;">
             <br></br>
-            <input type="text" size="50"name="ingredientNutrient" placeholder="Enter product nutrient"  required=""style=" height: 40px;">
+            <input type="text" size="50"name="ingredientNutrient" placeholder="Enter ingredient nutrient"  required=""style=" height: 40px;">
             <br></br>
-             <input class="button" type="submit" value="submit" name="submit"> 
-       
-
-
+            <input type="text" size="50"name="ingredientId" placeholder="Enter ingredient id"  required=""style=" height: 40px;">
+            <br></br>
+            <input class="button" type="submit" value="submit" name="submit"> 
+            <br>
         </form>   
     </div>
+
+
     <!----------------------------------UPDATE INGREDIENT--------------------------------------------------------------------->  
-    <% } else if (value.equalsIgnoreCase("update")) {
-
-
-    %>
-
-    <!------------------------------------ADD USER-----------------------------------------------------------------------> 
-    <div class="box">
-        <form action="http://localhost:8080/MrsPatOnlineBakerySystem/ucontrol?pro=update" >
-            <input type="hidden" name="pro" value="update">
-            <select name= "title" id="title">
-                <option value="Mr">Mr</option>
-                <option value="Mrs">Mrs</option>
-                <option value="Ms">Ms</option>
-                <option value="Dr">Dr</option>
-                <option value="Prof">Prof</option>
-            </select></p> 
-            <input type="text" size="50" name="firstName" placeholder="Enter User's First name"  required=""style=" height: 40px;">
-            <br></br>
-            <input type="text" size="50"name="lastName" placeholder="Enter User's last name"  required=""style=" height: 40px;">
-            <br></br>
-            <input  type="text" size="50" name="loginEmail" placeholder="Enter Email"  required=""style=" height: 40px;">
-            <br></br>
-            <input type="text" size="50" name="contactNumber" placeholder="Enter contact Number"  required=""style=" height: 40px;">
-            <br></br>  
-            <input type="text" size="50" name="loginPassword" placeholder="Enter Password"  required=""style=" height: 40px;">
-            <br></br> 
-            <button>Submit</button>  
-        </form>            
-    </div>
-
-    <!-----------------------------------END ADD USER------------------------------------------------------->
-    <!-----------------------------------UPDATE USER-------------------------------------------------------->
-    <%         } else if (value.equalsIgnoreCase("viewusers")) {
-
-
-    %>
-    <div class="box">
-        <form action="http://localhost:8080/MrsPatOnlineBakerySystem/ucontrol?pro=viewusers"  >
-            <!---update product----------------------------------------------------------------------------------------------->
-            <input type="hidden" name="pro" value="viewusers">
-            <select id="mySelect" onClick="check(this);">
-                <option>Choose The changes you would like to make:</option>   
-                <option name="name">Product Name</option>
-                <option name="picture" >Product Picture</option>
-                <option name="price">Product Price</option>
-                <option name="category">Product Category</option>
-                <option name="warning">Product Warning</option>
-                <option name="description">Product description</option>
-                <option name="recipe">Product Recipe</option>
-            </select>
-    </div>
-    <div id="other-div" style="display:none;">
-        <label class="a">Enter Changes
-            <input id="other-input"></input>
-            <button>Submit</button> 
-        </label>
-    </div>
-
-</form>    
-<!-----------------------------------END UPDATE USER---------------------------------------------------->
-<!-----------------------------------DELETE USER------------------------------------------------>
-<%     } else if (value.equalsIgnoreCase("delete")) {
-
-%>
-<div class="box">
-    <form action="http://localhost:8080/MrsPatOnlineBakerySystem/ucontrol?pro=delete">
-        <input type="hidden" name="pro" value="delete">
-        <input type="text" size="50"name="loginEmail" placeholder="Enter user login Email "  required=""style=" height: 40px;">
-        <button>Submit</button> 
-        <br></br>
-
-    </form> 
-</div> 
+  
 <% }%>
+<br>
+<br>
 <center> <button id="back" onclick="goBack()">BACK</button></center>
+
+
+
 
 </body>
 <script src="main.js"></script>
-<script>
 
-    function check(elem) {
-
-        if (elem.selectedIndex) {
-            document.getElementById("other-div").style.display = 'block';
-        } else {
-            document.getElementById("other-div").style.display = 'none';
-        }
-    }
-</script>
 
 <style>
     body{
@@ -393,7 +334,7 @@
     .a{
 
         color: #fff;
-        font-size: 14px;
+       
         text-decoration: none;
         margin: 15px 0;
     }

@@ -70,13 +70,17 @@ public class AdminController extends HttpServlet {
                     request.setAttribute("admin", "iadd");
                     break;
                 case "iedit":
+                     request.setAttribute("ingredientList", productService.getIngredients());
                     request.setAttribute("admin", "iedit");
                     break;
                 case "idel":
-                    request.setAttribute("admin", "idelete");
+                    request.setAttribute("ingredientList", productService.getIngredients());
+                    request.setAttribute("admin", "idel");
                     break;
                 case "ilist":
                     request.setAttribute("ingredientList", productService.getIngredients());
+                    
+                    
                     break;
                 case "plist":
                     request.setAttribute("products", productService.getProducts(request.getParameter("category")));

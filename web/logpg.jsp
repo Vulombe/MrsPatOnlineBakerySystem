@@ -41,9 +41,9 @@
                 <input type="text" name="lastName" placeholder="Last Name"  required=""/>
                 <input type="text"  name="loginEmail" placeholder="Email"  required=""/>
                 <input  type="text"  name="contactNumber" placeholder="Contact Number"  required=""/>
-                <input type="password"  name="loginPassword" placeholder="Password"  required=""/>
-                <input type="Confirm password"  name="confPassword" placeholder="confirm password"  required=""/>
-                <button type="submit" class="btnCreate"> Sign Up </button>
+                <input type="password"  name="loginPassword" id="loginPassword" placeholder="Password"  required=""/>
+                <input type="password"  name="confPassword" id="confPassword" placeholder="confirm password"  required=""/>
+                <button type="submit" class="btnCreate" id="signup"> Sign Up </button>
             </form>
         </div>
         <div class="form-container sign-in-container">
@@ -666,5 +666,21 @@ function goBack() {
 	console.log('We are in previous page');
 }
 
+</script>
+
+
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+<script type="text/javascript">
+    $(function () {
+        $("#signup").click(function () {
+            var password = $("#loginPassword").val();
+            var confirmPassword = $("#confPassword").val();
+            if (password != confirmPassword) {
+                alert("Passwords do not match.");
+                return false;
+            }
+            return true;
+        });
+    });
 </script>
 </html>

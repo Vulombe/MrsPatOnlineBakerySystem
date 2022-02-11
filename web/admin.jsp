@@ -35,7 +35,7 @@
             <a href="http://localhost:8080/MrsPatOnlineBakerySystem/acontrol?pro=pedt">
                 <button onclick="" value="pedt">  Update product</button></a>
 
-            <br></br>     
+           <!-- <br></br>     
 
            <b class="a"> <font size="+4">Recipe</b></font>
             <br></br>
@@ -47,7 +47,7 @@
             <button onclick=""value="rdel"> Delete Recipe</button>
             </a>
             <a href="http://localhost:8080/MrsPatOnlineBakerySystem/acontrol?pro=redit">
-                <button onclick="" value="redit">Update Recipe </button> </a>  
+                <button onclick="" value="redit">Update Recipe </button> </a>  -->
    <br></br> 
 
           <b class="a"> <font size="+4"> ingredient</b></font>
@@ -62,11 +62,11 @@
             <br>
  <b class="a"> <font size="+4">Users</b></font>
             <br></br>
-<a href="http://localhost:8080/MrsPatOnlineBakerySystem/ucontrol?pro=update">
-    <button onclick="" value="update">Add User</button></a>
-            <a href="http://localhost:8080/MrsPatOnlineBakerySystem/ucontrol?pro=delete">
+<a href="addUser.jsp">
+    <button onclick="" value="register">Add User</button></a>
+            <a href="deleteUser.jsp">
                 <button onClick="" value="delete"> Delete User</button></a>
-            <a href=http://localhost:8080/MrsPatOnlineBakerySystem/ucontrol?pro=viewusers">
+            <a href="updateuser.jsp">
                 <button onclick="" value="viewusers">Update User</button> </a>         
     </div>
 </center>

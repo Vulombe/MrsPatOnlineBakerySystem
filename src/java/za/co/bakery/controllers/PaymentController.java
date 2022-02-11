@@ -77,11 +77,10 @@ public class PaymentController extends HttpServlet {
                     String Cvv = request.getParameter("cvvNumber");
                     String paymentType = request.getParameter("paymentType");
 
-                    //  request.setAttribute("paid", paymentService.makePayment(cardNumber, Cvv, paymentType));
-                    //boolean paid=paymentService.makePayment(cardNumber, Cvv, paymentType);
+                    request.setAttribute("paid", paymentService.makePayment(cardNumber, Cvv, paymentType));
+                    // boolean paid=paymentService.makePayment(cardNumber, Cvv, paymentType);
                     boolean paid = true;
                     if (paid) {
-                        //orderService.add((User)request.getSession().getAttribute("user"),cart, (UserAddress)request.getSession().getAttribute("userAddress"), cart.grandTotal(), date);
 
                         LineItemCollection lineItemList = (LineItemCollection) request.getSession().getAttribute("cart");
                         double totalPrice = lineItemList.grandTotal();
@@ -95,19 +94,23 @@ public class PaymentController extends HttpServlet {
                             if (o != null) {
                                 String invoicePath = invoice.getInvoice(o);
                                 InvoiceService service = new InvoiceServiceImpl();
-                                service.sendInvoiceEmail(invoicePath, "manqobamilk@gmail.com", "0769192723", o.getUser().getEmailAddress());
+                                service.sendInvoiceEmail(invoicePath, "mrspatbakery@gmail.com", "%0Csdm1982", o.getUser().getEmailAddress());
                                 view = request.getRequestDispatcher("cornfimOrder.jsp");
                             }
 
                         } else {
                             request.setAttribute("errormsg", "Invalid Order information");
                             session.setAttribute("orderAdded", orderAddedd);
-                            view = request.getRequestDispatcher("error.jsp");
+                            view = request.getRequestDispatcher("payment.jsp");
                         }
                         //view.forward(request, response);
 
+                    } else {
+
+                        request.setAttribute("errormsg", "Payment Rejected,Please try again");
+                        view = request.getRequestDispatcher("payment.jsp");
+
                     }
-                    //view = request.getRequestDispatcher("Testing.jsp");
                     break;
 
             }

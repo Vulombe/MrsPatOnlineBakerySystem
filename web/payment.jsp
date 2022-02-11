@@ -65,6 +65,8 @@
                             <h2>R <%=lineItemCol.grandTotal()%></h2>
 
                         </div>
+
+                    
                     </div>
 
                     <div id="payment">
@@ -152,14 +154,24 @@
 
                     <div id="payment">
 
-                  <form method="POST" action="http://localhost:8080/MrsPatOnlineBakerySystem/pacontrol?pro=payment&paymentType=EFT" id="checkout">
+                        <form method="POST" action="http://localhost:8080/MrsPatOnlineBakerySystem/pacontrol?pro=payment&paymentType=EFT" id="checkout">
 
                             <input class="card" id="visa" type="button" name="card" value="">
                             <input class="card" id="mastercard" type="button" name="card" value="">
 
-                            <label>Bank</label>
-                            <input id="cardnumber" type=text name="cardnumber" required="true">
 
+                            <label>Bank</label>
+                            <!--<input id="cardnumber" type=text name="cardnumber" required="true">-->
+
+                            <div id="left">
+                                <select name="Banks" id="Banks">
+                                    <option value="Capitec">Capitec</option>
+                                    <option value="FNB">FNB</option>
+                                    <option value="Nedbank">Nedbank</option>
+                                    <option value="TymeBank">TymeBank</option>
+                                </select>
+
+                            </div>
                             <label>Account Number</label>
                             <input id="cardholder" type="text" name="name" required="true" maxlength="50"
                                    placeholder="Account Number">
@@ -168,7 +180,7 @@
                             <input id="cardholder" type="password" name="name" required="true" maxlength="4"
                                    placeholder="pin Number">
 
-                               <input class="btn" type="submit" name="purchase" value="Purchase">
+                            <input class="btn" type="submit" name="purchase" value="Purchase">
                         </form>
                         <input class="btn1" type="button" name="Back" value="Back">
                     </div>
